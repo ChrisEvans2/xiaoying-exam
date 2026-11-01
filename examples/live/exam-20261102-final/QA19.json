@@ -1,0 +1,999 @@
+{
+  "evidence_type": "live_model",
+  "case_id": "QA19",
+  "input": {
+    "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+    "history": []
+  },
+  "followup_input": null,
+  "fault_injection": {
+    "read": 1,
+    "search_document_ids": [
+      "D04"
+    ]
+  },
+  "history_runs": [],
+  "initial": {
+    "id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+    "conversation_id": "ab88acde-bf1f-48ec-9bb9-80cdfd894473",
+    "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+    "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+    "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 6,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "answered",
+    "result": {
+      "answer": "在上海出差，住宿费报销上限为每人每晚500元，上限含税；实际费用低于上限按实际报销，超出部分自行承担。",
+      "citations": [
+        {
+          "quote": "1. 在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "境内差旅住宿费用标准",
+          "locator": [
+            {
+              "end": 62,
+              "start": 0,
+              "block_id": "b6",
+              "paragraph": 7
+            }
+          ],
+          "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+          "document_id": "D04",
+          "evidence_id": "4667516a-9911-54d3-8998-98826aeaf9c2",
+          "version_date": "2026-08-01",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+        },
+        {
+          "quote": "2. 上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "境内差旅住宿费用标准",
+          "locator": [
+            {
+              "end": 49,
+              "start": 0,
+              "block_id": "b7",
+              "paragraph": 8
+            }
+          ],
+          "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+          "document_id": "D04",
+          "evidence_id": "8fe991b9-647e-51e1-87ca-4e64f9a03df1",
+          "version_date": "2026-08-01",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+        }
+      ],
+      "reason_code": "已读境内差旅住宿费用标准原文，明确上海上限及含税口径",
+      "task_status": "answered",
+      "information_gaps": []
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 0,
+    "deadline_at": null,
+    "model_calls": 5,
+    "tool_calls": 3,
+    "graph_steps": 9,
+    "active_ms": 7338.408,
+    "segment_started_at": null,
+    "next_event_seq": 27,
+    "created_at": "2026-11-01T17:28:05.295054+00:00"
+  },
+  "run": {
+    "id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+    "conversation_id": "ab88acde-bf1f-48ec-9bb9-80cdfd894473",
+    "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+    "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+    "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 6,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "answered",
+    "result": {
+      "answer": "在上海出差，住宿费报销上限为每人每晚500元，上限含税；实际费用低于上限按实际报销，超出部分自行承担。",
+      "citations": [
+        {
+          "quote": "1. 在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "境内差旅住宿费用标准",
+          "locator": [
+            {
+              "end": 62,
+              "start": 0,
+              "block_id": "b6",
+              "paragraph": 7
+            }
+          ],
+          "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+          "document_id": "D04",
+          "evidence_id": "4667516a-9911-54d3-8998-98826aeaf9c2",
+          "version_date": "2026-08-01",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+        },
+        {
+          "quote": "2. 上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "境内差旅住宿费用标准",
+          "locator": [
+            {
+              "end": 49,
+              "start": 0,
+              "block_id": "b7",
+              "paragraph": 8
+            }
+          ],
+          "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+          "document_id": "D04",
+          "evidence_id": "8fe991b9-647e-51e1-87ca-4e64f9a03df1",
+          "version_date": "2026-08-01",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+        }
+      ],
+      "reason_code": "已读境内差旅住宿费用标准原文，明确上海上限及含税口径",
+      "task_status": "answered",
+      "information_gaps": []
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 0,
+    "deadline_at": null,
+    "model_calls": 5,
+    "tool_calls": 3,
+    "graph_steps": 9,
+    "active_ms": 7338.408,
+    "segment_started_at": null,
+    "next_event_seq": 27,
+    "created_at": "2026-11-01T17:28:05.295054+00:00"
+  },
+  "trace": [
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 1,
+      "event_id": "run.queued",
+      "type": "run.queued",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "provider_mode": "live"
+      },
+      "occurred_at": "2026-11-01T17:28:05.295054+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 2,
+      "event_id": "run.started:f8563acf-e567-42be-9c87-14aaa091266f",
+      "type": "run.started",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "evidence_epoch": 0
+      },
+      "occurred_at": "2026-11-01T17:28:05.302202+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 3,
+      "event_id": "model.started:1",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "adapter": "DeepSeekChat",
+        "action_id": "expand:0",
+        "call_number": 1,
+        "message_count": 2
+      },
+      "occurred_at": "2026-11-01T17:28:05.351689+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 4,
+      "event_id": "model.finished:1",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "response": {
+          "intent": "knowledge",
+          "expanded_queries": [
+            "上海出差住宿费报销标准 每人每晚上限",
+            "差旅费住宿费报销标准 上海"
+          ],
+          "unresolved_slots": [],
+          "resolved_question": "在上海出差，住宿费每人每晚最多能报销多少？"
+        },
+        "action_id": "expand:0",
+        "recovered": false,
+        "elapsed_ms": 1490.859,
+        "call_number": 1
+      },
+      "occurred_at": "2026-11-01T17:28:06.842153+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 5,
+      "event_id": "intent:0",
+      "type": "intent.detected",
+      "payload": {
+        "intent": "knowledge",
+        "requires_knowledge": true
+      },
+      "occurred_at": "2026-11-01T17:28:06.846283+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 6,
+      "event_id": "expanded:0",
+      "type": "query.expanded",
+      "payload": {
+        "intent": "knowledge",
+        "expanded_queries": [
+          "在上海出差，住宿费每人每晚最多能报销多少？",
+          "上海出差住宿费报销标准 每人每晚上限",
+          "差旅费住宿费报销标准 上海"
+        ],
+        "unresolved_slots": [],
+        "resolved_question": "在上海出差，住宿费每人每晚最多能报销多少？"
+      },
+      "occurred_at": "2026-11-01T17:28:06.849698+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 7,
+      "event_id": "model.started:2",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:0",
+        "call_number": 2,
+        "message_count": 4
+      },
+      "occurred_at": "2026-11-01T17:28:06.866420+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 8,
+      "event_id": "model.finished:2",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_Iozr3LafZxNjtJgLs3wb9142",
+              "type": "function",
+              "function": {
+                "name": "search_knowledge",
+                "arguments": "{\"queries\": [\"上海出差住宿费报销标准 每人每晚上限\", \"差旅费住宿费报销标准 上海\", \"住宿费标准 上海 每人每晚\"], \"reason\": \"检索差旅住宿费标准中上海地区的限额规定\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:0",
+        "recovered": false,
+        "elapsed_ms": 1191.951,
+        "call_number": 2
+      },
+      "occurred_at": "2026-11-01T17:28:08.057871+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 9,
+      "event_id": "decision:0",
+      "type": "agent.decision",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "budget": {
+          "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+          "tool_calls_used": 0,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 6,
+          "graph_steps_remaining": 38,
+          "model_calls_remaining": 11,
+          "active_seconds_remaining": 178.441298
+        },
+        "tool_call_id": "call_00_ET_Iozr3LafZxNjtJgLs3wb9142"
+      },
+      "occurred_at": "2026-11-01T17:28:08.063909+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 10,
+      "event_id": "tool.started:0",
+      "type": "tool.started",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "reason": "检索差旅住宿费标准中上海地区的限额规定",
+        "arguments": {
+          "queries": [
+            "上海出差住宿费报销标准 每人每晚上限",
+            "差旅费住宿费报销标准 上海",
+            "住宿费标准 上海 每人每晚"
+          ]
+        },
+        "tool_call_id": "call_00_ET_Iozr3LafZxNjtJgLs3wb9142"
+      },
+      "occurred_at": "2026-11-01T17:28:08.085338+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 11,
+      "event_id": "tool.completed:0",
+      "type": "tool.completed",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "degraded": false,
+        "failures": [],
+        "candidates": [
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 5,
+            "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "rrf_score": 0.09836065573770493,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.9825232028961182,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 6,
+            "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+            "rrf_score": 0.09651817716333845,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.25160297751426697,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 7,
+            "chunk_id": "75943a17-4142-537c-ba78-e90085fca35f",
+            "rrf_score": 0.095246095750128,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.20981089770793915,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 9,
+            "chunk_id": "bf583cc8-0a4a-5e1b-95c4-fd9a9a5bd548",
+            "rrf_score": 0.09327686202686203,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.09342522919178009,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 3,
+            "chunk_id": "3453f4f1-c783-59b6-8f0a-2c398486e173",
+            "rrf_score": 0.09114219114219115,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.050853341817855835,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 8,
+            "chunk_id": "9dab1f61-d3b8-5831-8783-5b75a00f8dfd",
+            "rrf_score": 0.09279574592074592,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.016780218109488487,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 0,
+            "chunk_id": "a67eb890-c05c-5968-ac7c-e2ff161f1310",
+            "rrf_score": 0.08674948240165632,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.0004011917917523533,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 1,
+            "chunk_id": "598d18ba-2e12-5816-849f-8235f40c3d46",
+            "rrf_score": 0.08955223880597014,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.0003347540623508394,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          }
+        ],
+        "query_count": 3,
+        "tool_call_id": "call_00_ET_Iozr3LafZxNjtJgLs3wb9142",
+        "candidate_count": 10
+      },
+      "occurred_at": "2026-11-01T17:28:08.395697+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 12,
+      "event_id": "model.started:3",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:1",
+        "call_number": 3,
+        "message_count": 7
+      },
+      "occurred_at": "2026-11-01T17:28:08.411439+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 13,
+      "event_id": "model.finished:3",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_1GmfWrdeaXnIT6L4uR1m3344",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"chunk_ids\": [\"056e529f-30c9-5a26-8425-e6322daac3a5\", \"9c04f688-d34d-5743-b2cc-544a1ea4d5cc\", \"75943a17-4142-537c-ba78-e90085fca35f\"], \"reason\": \"读取住宿费标准中排名靠前的候选原文\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:1",
+        "recovered": false,
+        "elapsed_ms": 997.267,
+        "call_number": 3
+      },
+      "occurred_at": "2026-11-01T17:28:09.408527+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 14,
+      "event_id": "decision:1",
+      "type": "agent.decision",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+          "tool_calls_used": 1,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 5,
+          "graph_steps_remaining": 36,
+          "model_calls_remaining": 10,
+          "active_seconds_remaining": 176.897217
+        },
+        "tool_call_id": "call_00_ET_1GmfWrdeaXnIT6L4uR1m3344"
+      },
+      "occurred_at": "2026-11-01T17:28:09.412856+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 15,
+      "event_id": "tool.started:1",
+      "type": "tool.started",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "reason": "读取住宿费标准中排名靠前的候选原文",
+        "arguments": {
+          "chunk_ids": [
+            "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+            "75943a17-4142-537c-ba78-e90085fca35f"
+          ]
+        },
+        "tool_call_id": "call_00_ET_1GmfWrdeaXnIT6L4uR1m3344"
+      },
+      "occurred_at": "2026-11-01T17:28:09.427627+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 16,
+      "event_id": "tool.completed:1",
+      "type": "tool.failed",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "error": {
+          "code": "TIMEOUT",
+          "message": "测试注入：原文读取超时",
+          "retryable": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_ET_1GmfWrdeaXnIT6L4uR1m3344"
+      },
+      "occurred_at": "2026-11-01T17:28:09.439064+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 17,
+      "event_id": "model.started:4",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:2",
+        "call_number": 4,
+        "message_count": 10
+      },
+      "occurred_at": "2026-11-01T17:28:09.456534+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 18,
+      "event_id": "model.finished:4",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_Cslxsjf8doBtF8RxmKSj5811",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"chunk_ids\": [\"056e529f-30c9-5a26-8425-e6322daac3a5\", \"9c04f688-d34d-5743-b2cc-544a1ea4d5cc\"], \"reason\": \"超时后缩小范围重试读取最相关两条原文\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:2",
+        "recovered": false,
+        "elapsed_ms": 1217.246,
+        "call_number": 4
+      },
+      "occurred_at": "2026-11-01T17:28:10.673263+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 19,
+      "event_id": "decision:2",
+      "type": "agent.decision",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+          "tool_calls_used": 2,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 4,
+          "graph_steps_remaining": 34,
+          "model_calls_remaining": 9,
+          "active_seconds_remaining": 175.852832
+        },
+        "tool_call_id": "call_00_Cslxsjf8doBtF8RxmKSj5811"
+      },
+      "occurred_at": "2026-11-01T17:28:10.677935+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 20,
+      "event_id": "tool.started:2",
+      "type": "tool.started",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "reason": "超时后缩小范围重试读取最相关两条原文",
+        "arguments": {
+          "chunk_ids": [
+            "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "9c04f688-d34d-5743-b2cc-544a1ea4d5cc"
+          ]
+        },
+        "tool_call_id": "call_00_Cslxsjf8doBtF8RxmKSj5811"
+      },
+      "occurred_at": "2026-11-01T17:28:10.698591+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 21,
+      "event_id": "tool.completed:2",
+      "type": "tool.completed",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 62,
+                "start": 0,
+                "block_id": "b6",
+                "paragraph": 7
+              }
+            ],
+            "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "document_id": "D04",
+            "evidence_id": "4667516a-9911-54d3-8998-98826aeaf9c2"
+          },
+          {
+            "locator": [
+              {
+                "end": 49,
+                "start": 0,
+                "block_id": "b7",
+                "paragraph": 8
+              }
+            ],
+            "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+            "document_id": "D04",
+            "evidence_id": "8fe991b9-647e-51e1-87ca-4e64f9a03df1"
+          }
+        ],
+        "tool_call_id": "call_00_Cslxsjf8doBtF8RxmKSj5811"
+      },
+      "occurred_at": "2026-11-01T17:28:10.715101+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 22,
+      "event_id": "model.started:5",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:3",
+        "call_number": 5,
+        "message_count": 13
+      },
+      "occurred_at": "2026-11-01T17:28:10.734039+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 23,
+      "event_id": "model.finished:5",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_JcPF3ahlU0mQQmI9EIrN5988",
+              "type": "function",
+              "function": {
+                "name": "finish_answer",
+                "arguments": "{\"answer\": \"在上海出差，住宿费报销上限为每人每晚500元，上限含税；实际费用低于上限按实际报销，超出部分自行承担。\", \"citations\": [{\"evidence_id\": \"4667516a-9911-54d3-8998-98826aeaf9c2\", \"quote\": \"1. 在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。\"}, {\"evidence_id\": \"8fe991b9-647e-51e1-87ca-4e64f9a03df1\", \"quote\": \"2. 上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。\"}], \"information_gaps\": [], \"task_status\": \"answered\", \"reason_code\": \"已读境内差旅住宿费用标准原文，明确上海上限及含税口径\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:3",
+        "recovered": false,
+        "elapsed_ms": 1865.52,
+        "call_number": 5
+      },
+      "occurred_at": "2026-11-01T17:28:12.599258+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 24,
+      "event_id": "decision:3",
+      "type": "agent.decision",
+      "payload": {
+        "step": 3,
+        "tool": "finish_answer",
+        "budget": {
+          "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+          "tool_calls_used": 3,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 3,
+          "graph_steps_remaining": 32,
+          "model_calls_remaining": 8,
+          "active_seconds_remaining": 174.576503
+        },
+        "tool_call_id": "call_00_JcPF3ahlU0mQQmI9EIrN5988"
+      },
+      "occurred_at": "2026-11-01T17:28:12.604657+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 25,
+      "event_id": "tool.started:3",
+      "type": "tool.started",
+      "payload": {
+        "step": 3,
+        "tool": "finish_answer",
+        "reason": "",
+        "arguments": {
+          "answer": "在上海出差，住宿费报销上限为每人每晚500元，上限含税；实际费用低于上限按实际报销，超出部分自行承担。",
+          "citations": [
+            {
+              "quote": "1. 在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。",
+              "evidence_id": "4667516a-9911-54d3-8998-98826aeaf9c2"
+            },
+            {
+              "quote": "2. 上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。",
+              "evidence_id": "8fe991b9-647e-51e1-87ca-4e64f9a03df1"
+            }
+          ],
+          "reason_code": "已读境内差旅住宿费用标准原文，明确上海上限及含税口径",
+          "task_status": "answered",
+          "information_gaps": []
+        },
+        "tool_call_id": "call_00_JcPF3ahlU0mQQmI9EIrN5988"
+      },
+      "occurred_at": "2026-11-01T17:28:12.622534+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 26,
+      "event_id": "tool.completed:3",
+      "type": "tool.completed",
+      "payload": {
+        "step": 3,
+        "tool": "finish_answer",
+        "result": {
+          "accepted": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_JcPF3ahlU0mQQmI9EIrN5988"
+      },
+      "occurred_at": "2026-11-01T17:28:12.627810+00:00"
+    },
+    {
+      "run_id": "a60921e3-6a5f-4c4c-8eab-6dc05c889864",
+      "seq": 27,
+      "event_id": "run.finished",
+      "type": "run.finished",
+      "payload": {
+        "answer": "在上海出差，住宿费报销上限为每人每晚500元，上限含税；实际费用低于上限按实际报销，超出部分自行承担。",
+        "citations": [
+          {
+            "quote": "1. 在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "境内差旅住宿费用标准",
+            "locator": [
+              {
+                "end": 62,
+                "start": 0,
+                "block_id": "b6",
+                "paragraph": 7
+              }
+            ],
+            "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "document_id": "D04",
+            "evidence_id": "4667516a-9911-54d3-8998-98826aeaf9c2",
+            "version_date": "2026-08-01",
+            "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+            "evidence_epoch": 0,
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "quote": "2. 上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "境内差旅住宿费用标准",
+            "locator": [
+              {
+                "end": 49,
+                "start": 0,
+                "block_id": "b7",
+                "paragraph": 8
+              }
+            ],
+            "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+            "document_id": "D04",
+            "evidence_id": "8fe991b9-647e-51e1-87ca-4e64f9a03df1",
+            "version_date": "2026-08-01",
+            "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+            "evidence_epoch": 0,
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          }
+        ],
+        "reason_code": "已读境内差旅住宿费用标准原文，明确上海上限及含税口径",
+        "task_status": "answered",
+        "information_gaps": []
+      },
+      "occurred_at": "2026-11-01T17:28:12.640436+00:00"
+    }
+  ],
+  "read_evidence": [
+    {
+      "quote": "1. 在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "境内差旅住宿费用标准",
+      "locator": [
+        {
+          "end": 62,
+          "start": 0,
+          "block_id": "b6",
+          "paragraph": 7
+        }
+      ],
+      "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+      "document_id": "D04",
+      "evidence_id": "4667516a-9911-54d3-8998-98826aeaf9c2",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+    },
+    {
+      "quote": "2. 上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "境内差旅住宿费用标准",
+      "locator": [
+        {
+          "end": 49,
+          "start": 0,
+          "block_id": "b7",
+          "paragraph": 8
+        }
+      ],
+      "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+      "document_id": "D04",
+      "evidence_id": "8fe991b9-647e-51e1-87ca-4e64f9a03df1",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+    }
+  ],
+  "model_calls": [
+    {
+      "call_number": 1,
+      "phase": "expand",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1490.859,
+      "error": null
+    },
+    {
+      "call_number": 2,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1191.951,
+      "error": null
+    },
+    {
+      "call_number": 3,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 997.267,
+      "error": null
+    },
+    {
+      "call_number": 4,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1217.246,
+      "error": null
+    },
+    {
+      "call_number": 5,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1865.52,
+      "error": null
+    }
+  ],
+  "citation_integrity": true,
+  "expected": {
+    "status": "answered",
+    "reference_answer": "上海住宿费上限为每人每晚 500 元，按含税实际费用报销；低于上限按实际金额报销，超过部分自行承担。依据 D04 第 1、2 条。",
+    "required_facts": [
+      "实际获得 D04 原文后才能给出 500 元上限",
+      "按含税实际费用报销",
+      "引用成功读取的原文"
+    ],
+    "forbidden_claims": [
+      "还没成功读取就凭记忆给出答案",
+      "伪造成功读取记录"
+    ],
+    "evidence": [
+      {
+        "document_id": "D04",
+        "source_path": "data/policies/D04-accommodation.docx",
+        "locator": "第 1 条",
+        "quote": "在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。"
+      },
+      {
+        "document_id": "D04",
+        "source_path": "data/policies/D04-accommodation.docx",
+        "locator": "第 2 条",
+        "quote": "上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。"
+      }
+    ],
+    "information_gaps": []
+  },
+  "expected_final_status": "answered",
+  "semantic_verdict": "pending_source_review",
+  "initial_status_matches": true,
+  "final_status_matches": true
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "created_date": "2026-10-31",
-  "purpose": "企业知识问答 Agent 的 20 组问题与参考答案；仅为预期结果，不是模型实际输出。",
+  "purpose": "企业知识问答Agent的20组问题、参考答案与执行索引；实际模型输出和逐项审阅见execution_record及review_record，expected不是实际输出。",
   "corpus_root": "data/policies",
   "source_snapshot": [
     {
@@ -91,7 +91,9 @@
         "information_gaps": []
       },
       "trace_assertions": [],
-      "execution_status": "not_run"
+      "execution_status": "executed",
+      "execution_record": "examples/live/exam-20261102-final/QA01.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA02",
@@ -164,8 +166,10 @@
         "information_gaps": []
       },
       "trace_assertions": [],
-      "execution_status": "not_run",
-      "related_case": "QA01"
+      "execution_status": "executed",
+      "related_case": "QA01",
+      "execution_record": "examples/live/exam-20261102-final/QA03.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA04",
@@ -211,7 +215,9 @@
         "information_gaps": []
       },
       "trace_assertions": [],
-      "execution_status": "not_run"
+      "execution_status": "executed",
+      "execution_record": "examples/live/exam-20261102-final/QA04.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA05",
@@ -474,7 +480,9 @@
         "information_gaps": []
       },
       "trace_assertions": [],
-      "execution_status": "not_run"
+      "execution_status": "executed",
+      "execution_record": "examples/live/exam-20261102-final/QA11.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA12",
@@ -658,13 +666,15 @@
         "发现冲突后查找适用范围或优先级依据；仍无依据时澄清或报告冲突",
         "后续行动或结束决定来自模型对已观察结果的判断"
       ],
-      "execution_status": "not_run",
+      "execution_status": "executed",
       "followup": {
         "input": {
           "content": "没有更多的优先级或替代关系说明，请保留冲突。"
         },
         "expected_status": "insufficient"
-      }
+      },
+      "execution_record": "examples/live/exam-20261102-final/QA16.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA17",
@@ -695,13 +705,15 @@
       "trace_assertions": [
         "检索境外或东京相关规定，观察没有适用依据后说明缺口"
       ],
-      "execution_status": "not_run",
+      "execution_status": "executed",
       "followup": {
         "input": {
           "content": "没有境外制度可以补充。"
         },
         "expected_status": "insufficient"
-      }
+      },
+      "execution_record": "examples/live/exam-20261102-final/QA17.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA18",
@@ -756,13 +768,15 @@
         ]
       },
       "trace_assertions": [],
-      "execution_status": "not_run",
+      "execution_status": "executed",
       "followup": {
         "input": {
           "content": "我已转正，预算已审批，没有未结清的差旅预借款。"
         },
         "expected_status": "answered"
-      }
+      },
+      "execution_record": "examples/live/exam-20261102-final/QA18.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA19",
@@ -804,7 +818,7 @@
         "模型观察错误后选择重试读取；工具内部自动重试不计作该模型动作",
         "后续读取成功，模型依据新观察结果回答"
       ],
-      "execution_status": "not_run",
+      "execution_status": "executed",
       "setup": {
         "description": "故障由测试适配器注入，模型仍须真实选择动作。搜索只返回元数据，禁止答案摘要、原文缓存和其他原文读取旁路。",
         "search_results": {
@@ -824,7 +838,9 @@
         ],
         "max_tool_calls": 6
       },
-      "related_case": "QA01"
+      "related_case": "QA01",
+      "execution_record": "examples/live/exam-20261102-final/QA19.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     },
     {
       "id": "QA20",
@@ -858,7 +874,7 @@
         "模型选择后续处理或停止；达到上限时运行时强制结束且标记未完成",
         "原文读取调用总量不超过剩余工具调用预算，全部工具调用总量不超过 6 次"
       ],
-      "execution_status": "not_run",
+      "execution_status": "executed",
       "setup": {
         "description": "搜索只返回元数据；所有原文读取持续失败，不允许成功缓存、答案摘要或读取旁路。由测试适配器注入故障，不能替模型预设决策。",
         "search_results": {
@@ -878,7 +894,10 @@
         ],
         "max_tool_calls": 6
       },
-      "related_case": "QA01"
+      "related_case": "QA01",
+      "execution_record": "examples/live/exam-20261102-final/QA20.json",
+      "review_record": "examples/live/exam-20261102-final/review.json"
     }
-  ]
+  ],
+  "execution_note": "已执行项对应原始资料的冻结Git快照；工作区D07后续修订未包含在该验收范围。事实审阅由Codex AI完成，未记录考生独立人工复核。"
 }

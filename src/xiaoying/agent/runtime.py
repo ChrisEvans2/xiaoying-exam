@@ -12,11 +12,23 @@ from xiaoying.providers.chat import (
     THINKING_CONFIG_KEYS,
     DeepSeekChat,
     MockChat,
+    budget_message,
     validate_tool_calls,
     validate_tool_history,
 )
 from xiaoying.services.runs import final_result
 from xiaoying.storage.checkpoints import FencedPostgresSaver
+
+
+# Only these bounded, non-business replies may finish without document evidence.
+# The model chooses an intent; it cannot supply an unchecked policy answer here.
+CONVERSATIONAL_REPLIES = {
+    "greeting": "你好！有什么想咨询的？",
+    "thanks": "不客气！有需要可以继续问我。",
+    "farewell": "再见！有需要随时来问。",
+    "capabilities": "我可以帮你查找所选知识库中的制度、流程等资料，并附上原文出处。你想了解什么？",
+    "unrelated": "我主要帮助查询企业制度和流程。你有相关业务问题可以直接问我。",
+}
 
 
 class State(TypedDict, total=False):
@@ -105,7 +117,12 @@ class AgentRuntime:
         except LeaseLost:
             raise
         except AppError as exc:
-            self.runs.finish(job, final_result("incomplete", exc.code, exc.message))
+            result = (
+                self.runs.limit_result(rid, exc.code, exc.message)
+                if exc.code in {"EXECUTION_LIMIT", "TOOL_CALL_LIMIT"}
+                else final_result("incomplete", exc.code, exc.message)
+            )
+            self.runs.finish(job, result)
 
     def previous_messages(self, record, graph):
         """Continue a compatible, closed provider conversation from its private checkpoint.
@@ -143,18 +160,39 @@ class AgentRuntime:
         rid = job["resource_id"]
         cfg = self.runs.get(rid)["config"]
 
-        def step(state, name):
+        def step(state, name, with_budget=False):
             key = f"step:{state['turn']}:{name}"
-            cached, _ = self.runs.reserve_action(job, key, "step", {"node": name})
+            cached, output = self.runs.reserve_action(job, key, "step", {"node": name})
             if not cached:
-                self.runs.complete_action(job, key, {})
+                # Freeze the prompt budget before reserving the model action. A completed
+                # model replay must receive the identical input, including this snapshot.
+                output = {"budget": self.runs.budget(rid)} if with_budget else {}
+                self.runs.complete_action(job, key, output)
+            return output
 
         def model_call(action_id, body, call):
             cached, output = self.runs.reserve_action(job, action_id, "model", body)
             if cached:
+                self.runs.model_finished(job, action_id, response=output, recovered=True)
                 return output
-            output = bounded(call, min(cfg["model_timeout_seconds"], self.runs.remaining(rid)))
+            phase = "expand" if action_id.startswith("expand:") else "decide"
+            request = (
+                chat.request_payload(phase, body) if isinstance(chat, DeepSeekChat)
+                else ({"messages": body} if phase == "decide" else {"input": body})
+            )
+            self.runs.model_started(
+                job, action_id, phase, type(chat).__name__,
+                cfg["deepseek_model"] if isinstance(chat, DeepSeekChat) else type(chat).__name__, request,
+            )
+            try:
+                output = bounded(call, min(cfg["model_timeout_seconds"], self.runs.remaining(rid)))
+            except LeaseLost:
+                raise
+            except AppError as exc:
+                self.runs.model_finished(job, action_id, error={"code": exc.code, "message": exc.message})
+                raise
             self.runs.complete_action(job, action_id, output)
+            self.runs.model_finished(job, action_id, response=output)
             return output
 
         def expand(state):
@@ -166,6 +204,27 @@ class AgentRuntime:
             )
             if not isinstance(expanded, dict) or not isinstance(expanded.get("resolved_question"), str):
                 raise AppError("INVALID_EXPANSION", "模型问题扩展格式无效", 502)
+            intent = expanded.get("intent")
+            # Missing/unknown legacy fields stay on the evidence-checked business path.
+            # A clarification resumes its original business request, never a social turn.
+            if not isinstance(intent, str) or intent not in CONVERSATIONAL_REPLIES or state["turn"] != 0:
+                intent = "knowledge"
+            self.runs.trace(
+                job, f"intent:{state['turn']}", "intent.detected",
+                {"intent": intent, "requires_knowledge": intent == "knowledge"},
+            )
+            if intent in CONVERSATIONAL_REPLIES:
+                answer = CONVERSATIONAL_REPLIES[intent]
+                messages = state["messages"] or [{"role": "user", "content": state["question"]}]
+                return {
+                    "expanded": {"intent": intent, "resolved_question": state["question"]},
+                    # This is the server's public template reply, with no internal reasoning.
+                    # Keep the closed transcript so later business follow-ups retain context.
+                    "messages": messages + [{"role": "assistant", "content": answer, "reasoning_content": ""}],
+                    "result": final_result("answered", f"CONVERSATION_{intent.upper()}", answer),
+                    "route": "finish",
+                }
+            expanded["intent"] = intent
             queries = expanded.get("expanded_queries", [])
             if not isinstance(queries, list) or any(not isinstance(x, str) for x in queries):
                 raise AppError("INVALID_EXPANSION", "扩展查询格式无效", 502)
@@ -196,17 +255,20 @@ class AgentRuntime:
                     ),
                 }
             ]
-            return {"expanded": expanded, "messages": messages}
+            return {"expanded": expanded, "messages": messages, "route": "decide"}
 
         def decide(state):
-            step(state, "decide")
+            observation = step(state, "decide", with_budget=True)
+            budget = observation.get("budget")
+            # Old checkpoints have an empty step output; preserve their model input hash.
+            messages = state["messages"] + ([budget_message(budget)] if budget else [])
             response = model_call(
-                f"model:{state['turn']}", state["messages"], lambda: chat.decide(state["messages"])
+                f"model:{state['turn']}", messages, lambda: chat.decide(messages)
             )
             calls = validate_tool_calls(response)
             if len(calls) != 1:
                 # Keep reasoning even without tools. Close every rejected parallel call by ID.
-                messages = state["messages"] + [response]
+                messages = messages + [response]
                 for call in calls:
                     messages.append(
                         {
@@ -232,6 +294,7 @@ class AgentRuntime:
                         "step": state["turn"],
                         "tool_count": len(calls),
                         "accepted": False,
+                        "budget": budget,
                     },
                 )
                 return {
@@ -247,9 +310,10 @@ class AgentRuntime:
                     "tool": calls[0].get("function", {}).get("name"),
                     "step": state["turn"],
                     "tool_call_id": calls[0].get("id"),
+                    "budget": budget,
                 },
             )
-            return {"messages": state["messages"] + [response], "pending": calls[0], "route": "execute"}
+            return {"messages": messages + [response], "pending": calls[0], "route": "execute"}
 
         def execute(state):
             step(state, "execute")
@@ -330,6 +394,15 @@ class AgentRuntime:
                             # Direct document reads can recover a failed search; actual evidence is now available.
                             errors.pop("search_knowledge", None)
                 elif name == "request_clarification":
+                    budget = self.runs.budget(rid)
+                    if (
+                        budget["tool_calls_remaining"] == 0
+                        or budget["model_calls_remaining"] < 2
+                        or budget["graph_steps_remaining"] < 4
+                    ):
+                        raise AppError(
+                            "FINALIZATION_REQUIRED", "剩余预算不足以处理补充，请调用 finish_answer 说明已核实内容和缺口", 409
+                        )
                     if errors:
                         raise AppError(
                             "UNRESOLVED_TOOL_FAILURE", "必要工具尚未成功，请补救或结束为执行未完成", 422
@@ -374,7 +447,8 @@ class AgentRuntime:
                     raise
                 output = {"error": {"code": exc.code, "message": exc.message, "retryable": exc.retryable}}
                 self.runs.trace(
-                    job, f"tool.failed:{turn}", "tool.failed", {"tool": name, "step": turn, **output}
+                    job, f"tool.failed:{turn}", "tool.failed",
+                    {"tool": name, "tool_call_id": pending["id"], "step": turn, **output}
                 )
             except (ValueError, KeyError, TypeError):
                 output = {
@@ -430,7 +504,7 @@ class AgentRuntime:
         graph.add_node("execute", execute)
         graph.add_node("wait", wait)
         graph.add_edge(START, "expand")
-        graph.add_edge("expand", "decide")
+        graph.add_conditional_edges("expand", lambda s: s["route"], {"decide": "decide", "finish": END})
         graph.add_edge("decide", "execute")
         graph.add_conditional_edges(
             "execute", lambda s: s["route"], {"decide": "decide", "wait": "wait", "finish": END}

@@ -25,7 +25,10 @@ def test_concurrent_workers_share_global_slots(knowledge, kind, limit):
     kb = h.create()
     version = h.initial(kb)
     if kind == "build":
-        requests = [h.start(kb, version, auto_publish=False) for _ in range(4)]
+        requests = [h.start(kb, version, auto_publish=False)]
+        for _ in range(3):
+            other = h.create()
+            requests.append(h.start(other, h.initial(other), auto_publish=False))
     else:
         runs = RunService(h.db, h.settings, h.embedder)
         conversations = [runs.create_conversation(kb, h.key())["id"] for _ in range(4)]

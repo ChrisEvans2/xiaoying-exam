@@ -1,0 +1,1566 @@
+{
+  "evidence_type": "live_model",
+  "case_id": "QA18",
+  "input": {
+    "question": "我下周去杭州出差，预算 2000 元，可以先借钱吗？",
+    "history": []
+  },
+  "followup_input": {
+    "content": "我已转正，预算已审批，没有未结清的差旅预借款。"
+  },
+  "fault_injection": {
+    "read": 0,
+    "search_document_ids": null
+  },
+  "history_runs": [],
+  "initial": {
+    "id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+    "conversation_id": "7e0d3ac8-83db-448b-b048-1039025590d8",
+    "kb_id": "b89dbb84-9732-402b-b98b-1079e3e3ee19",
+    "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+    "question": "我下周去杭州出差，预算 2000 元，可以先借钱吗？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 8,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "answered",
+    "result": {
+      "answer": "可以预借，但须同时满足：你已转正、无未结清的差旅预借款，且2000元不超过已审批的差旅预算（单次上限3000元）；申请时附出差审批记录和预算明细，经直属主管及财务审核通过后发放。试用期员工不能申请预借款，但仍可正常报销；报销审核后以核准金额抵扣借款，不足部分需退还差额。",
+      "citations": [
+        {
+          "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 47,
+              "start": 0,
+              "clause": 1,
+              "item_id": null,
+              "block_id": "b6",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(1)"
+            }
+          ],
+          "chunk_id": "c32f77c3-96f0-5517-8102-98eb5d39b36a",
+          "document_id": "D06",
+          "evidence_id": "7093f813-9122-53bd-8c2e-90ae1c8c18b8",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 32,
+              "start": 0,
+              "clause": 2,
+              "item_id": null,
+              "block_id": "b7",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(2)"
+            }
+          ],
+          "chunk_id": "1b36c468-c97e-5a18-a2c2-1381dd6dae38",
+          "document_id": "D06",
+          "evidence_id": "b805c424-5426-5bff-b702-38bf68ab2535",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 41,
+              "start": 0,
+              "clause": 3,
+              "item_id": null,
+              "block_id": "b8",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(3)"
+            }
+          ],
+          "chunk_id": "5fd7a292-24c4-5d93-ab2e-0e2a44db1074",
+          "document_id": "D06",
+          "evidence_id": "44f1f66d-6ab4-5f85-a95b-f6d1f69d0401",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 27,
+              "start": 0,
+              "clause": 4,
+              "item_id": null,
+              "block_id": "b9",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(4)"
+            }
+          ],
+          "chunk_id": "8f486c53-4fe3-5bea-9762-a86c7b63b5c0",
+          "document_id": "D06",
+          "evidence_id": "0156fd9f-31d9-50b4-9088-30c12a6a891f",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "差旅报销审核完成后，财务以核准报销金额抵扣本次预借款；报销金额不足抵扣的，员工应退还差额。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 45,
+              "start": 0,
+              "clause": 5,
+              "item_id": null,
+              "block_id": "b10",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(5)"
+            }
+          ],
+          "chunk_id": "f216a6f4-9b4c-5b15-8eef-cc09b08f9b8a",
+          "document_id": "D06",
+          "evidence_id": "4c15e8d6-3930-5b26-ad9a-e6e9fe82988d",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        }
+      ],
+      "reason_code": "policy_found",
+      "task_status": "answered",
+      "information_gaps": []
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 0,
+    "deadline_at": null,
+    "model_calls": 5,
+    "tool_calls": 3,
+    "graph_steps": 9,
+    "active_ms": 9966.809,
+    "segment_started_at": null,
+    "next_event_seq": 27,
+    "created_at": "2026-11-01T17:24:31.265853+00:00"
+  },
+  "run": {
+    "id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+    "conversation_id": "7e0d3ac8-83db-448b-b048-1039025590d8",
+    "kb_id": "b89dbb84-9732-402b-b98b-1079e3e3ee19",
+    "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+    "question": "我下周去杭州出差，预算 2000 元，可以先借钱吗？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 8,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "answered",
+    "result": {
+      "answer": "可以预借，但须同时满足：你已转正、无未结清的差旅预借款，且2000元不超过已审批的差旅预算（单次上限3000元）；申请时附出差审批记录和预算明细，经直属主管及财务审核通过后发放。试用期员工不能申请预借款，但仍可正常报销；报销审核后以核准金额抵扣借款，不足部分需退还差额。",
+      "citations": [
+        {
+          "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 47,
+              "start": 0,
+              "clause": 1,
+              "item_id": null,
+              "block_id": "b6",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(1)"
+            }
+          ],
+          "chunk_id": "c32f77c3-96f0-5517-8102-98eb5d39b36a",
+          "document_id": "D06",
+          "evidence_id": "7093f813-9122-53bd-8c2e-90ae1c8c18b8",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 32,
+              "start": 0,
+              "clause": 2,
+              "item_id": null,
+              "block_id": "b7",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(2)"
+            }
+          ],
+          "chunk_id": "1b36c468-c97e-5a18-a2c2-1381dd6dae38",
+          "document_id": "D06",
+          "evidence_id": "b805c424-5426-5bff-b702-38bf68ab2535",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 41,
+              "start": 0,
+              "clause": 3,
+              "item_id": null,
+              "block_id": "b8",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(3)"
+            }
+          ],
+          "chunk_id": "5fd7a292-24c4-5d93-ab2e-0e2a44db1074",
+          "document_id": "D06",
+          "evidence_id": "44f1f66d-6ab4-5f85-a95b-f6d1f69d0401",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 27,
+              "start": 0,
+              "clause": 4,
+              "item_id": null,
+              "block_id": "b9",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(4)"
+            }
+          ],
+          "chunk_id": "8f486c53-4fe3-5bea-9762-a86c7b63b5c0",
+          "document_id": "D06",
+          "evidence_id": "0156fd9f-31d9-50b4-9088-30c12a6a891f",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        },
+        {
+          "quote": "差旅报销审核完成后，财务以核准报销金额抵扣本次预借款；报销金额不足抵扣的，员工应退还差额。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅预借款管理规定",
+          "locator": [
+            {
+              "end": 45,
+              "start": 0,
+              "clause": 5,
+              "item_id": null,
+              "block_id": "b10",
+              "dom_path": "ol:nth-of-type(1) > li:nth-of-type(5)"
+            }
+          ],
+          "chunk_id": "f216a6f4-9b4c-5b15-8eef-cc09b08f9b8a",
+          "document_id": "D06",
+          "evidence_id": "4c15e8d6-3930-5b26-ad9a-e6e9fe82988d",
+          "version_date": "2026-08-01",
+          "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+          "evidence_epoch": 0,
+          "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+        }
+      ],
+      "reason_code": "policy_found",
+      "task_status": "answered",
+      "information_gaps": []
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 0,
+    "deadline_at": null,
+    "model_calls": 5,
+    "tool_calls": 3,
+    "graph_steps": 9,
+    "active_ms": 9966.809,
+    "segment_started_at": null,
+    "next_event_seq": 27,
+    "created_at": "2026-11-01T17:24:31.265853+00:00"
+  },
+  "trace": [
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 1,
+      "event_id": "run.queued",
+      "type": "run.queued",
+      "payload": {
+        "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+        "provider_mode": "live"
+      },
+      "occurred_at": "2026-11-01T17:24:31.265853+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 2,
+      "event_id": "run.started:3eb745c3-19e9-46d2-a7ea-b72686109801",
+      "type": "run.started",
+      "payload": {
+        "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+        "evidence_epoch": 0
+      },
+      "occurred_at": "2026-11-01T17:24:31.271569+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 3,
+      "event_id": "model.started:1",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "adapter": "DeepSeekChat",
+        "action_id": "expand:0",
+        "call_number": 1,
+        "message_count": 2
+      },
+      "occurred_at": "2026-11-01T17:24:31.317206+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 4,
+      "event_id": "model.finished:1",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "response": {
+          "intent": "knowledge",
+          "expanded_queries": [
+            "出差可以预借差旅费吗",
+            "差旅费预借（借款）流程与额度规定"
+          ],
+          "unresolved_slots": [
+            "出差天数",
+            "费用明细构成"
+          ],
+          "resolved_question": "我下周去杭州出差，预算 2000 元，可以先预借差旅费吗？"
+        },
+        "action_id": "expand:0",
+        "recovered": false,
+        "elapsed_ms": 2495.565,
+        "call_number": 1
+      },
+      "occurred_at": "2026-11-01T17:24:33.811883+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 5,
+      "event_id": "intent:0",
+      "type": "intent.detected",
+      "payload": {
+        "intent": "knowledge",
+        "requires_knowledge": true
+      },
+      "occurred_at": "2026-11-01T17:24:33.818261+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 6,
+      "event_id": "expanded:0",
+      "type": "query.expanded",
+      "payload": {
+        "intent": "knowledge",
+        "expanded_queries": [
+          "我下周去杭州出差，预算 2000 元，可以先借钱吗？",
+          "我下周去杭州出差，预算 2000 元，可以先预借差旅费吗？",
+          "出差可以预借差旅费吗"
+        ],
+        "unresolved_slots": [
+          "出差天数",
+          "费用明细构成"
+        ],
+        "resolved_question": "我下周去杭州出差，预算 2000 元，可以先预借差旅费吗？"
+      },
+      "occurred_at": "2026-11-01T17:24:33.822496+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 7,
+      "event_id": "model.started:2",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:0",
+        "call_number": 2,
+        "message_count": 4
+      },
+      "occurred_at": "2026-11-01T17:24:33.848135+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 8,
+      "event_id": "model.finished:2",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_IeWmqyfC3z0QtvcT5CDw0078",
+              "type": "function",
+              "function": {
+                "name": "search_knowledge",
+                "arguments": "{\"queries\": [\"出差预借差旅费\", \"预借差旅费 条件 额度\", \"差旅费借款 审批\"], \"reason\": \"检索差旅费预借制度\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:0",
+        "recovered": false,
+        "elapsed_ms": 1151.306,
+        "call_number": 2
+      },
+      "occurred_at": "2026-11-01T17:24:34.998602+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 9,
+      "event_id": "decision:0",
+      "type": "agent.decision",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "budget": {
+          "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+          "tool_calls_used": 0,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 8,
+          "graph_steps_remaining": 38,
+          "model_calls_remaining": 11,
+          "active_seconds_remaining": 177.430885
+        },
+        "tool_call_id": "call_00_ET_IeWmqyfC3z0QtvcT5CDw0078"
+      },
+      "occurred_at": "2026-11-01T17:24:35.005001+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 10,
+      "event_id": "tool.started:0",
+      "type": "tool.started",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "reason": "检索差旅费预借制度",
+        "arguments": {
+          "queries": [
+            "出差预借差旅费",
+            "预借差旅费 条件 额度",
+            "差旅费借款 审批"
+          ]
+        },
+        "tool_call_id": "call_00_ET_IeWmqyfC3z0QtvcT5CDw0078"
+      },
+      "occurred_at": "2026-11-01T17:24:35.025962+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 11,
+      "event_id": "tool.completed:0",
+      "type": "tool.completed",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "degraded": false,
+        "failures": [],
+        "candidates": [
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 6,
+            "chunk_id": "c32f77c3-96f0-5517-8102-98eb5d39b36a",
+            "rrf_score": 0.07631831990636856,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.9693906307220459,
+            "version_date": "2026-08-01",
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 8,
+            "chunk_id": "5fd7a292-24c4-5d93-ab2e-0e2a44db1074",
+            "rrf_score": 0.09387123702268793,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.612687349319458,
+            "version_date": "2026-08-01",
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 10,
+            "chunk_id": "f216a6f4-9b4c-5b15-8eef-cc09b08f9b8a",
+            "rrf_score": 0.04616113053613054,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.536208987236023,
+            "version_date": "2026-08-01",
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 7,
+            "chunk_id": "1b36c468-c97e-5a18-a2c2-1381dd6dae38",
+            "rrf_score": 0.07816317866721093,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.4102836847305298,
+            "version_date": "2026-08-01",
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 9,
+            "chunk_id": "8f486c53-4fe3-5bea-9762-a86c7b63b5c0",
+            "rrf_score": 0.04642338900734423,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.27104100584983826,
+            "version_date": "2026-08-01",
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "title": "境内差旅交通费用规定",
+            "ordinal": 3,
+            "chunk_id": "c8c95abf-a095-51b4-b8f7-afc26ffbfb0a",
+            "rrf_score": 0.04091693431576296,
+            "document_id": "D03",
+            "heading_path": [
+              "境内差旅交通费用规定"
+            ],
+            "rerank_score": 0.1464216113090515,
+            "version_date": "2026-08-01",
+            "document_version_id": "c2d98c50-e4f6-4df6-a4c9-e46788b4bf58"
+          },
+          {
+            "title": "财务差旅报销受理指引",
+            "ordinal": 7,
+            "chunk_id": "a3efb8f4-567d-55b9-baef-b408604161b2",
+            "rrf_score": 0.06890943701424232,
+            "document_id": "D02",
+            "heading_path": [
+              "财务差旅报销受理指引"
+            ],
+            "rerank_score": 0.10591176897287369,
+            "version_date": "2026-09-15",
+            "document_version_id": "3dbcffe5-1623-41d7-a311-cec0e708f5c9"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 3,
+            "chunk_id": "5446bdbb-8c5c-5d96-9d3c-66a53d21333c",
+            "rrf_score": 0.041611016258327645,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.10558302700519562,
+            "version_date": "2026-08-01",
+            "document_version_id": "488ca000-9092-4071-8ff1-c328c691a7a0"
+          }
+        ],
+        "query_count": 3,
+        "tool_call_id": "call_00_ET_IeWmqyfC3z0QtvcT5CDw0078",
+        "candidate_count": 29
+      },
+      "occurred_at": "2026-11-01T17:24:35.678314+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 12,
+      "event_id": "model.started:3",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:1",
+        "call_number": 3,
+        "message_count": 7
+      },
+      "occurred_at": "2026-11-01T17:24:35.696106+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 13,
+      "event_id": "model.finished:3",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_1thn6kCoTzQq9aOGTJ2c8463",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D06\", \"reason\": \"读取差旅预借款管理规定全文\", \"limit\": 8}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:1",
+        "recovered": false,
+        "elapsed_ms": 884.772,
+        "call_number": 3
+      },
+      "occurred_at": "2026-11-01T17:24:36.580431+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 14,
+      "event_id": "decision:1",
+      "type": "agent.decision",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+          "tool_calls_used": 1,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 7,
+          "graph_steps_remaining": 36,
+          "model_calls_remaining": 10,
+          "active_seconds_remaining": 175.582427
+        },
+        "tool_call_id": "call_00_ET_1thn6kCoTzQq9aOGTJ2c8463"
+      },
+      "occurred_at": "2026-11-01T17:24:36.584939+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 15,
+      "event_id": "tool.started:1",
+      "type": "tool.started",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "reason": "读取差旅预借款管理规定全文",
+        "arguments": {
+          "limit": 8,
+          "document_id": "D06"
+        },
+        "tool_call_id": "call_00_ET_1thn6kCoTzQq9aOGTJ2c8463"
+      },
+      "occurred_at": "2026-11-01T17:24:36.598872+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 16,
+      "event_id": "tool.completed:1",
+      "type": "tool.completed",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 9,
+                "start": 0,
+                "item_id": null,
+                "block_id": "b0",
+                "dom_path": "dl:nth-of-type(1) > div:nth-of-type(1)"
+              }
+            ],
+            "chunk_id": "281c4143-838c-5fc0-bb7b-c31efb12a986",
+            "document_id": "D06",
+            "evidence_id": "e5590721-bb3d-5d38-bea6-3b1b79e2e42a"
+          },
+          {
+            "locator": [
+              {
+                "end": 15,
+                "start": 0,
+                "item_id": null,
+                "block_id": "b1",
+                "dom_path": "dl:nth-of-type(1) > div:nth-of-type(2)"
+              }
+            ],
+            "chunk_id": "c59551bf-fde8-5b21-b3bc-a8452fc0e94b",
+            "document_id": "D06",
+            "evidence_id": "ed9a5b54-4ba1-5456-ac5d-4008dc07d9e9"
+          },
+          {
+            "locator": [
+              {
+                "end": 13,
+                "start": 0,
+                "item_id": null,
+                "block_id": "b2",
+                "dom_path": "dl:nth-of-type(1) > div:nth-of-type(3)"
+              }
+            ],
+            "chunk_id": "230f5edb-a057-54fe-816a-f21a7f8de506",
+            "document_id": "D06",
+            "evidence_id": "04f78275-caa9-5450-a4a2-c5ad9f894661"
+          },
+          {
+            "locator": [
+              {
+                "end": 28,
+                "start": 0,
+                "item_id": null,
+                "block_id": "b3",
+                "dom_path": "dl:nth-of-type(1) > div:nth-of-type(4)"
+              }
+            ],
+            "chunk_id": "768cdbea-af7f-5936-b9fb-0acbabf507e5",
+            "document_id": "D06",
+            "evidence_id": "a14f6a87-62d3-5c45-9775-a03f0df5374d"
+          },
+          {
+            "locator": [
+              {
+                "end": 9,
+                "start": 0,
+                "item_id": null,
+                "block_id": "b4",
+                "dom_path": "dl:nth-of-type(1) > div:nth-of-type(5)"
+              }
+            ],
+            "chunk_id": "9bcfd21c-6b1a-5944-aeeb-db62bbc068c7",
+            "document_id": "D06",
+            "evidence_id": "e139c686-37da-5086-82be-638259408cbd"
+          },
+          {
+            "locator": [
+              {
+                "end": 25,
+                "start": 0,
+                "item_id": null,
+                "block_id": "b5",
+                "dom_path": "p:nth-of-type(1)"
+              }
+            ],
+            "chunk_id": "43e5188f-fa22-548f-9efc-1d51ec1514ff",
+            "document_id": "D06",
+            "evidence_id": "321a58cd-06db-5ac4-b3cf-bb01c15e4bc1"
+          },
+          {
+            "locator": [
+              {
+                "end": 47,
+                "start": 0,
+                "clause": 1,
+                "item_id": null,
+                "block_id": "b6",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(1)"
+              }
+            ],
+            "chunk_id": "c32f77c3-96f0-5517-8102-98eb5d39b36a",
+            "document_id": "D06",
+            "evidence_id": "7093f813-9122-53bd-8c2e-90ae1c8c18b8"
+          },
+          {
+            "locator": [
+              {
+                "end": 32,
+                "start": 0,
+                "clause": 2,
+                "item_id": null,
+                "block_id": "b7",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(2)"
+              }
+            ],
+            "chunk_id": "1b36c468-c97e-5a18-a2c2-1381dd6dae38",
+            "document_id": "D06",
+            "evidence_id": "b805c424-5426-5bff-b702-38bf68ab2535"
+          }
+        ],
+        "tool_call_id": "call_00_ET_1thn6kCoTzQq9aOGTJ2c8463"
+      },
+      "occurred_at": "2026-11-01T17:24:36.620617+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 17,
+      "event_id": "model.started:4",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:2",
+        "call_number": 4,
+        "message_count": 10
+      },
+      "occurred_at": "2026-11-01T17:24:36.635719+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 18,
+      "event_id": "model.finished:4",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_QKReJ7lqBUZoPbXmOuNL8981",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D06\", \"offset\": 8, \"limit\": 8, \"reason\": \"读取预借款规定剩余条款\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:2",
+        "recovered": false,
+        "elapsed_ms": 831.021,
+        "call_number": 4
+      },
+      "occurred_at": "2026-11-01T17:24:37.466218+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 19,
+      "event_id": "decision:2",
+      "type": "agent.decision",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+          "tool_calls_used": 2,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 6,
+          "graph_steps_remaining": 34,
+          "model_calls_remaining": 9,
+          "active_seconds_remaining": 174.641972
+        },
+        "tool_call_id": "call_00_QKReJ7lqBUZoPbXmOuNL8981"
+      },
+      "occurred_at": "2026-11-01T17:24:37.471159+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 20,
+      "event_id": "tool.started:2",
+      "type": "tool.started",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "reason": "读取预借款规定剩余条款",
+        "arguments": {
+          "limit": 8,
+          "offset": 8,
+          "document_id": "D06"
+        },
+        "tool_call_id": "call_00_QKReJ7lqBUZoPbXmOuNL8981"
+      },
+      "occurred_at": "2026-11-01T17:24:37.489865+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 21,
+      "event_id": "tool.completed:2",
+      "type": "tool.completed",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 41,
+                "start": 0,
+                "clause": 3,
+                "item_id": null,
+                "block_id": "b8",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(3)"
+              }
+            ],
+            "chunk_id": "5fd7a292-24c4-5d93-ab2e-0e2a44db1074",
+            "document_id": "D06",
+            "evidence_id": "44f1f66d-6ab4-5f85-a95b-f6d1f69d0401"
+          },
+          {
+            "locator": [
+              {
+                "end": 27,
+                "start": 0,
+                "clause": 4,
+                "item_id": null,
+                "block_id": "b9",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(4)"
+              }
+            ],
+            "chunk_id": "8f486c53-4fe3-5bea-9762-a86c7b63b5c0",
+            "document_id": "D06",
+            "evidence_id": "0156fd9f-31d9-50b4-9088-30c12a6a891f"
+          },
+          {
+            "locator": [
+              {
+                "end": 45,
+                "start": 0,
+                "clause": 5,
+                "item_id": null,
+                "block_id": "b10",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(5)"
+              }
+            ],
+            "chunk_id": "f216a6f4-9b4c-5b15-8eef-cc09b08f9b8a",
+            "document_id": "D06",
+            "evidence_id": "4c15e8d6-3930-5b26-ad9a-e6e9fe82988d"
+          }
+        ],
+        "tool_call_id": "call_00_QKReJ7lqBUZoPbXmOuNL8981"
+      },
+      "occurred_at": "2026-11-01T17:24:37.502633+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 22,
+      "event_id": "model.started:5",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:3",
+        "call_number": 5,
+        "message_count": 13
+      },
+      "occurred_at": "2026-11-01T17:24:37.518706+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 23,
+      "event_id": "model.finished:5",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_gAggACK3QtzDlJNcKDz33276",
+              "type": "function",
+              "function": {
+                "name": "finish_answer",
+                "arguments": "{\"answer\": \"可以预借，但须同时满足：你已转正、无未结清的差旅预借款，且2000元不超过已审批的差旅预算（单次上限3000元）；申请时附出差审批记录和预算明细，经直属主管及财务审核通过后发放。试用期员工不能申请预借款，但仍可正常报销；报销审核后以核准金额抵扣借款，不足部分需退还差额。\", \"citations\": [{\"evidence_id\": \"7093f813-9122-53bd-8c2e-90ae1c8c18b8\", \"quote\": \"已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。\"}, {\"evidence_id\": \"b805c424-5426-5bff-b702-38bf68ab2535\", \"quote\": \"申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。\"}, {\"evidence_id\": \"44f1f66d-6ab4-5f85-a95b-f6d1f69d0401\", \"quote\": \"试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。\"}, {\"evidence_id\": \"0156fd9f-31d9-50b4-9088-30c12a6a891f\", \"quote\": \"尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。\"}, {\"evidence_id\": \"4c15e8d6-3930-5b26-ad9a-e6e9fe82988d\", \"quote\": \"差旅报销审核完成后，财务以核准报销金额抵扣本次预借款；报销金额不足抵扣的，员工应退还差额。\"}], \"information_gaps\": [], \"reason_code\": \"policy_found\", \"task_status\": \"answered\", \"reason\": \"已读取差旅预借款规定的资格、额度、申请与核销条款\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:3",
+        "recovered": false,
+        "elapsed_ms": 3672.105,
+        "call_number": 5
+      },
+      "occurred_at": "2026-11-01T17:24:41.190030+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 24,
+      "event_id": "decision:3",
+      "type": "agent.decision",
+      "payload": {
+        "step": 3,
+        "tool": "finish_answer",
+        "budget": {
+          "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+          "tool_calls_used": 3,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 5,
+          "graph_steps_remaining": 32,
+          "model_calls_remaining": 8,
+          "active_seconds_remaining": 173.75911
+        },
+        "tool_call_id": "call_00_gAggACK3QtzDlJNcKDz33276"
+      },
+      "occurred_at": "2026-11-01T17:24:41.195881+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 25,
+      "event_id": "tool.started:3",
+      "type": "tool.started",
+      "payload": {
+        "step": 3,
+        "tool": "finish_answer",
+        "reason": "已读取差旅预借款规定的资格、额度、申请与核销条款",
+        "arguments": {
+          "answer": "可以预借，但须同时满足：你已转正、无未结清的差旅预借款，且2000元不超过已审批的差旅预算（单次上限3000元）；申请时附出差审批记录和预算明细，经直属主管及财务审核通过后发放。试用期员工不能申请预借款，但仍可正常报销；报销审核后以核准金额抵扣借款，不足部分需退还差额。",
+          "citations": [
+            {
+              "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。",
+              "evidence_id": "7093f813-9122-53bd-8c2e-90ae1c8c18b8"
+            },
+            {
+              "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。",
+              "evidence_id": "b805c424-5426-5bff-b702-38bf68ab2535"
+            },
+            {
+              "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。",
+              "evidence_id": "44f1f66d-6ab4-5f85-a95b-f6d1f69d0401"
+            },
+            {
+              "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。",
+              "evidence_id": "0156fd9f-31d9-50b4-9088-30c12a6a891f"
+            },
+            {
+              "quote": "差旅报销审核完成后，财务以核准报销金额抵扣本次预借款；报销金额不足抵扣的，员工应退还差额。",
+              "evidence_id": "4c15e8d6-3930-5b26-ad9a-e6e9fe82988d"
+            }
+          ],
+          "reason_code": "policy_found",
+          "task_status": "answered",
+          "information_gaps": []
+        },
+        "tool_call_id": "call_00_gAggACK3QtzDlJNcKDz33276"
+      },
+      "occurred_at": "2026-11-01T17:24:41.217831+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 26,
+      "event_id": "tool.completed:3",
+      "type": "tool.completed",
+      "payload": {
+        "step": 3,
+        "tool": "finish_answer",
+        "result": {
+          "accepted": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_gAggACK3QtzDlJNcKDz33276"
+      },
+      "occurred_at": "2026-11-01T17:24:41.225167+00:00"
+    },
+    {
+      "run_id": "155e43ea-7460-4712-9b12-55879ed67d6c",
+      "seq": 27,
+      "event_id": "run.finished",
+      "type": "run.finished",
+      "payload": {
+        "answer": "可以预借，但须同时满足：你已转正、无未结清的差旅预借款，且2000元不超过已审批的差旅预算（单次上限3000元）；申请时附出差审批记录和预算明细，经直属主管及财务审核通过后发放。试用期员工不能申请预借款，但仍可正常报销；报销审核后以核准金额抵扣借款，不足部分需退还差额。",
+        "citations": [
+          {
+            "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅预借款管理规定",
+            "locator": [
+              {
+                "end": 47,
+                "start": 0,
+                "clause": 1,
+                "item_id": null,
+                "block_id": "b6",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(1)"
+              }
+            ],
+            "chunk_id": "c32f77c3-96f0-5517-8102-98eb5d39b36a",
+            "document_id": "D06",
+            "evidence_id": "7093f813-9122-53bd-8c2e-90ae1c8c18b8",
+            "version_date": "2026-08-01",
+            "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+            "evidence_epoch": 0,
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅预借款管理规定",
+            "locator": [
+              {
+                "end": 32,
+                "start": 0,
+                "clause": 2,
+                "item_id": null,
+                "block_id": "b7",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(2)"
+              }
+            ],
+            "chunk_id": "1b36c468-c97e-5a18-a2c2-1381dd6dae38",
+            "document_id": "D06",
+            "evidence_id": "b805c424-5426-5bff-b702-38bf68ab2535",
+            "version_date": "2026-08-01",
+            "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+            "evidence_epoch": 0,
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅预借款管理规定",
+            "locator": [
+              {
+                "end": 41,
+                "start": 0,
+                "clause": 3,
+                "item_id": null,
+                "block_id": "b8",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(3)"
+              }
+            ],
+            "chunk_id": "5fd7a292-24c4-5d93-ab2e-0e2a44db1074",
+            "document_id": "D06",
+            "evidence_id": "44f1f66d-6ab4-5f85-a95b-f6d1f69d0401",
+            "version_date": "2026-08-01",
+            "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+            "evidence_epoch": 0,
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅预借款管理规定",
+            "locator": [
+              {
+                "end": 27,
+                "start": 0,
+                "clause": 4,
+                "item_id": null,
+                "block_id": "b9",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(4)"
+              }
+            ],
+            "chunk_id": "8f486c53-4fe3-5bea-9762-a86c7b63b5c0",
+            "document_id": "D06",
+            "evidence_id": "0156fd9f-31d9-50b4-9088-30c12a6a891f",
+            "version_date": "2026-08-01",
+            "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+            "evidence_epoch": 0,
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          },
+          {
+            "quote": "差旅报销审核完成后，财务以核准报销金额抵扣本次预借款；报销金额不足抵扣的，员工应退还差额。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅预借款管理规定",
+            "locator": [
+              {
+                "end": 45,
+                "start": 0,
+                "clause": 5,
+                "item_id": null,
+                "block_id": "b10",
+                "dom_path": "ol:nth-of-type(1) > li:nth-of-type(5)"
+              }
+            ],
+            "chunk_id": "f216a6f4-9b4c-5b15-8eef-cc09b08f9b8a",
+            "document_id": "D06",
+            "evidence_id": "4c15e8d6-3930-5b26-ad9a-e6e9fe82988d",
+            "version_date": "2026-08-01",
+            "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+            "evidence_epoch": 0,
+            "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+          }
+        ],
+        "reason_code": "policy_found",
+        "task_status": "answered",
+        "information_gaps": []
+      },
+      "occurred_at": "2026-11-01T17:24:41.237971+00:00"
+    }
+  ],
+  "read_evidence": [
+    {
+      "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 27,
+          "start": 0,
+          "clause": 4,
+          "item_id": null,
+          "block_id": "b9",
+          "dom_path": "ol:nth-of-type(1) > li:nth-of-type(4)"
+        }
+      ],
+      "chunk_id": "8f486c53-4fe3-5bea-9762-a86c7b63b5c0",
+      "document_id": "D06",
+      "evidence_id": "0156fd9f-31d9-50b4-9088-30c12a6a891f",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "公司 青屿示例科技有限公司",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 13,
+          "start": 0,
+          "item_id": null,
+          "block_id": "b2",
+          "dom_path": "dl:nth-of-type(1) > div:nth-of-type(3)"
+        }
+      ],
+      "chunk_id": "230f5edb-a057-54fe-816a-f21a7f8de506",
+      "document_id": "D06",
+      "evidence_id": "04f78275-caa9-5450-a4a2-c5ad9f894661",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "本文为虚构公司的合成制度，仅供项目开发与评估使用。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 25,
+          "start": 0,
+          "item_id": null,
+          "block_id": "b5",
+          "dom_path": "p:nth-of-type(1)"
+        }
+      ],
+      "chunk_id": "43e5188f-fa22-548f-9efc-1d51ec1514ff",
+      "document_id": "D06",
+      "evidence_id": "321a58cd-06db-5ac4-b3cf-bb01c15e4bc1",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 41,
+          "start": 0,
+          "clause": 3,
+          "item_id": null,
+          "block_id": "b8",
+          "dom_path": "ol:nth-of-type(1) > li:nth-of-type(3)"
+        }
+      ],
+      "chunk_id": "5fd7a292-24c4-5d93-ab2e-0e2a44db1074",
+      "document_id": "D06",
+      "evidence_id": "44f1f66d-6ab4-5f85-a95b-f6d1f69d0401",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "差旅报销审核完成后，财务以核准报销金额抵扣本次预借款；报销金额不足抵扣的，员工应退还差额。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 45,
+          "start": 0,
+          "clause": 5,
+          "item_id": null,
+          "block_id": "b10",
+          "dom_path": "ol:nth-of-type(1) > li:nth-of-type(5)"
+        }
+      ],
+      "chunk_id": "f216a6f4-9b4c-5b15-8eef-cc09b08f9b8a",
+      "document_id": "D06",
+      "evidence_id": "4c15e8d6-3930-5b26-ad9a-e6e9fe82988d",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 47,
+          "start": 0,
+          "clause": 1,
+          "item_id": null,
+          "block_id": "b6",
+          "dom_path": "ol:nth-of-type(1) > li:nth-of-type(1)"
+        }
+      ],
+      "chunk_id": "c32f77c3-96f0-5517-8102-98eb5d39b36a",
+      "document_id": "D06",
+      "evidence_id": "7093f813-9122-53bd-8c2e-90ae1c8c18b8",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "适用范围 中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 28,
+          "start": 0,
+          "item_id": null,
+          "block_id": "b3",
+          "dom_path": "dl:nth-of-type(1) > div:nth-of-type(4)"
+        }
+      ],
+      "chunk_id": "768cdbea-af7f-5936-b9fb-0acbabf507e5",
+      "document_id": "D06",
+      "evidence_id": "a14f6a87-62d3-5c45-9775-a03f0df5374d",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 32,
+          "start": 0,
+          "clause": 2,
+          "item_id": null,
+          "block_id": "b7",
+          "dom_path": "ol:nth-of-type(1) > li:nth-of-type(2)"
+        }
+      ],
+      "chunk_id": "1b36c468-c97e-5a18-a2c2-1381dd6dae38",
+      "document_id": "D06",
+      "evidence_id": "b805c424-5426-5bff-b702-38bf68ab2535",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "合成材料 true",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 9,
+          "start": 0,
+          "item_id": null,
+          "block_id": "b4",
+          "dom_path": "dl:nth-of-type(1) > div:nth-of-type(5)"
+        }
+      ],
+      "chunk_id": "9bcfd21c-6b1a-5944-aeeb-db62bbc068c7",
+      "document_id": "D06",
+      "evidence_id": "e139c686-37da-5086-82be-638259408cbd",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "文档 ID D06",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 9,
+          "start": 0,
+          "item_id": null,
+          "block_id": "b0",
+          "dom_path": "dl:nth-of-type(1) > div:nth-of-type(1)"
+        }
+      ],
+      "chunk_id": "281c4143-838c-5fc0-bb7b-c31efb12a986",
+      "document_id": "D06",
+      "evidence_id": "e5590721-bb3d-5d38-bea6-3b1b79e2e42a",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    },
+    {
+      "quote": "版本日期 2026-08-01",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅预借款管理规定",
+      "locator": [
+        {
+          "end": 15,
+          "start": 0,
+          "item_id": null,
+          "block_id": "b1",
+          "dom_path": "dl:nth-of-type(1) > div:nth-of-type(2)"
+        }
+      ],
+      "chunk_id": "c59551bf-fde8-5b21-b3bc-a8452fc0e94b",
+      "document_id": "D06",
+      "evidence_id": "ed9a5b54-4ba1-5456-ac5d-4008dc07d9e9",
+      "version_date": "2026-08-01",
+      "kb_version_id": "0766a93a-c267-4058-9077-47642e8f2df6",
+      "evidence_epoch": 0,
+      "document_version_id": "fdbab3a7-c794-4b85-b885-ded05058c75a"
+    }
+  ],
+  "model_calls": [
+    {
+      "call_number": 1,
+      "phase": "expand",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 2495.565,
+      "error": null
+    },
+    {
+      "call_number": 2,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1151.306,
+      "error": null
+    },
+    {
+      "call_number": 3,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 884.772,
+      "error": null
+    },
+    {
+      "call_number": 4,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 831.021,
+      "error": null
+    },
+    {
+      "call_number": 5,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 3672.105,
+      "error": null
+    }
+  ],
+  "citation_integrity": true,
+  "expected": {
+    "status": "awaiting_user",
+    "reference_answer": "需要先确认你是否已转正、预算是否已审批、是否还有未结清的差旅预借款。若已转正、预算已审批且无未结清预借款，可按规定申请不超过 2000 元，并须经直属主管及财务审核；试用期或存在未结清预借款时不能申请。依据 D06 第 1—4 条。",
+    "required_facts": [
+      "询问转正状态、预算审批状态和未结清预借款",
+      "符合条件时本次上限 2000 元",
+      "需要直属主管及财务审核",
+      "不能无条件承诺可以借款"
+    ],
+    "forbidden_claims": [
+      "直接承诺可借 2000 元",
+      "忽略实际预算直接说能借 3000 元"
+    ],
+    "evidence": [
+      {
+        "document_id": "D06",
+        "source_path": "data/policies/D06-travel-advance.html",
+        "locator": "第 1 条",
+        "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。"
+      },
+      {
+        "document_id": "D06",
+        "source_path": "data/policies/D06-travel-advance.html",
+        "locator": "第 2 条",
+        "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。"
+      },
+      {
+        "document_id": "D06",
+        "source_path": "data/policies/D06-travel-advance.html",
+        "locator": "第 3 条",
+        "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。"
+      },
+      {
+        "document_id": "D06",
+        "source_path": "data/policies/D06-travel-advance.html",
+        "locator": "第 4 条",
+        "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。"
+      }
+    ],
+    "information_gaps": [
+      "员工是否已转正",
+      "预算是否已经审批",
+      "是否存在未结清差旅预借款"
+    ]
+  },
+  "expected_final_status": "answered",
+  "semantic_verdict": "pending_source_review",
+  "initial_status_matches": false,
+  "final_status_matches": true
+}

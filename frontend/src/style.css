@@ -264,6 +264,72 @@ a {
 .new-chat {
   margin-top: 8px;
 }
+.history-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 90px;
+  gap: 8px;
+  margin-top: 16px;
+}
+.history-panel > .section-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.sidebar .history-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -6px;
+  padding: 2px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.history-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 10px;
+  background: transparent;
+  color: #47574c;
+  text-align: left;
+  font-size: 13px;
+}
+.history-item:hover,
+.history-item.selected {
+  background: #e9ede5;
+  color: #293e35;
+}
+.history-item.selected {
+  border-color: #b7c5b9;
+}
+.history-item span {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.history-item time {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.history-select {
+  display: none;
+}
+.history-status,
+.conversation-loading {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0;
+}
+.history-status .text-button {
+  margin-left: 8px;
+}
 .sidebar-bottom {
   margin-top: auto;
   padding-top: 24px;
@@ -360,6 +426,15 @@ a {
   scrollbar-gutter: stable;
   padding-right: 10px;
 }
+.chat-session-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding-bottom: 12px;
+}
 .empty-state {
   min-height: 100%;
   display: grid;
@@ -443,6 +518,100 @@ kbd {
   gap: 20px;
   padding-bottom: 14px;
   flex-shrink: 0;
+}
+.trace-session-heading {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.trace-session-heading strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+.trace-session-heading > span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.trace-round {
+  border-bottom: 1px solid var(--line);
+}
+.trace-round-summary {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  gap: 12px;
+  padding: 12px 4px;
+  background: transparent;
+  color: #2f3437;
+  border-radius: 0;
+  text-align: left;
+}
+.trace-round-summary:hover {
+  background: #f1f4ee;
+}
+.trace-round-summary[aria-expanded="true"] {
+  background: #f1f4ee;
+}
+.round-number {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.round-question {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.round-counts {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.trace-round-summary .status {
+  flex-shrink: 0;
+}
+.trace-round-body {
+  padding: 18px 4px 24px;
+}
+.legacy-context-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 18px;
+}
+.model-context {
+  border-left: 2px solid var(--input-ink);
+  padding-left: 12px;
+}
+.event-details.model-context > summary {
+  color: var(--input-ink);
+}
+.context-note {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.context-message {
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
+}
+.event-details .context-message > summary {
+  color: var(--input-ink);
+}
+.event-details .context-assistant > summary {
+  color: var(--model-ink);
+}
+.event-details .context-tool > summary {
+  color: var(--tool-ink);
+}
+.context-message pre,
+.event-details pre {
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .trace-selector {
   display: grid;
@@ -1098,6 +1267,26 @@ summary {
   .sidebar nav {
     margin: 0;
   }
+  .history-panel {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-direction: row;
+    align-items: center;
+    min-height: 0;
+    margin: 0;
+  }
+  .history-panel > .section-label {
+    display: block;
+    flex-shrink: 0;
+  }
+  .sidebar .history-list {
+    display: none;
+  }
+  .history-select {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
   .nav-item {
     font-size: 12px;
     padding: 8px;
@@ -1149,6 +1338,16 @@ summary {
   .trace-toolbar {
     gap: 12px;
     padding-bottom: 14px;
+  }
+  .trace-round-summary {
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .round-question {
+    flex-basis: calc(100% - 60px);
+  }
+  .round-counts {
+    margin-left: 42px;
   }
   .trace-legend {
     gap: 8px 14px;

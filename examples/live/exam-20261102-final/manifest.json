@@ -1,0 +1,141 @@
+{
+  "evidence_type": "live_model_exam_acceptance",
+  "started_at": "2026-11-01T17:25:53.076063+00:00",
+  "database_name": "xiaoying_acceptance_d998be21dbeb",
+  "case_ids": [
+    "QA01",
+    "QA03",
+    "QA04",
+    "QA11",
+    "QA16",
+    "QA17",
+    "QA18",
+    "QA19",
+    "QA20"
+  ],
+  "source_snapshot": [
+    {
+      "document_id": "D01",
+      "path": "data/policies/D01-expense-submission.md",
+      "sha256": "1878a52a5870674fdd0437f49f07d021ab8f1f760b008767b5a6105ccfc6b813"
+    },
+    {
+      "document_id": "D02",
+      "path": "data/policies/D02-finance-intake.pdf",
+      "sha256": "3ce1cadd14c92a53bf1a4ab03bc02dc6fc27020a43fd0b8879299c067a97cee7"
+    },
+    {
+      "document_id": "D03",
+      "path": "data/policies/D03-transportation.md",
+      "sha256": "dd505aa47b73c85c4741dc81952d9068b3ba49a11bad49dcefefa3b8ea7fff6c"
+    },
+    {
+      "document_id": "D04",
+      "path": "data/policies/D04-accommodation.docx",
+      "sha256": "8e4c21b384fb7a391d782643d8d06083f5797684ddfe0fd91b116431b2235bde"
+    },
+    {
+      "document_id": "D05",
+      "path": "data/policies/D05-meal-allowance.md",
+      "sha256": "bec46c0acada21333a4f35bec592242007cd133e03cb5360b0c47c7aa422c9ff"
+    },
+    {
+      "document_id": "D06",
+      "path": "data/policies/D06-travel-advance.html",
+      "sha256": "3b353c09d1bf9143b4ebb2d4f3427738e4dd7d315a82fd891d96c84d550e0463"
+    },
+    {
+      "document_id": "D07",
+      "path": "data/policies/D07-missing-receipts.txt",
+      "sha256": "19873600d87bcb00401d24dfb8799ac6ea6f331327766e782f08d890bcde2a97"
+    },
+    {
+      "document_id": "D08",
+      "path": "data/policies/D08-trip-approval-and-changes.md",
+      "sha256": "acc4acb2462e29b9ace9a22859b9d1a33d0d352c23c3c3b326186dea9024907e"
+    }
+  ],
+  "source_revision": "a3e478af065c3542c80fc199750d8bef309fe3c0",
+  "business_database_writes": false,
+  "code_snapshot": {
+    "src/xiaoying/__init__.py": "72ee2b633c0ee8f5640b66acf683f23c7ff7aa12c2b6e62ee67e4d70dfb41df1",
+    "src/xiaoying/agent/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/xiaoying/agent/runtime.py": "f0b746b9558d0c947bc510e7c4628ebdbe4515c0e843f93f6c1da2a8b5cced8f",
+    "src/xiaoying/api.py": "2f047823390abb8728f6a855e5c5fdb5fcc9304b2377aa96ba3b55486a79d627",
+    "src/xiaoying/cli.py": "95905ec0a2214be288753c75ab5977dab8bf32ed830d43199526ec36451745a0",
+    "src/xiaoying/config.py": "8ba09316fba3aa9a805fea30c9bb9f7b36b987099cdc368d41a94090b9ab48fc",
+    "src/xiaoying/domain.py": "831a216b6eda8a294857f2d3ae10cbca850eeb34d4a539730f9ab1d48423243d",
+    "src/xiaoying/extensions.py": "cc92619de5b6831fdbf154bc3ebd265f6fa0031a8fd7a164c6496b896033da01",
+    "src/xiaoying/ingestion/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/xiaoying/ingestion/chunking.py": "76022fd6f4d539cd67d1f0ae4e46985f531e4625358f511b308d2ea95e5727db",
+    "src/xiaoying/ingestion/parsers.py": "4d300758cdc792f535442c5dfa6fc97b6b4733f089e31ab2c626a99dbdaa27ba",
+    "src/xiaoying/launcher.py": "d45949025b062facb723be7e681dcee494e3f0f14d60f055c0693dd6ee509ffd",
+    "src/xiaoying/managed_process.py": "7b4f67daf6435f69948c85b3c2c728f27e9642c27fe9957e4ba5c82d4c56dc15",
+    "src/xiaoying/providers/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/xiaoying/providers/audit.py": "babfae82837a23c23803e733cdb6b904f67e4242e7fc11a2a0ab8d9428bdecbf",
+    "src/xiaoying/providers/bounded.py": "393368e56fb2e1a7e2cd1e721ccd2b0ac0ed6b3d8347bd6bb987f8d10c4262d6",
+    "src/xiaoying/providers/chat.py": "64a194409cb7b69cc11b56a51c789bbb93cd50a76d44523bb50bee45e61d4672",
+    "src/xiaoying/providers/embeddings.py": "c9612a381cf1dcbbda44e1c925df634cb4a44805d6aeadca6ebb5dd666637240",
+    "src/xiaoying/rag/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/xiaoying/rag/retrieval.py": "23e1dcc58e087eb014daf4a95e75dc42ac0be0e0c4f93e9820d8e6fae6265a90",
+    "src/xiaoying/services/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/xiaoying/services/knowledge.py": "8b63210ed50116f75f5e1920f8c59f3625497cc95a509aff2a193f576ddad56b",
+    "src/xiaoying/services/runs.py": "4d0e4ec5f53d222e77aa8bcded779e5691bd3a0445a4adf4a0a816d3b1db39b8",
+    "src/xiaoying/storage/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/xiaoying/storage/checkpoints.py": "81ff3cfd28b66e621af59f79bee581de4785d2916835caa5c98b50bdbb67a370",
+    "src/xiaoying/storage/db.py": "c261d2edddfd1f049601f6c9058928a8c9f1b9cb1e7338e3d6da4d17c686092e",
+    "src/xiaoying/worker.py": "3ae7da8e928dbf35d1ddf3f31b274d3c98a9891f5154a9f2fc700a4c5d727146"
+  },
+  "runtime_versions": {
+    "langgraph": "1.2.19",
+    "langgraph-checkpoint-postgres": "3.2.0",
+    "openai": "2.54.0",
+    "psycopg": "3.3.6",
+    "sentence-transformers": "5.7.0"
+  },
+  "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+  "baseline_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+  "baseline_build": {
+    "status": "done",
+    "error": null,
+    "progress": {
+      "stage": "ready",
+      "total": 8,
+      "reused": 0,
+      "rebuilt": 8,
+      "completed": 8,
+      "published": true,
+      "publish_error": null
+    }
+  },
+  "models": {
+    "chat": "deepseek-v4-flash",
+    "embedding": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-m3@5617a9f61b028005a4858fdac845db406aefb181",
+    "reranker": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+    "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "pdf_backend": "mineru",
+    "run_config": {
+      "deepseek_model": "deepseek-v4-flash",
+      "deepseek_thinking": true,
+      "deepseek_reasoning_effort": "high",
+      "deepseek_max_tokens": 16384,
+      "provider_mode": "live",
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "model_timeout_seconds": 45.0,
+      "tool_timeout_seconds": 20.0,
+      "read_timeout_seconds": 5.0,
+      "active_timeout_seconds": 180.0,
+      "clarification_seconds": 600.0,
+      "queue_timeout_seconds": 60.0,
+      "max_model_calls": 12,
+      "max_tool_calls": 8,
+      "max_graph_steps": 40
+    }
+  },
+  "finished_at": "2026-11-01T17:28:28.989423+00:00",
+  "frozen_sources_unchanged": true,
+  "workspace_differences": [
+    "data/policies/D07-missing-receipts.txt"
+  ]
+}

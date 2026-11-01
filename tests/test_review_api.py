@@ -10,6 +10,7 @@ import pytest
 
 from xiaoying.api import create_app
 from xiaoying.providers.embeddings import BGEEmbedder
+from xiaoying.services.runs import final_result
 
 from test_review_knowledge import knowledge as knowledge_fixture
 from test_review_runtime import setup
@@ -171,3 +172,53 @@ def test_job_status_does_not_publish_fencing_token(knowledge):
     assert response.status_code == 200
     assert "lease_token" not in response.json()
     assert "worker_id" not in response.json()
+
+
+def test_history_lists_saved_conversations_by_kb_and_can_reopen_old_turns(knowledge):
+    h = knowledge
+    runs, first, job, runtime = setup(h)
+    runtime.run(job)
+    original = runs.get(first["run_id"])
+    kb, first_cid = original["kb_id"], original["conversation_id"]
+    second_cid = runs.create_conversation(kb, h.key())["id"]
+    second = runs.create_run(second_cid, "第二次独立咨询", h.key())
+    second_job = h.claim(second)
+    runs.start(second_job)
+    runs.finish(second_job, final_result("incomplete", "TEST_FAILURE", "脚本故障记录，保留供历史查看。"))
+    followup = runs.create_run(first_cid, "第一段对话的追问", h.key())
+    runtime.run(h.claim(followup))
+    empty_cid = runs.create_conversation(kb, h.key())["id"]
+    other_kb = h.create()
+    h.initial(other_kb)
+    other_cid = runs.create_conversation(other_kb, h.key())["id"]
+    runs.create_run(other_cid, "其他知识库的对话", h.key())
+    before = h.db.one("SELECT count(*) n,sum(model_calls) model_calls FROM runs")
+    with client_for(h) as client:
+        response = client.get(f"/api/v1/knowledge-bases/{kb}/conversations")
+        assert response.status_code == 200
+        history = response.json()
+        assert [item["id"] for item in history] == [first_cid, second_cid]
+        assert history[0]["title"] == "上海住宿上限多少？", "A follow-up must not replace the conversation title"
+        assert set(history[0]) == {"id", "kb_id", "title", "created_at", "last_activity_at", "input_count"}
+        assert history[0]["input_count"] == 2 and history[1]["input_count"] == 1
+        assert other_cid not in response.text and empty_cid not in response.text
+        failed = client.get(f"/api/v1/conversations/{second_cid}").json()["runs"][0]
+        assert failed["task_status"] == "incomplete" and "脚本故障" in failed["result"]["answer"]
+        reopened = client.get(f"/api/v1/conversations/{first_cid}")
+        assert reopened.status_code == 200
+        assert [run["id"] for run in reopened.json()["runs"]] == [first["run_id"], followup["run_id"]]
+        assert all(run["result"]["citations"] for run in reopened.json()["runs"])
+        traces = client.get(f"/api/v1/runs/{first['run_id']}/events")
+        assert parse_sse(traces.text)[-1][1]["type"] == "run.finished"
+    assert h.db.one("SELECT count(*) n,sum(model_calls) model_calls FROM runs") == before
+
+
+def test_history_handles_empty_missing_and_malformed_knowledge_base(knowledge):
+    kb = knowledge.create()
+    with client_for(knowledge) as client:
+        empty = client.get(f"/api/v1/knowledge-bases/{kb}/conversations")
+        assert empty.status_code == 200 and empty.json() == []
+        missing = client.get(f"/api/v1/knowledge-bases/{uuid4()}/conversations")
+        assert missing.status_code == 404
+        malformed = client.get("/api/v1/knowledge-bases/not-a-uuid/conversations")
+        assert malformed.status_code == 422

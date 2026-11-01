@@ -2,6 +2,7 @@ from uuid import UUID, uuid5
 from psycopg.types.json import Jsonb
 from xiaoying.domain import AppError, LeaseLost, digest
 from xiaoying.providers.embeddings import require_compatible_index
+from xiaoying.providers.audit import public_model_payload
 from xiaoying.storage.db import event, fence, idempotent, jsonable, require, uid, valid_id
 
 
@@ -61,6 +62,24 @@ class RunService:
                 ).fetchone(),
             )
 
+    def conversations(self, kb_id):
+        kb_id = valid_id(kb_id)
+        require(self.db.one("SELECT id FROM knowledge_bases WHERE id=%s", (kb_id,)))
+        return self.db.all(
+            """SELECT c.id,c.kb_id,c.created_at,first_run.question AS title,
+            (SELECT count(*) FROM runs WHERE conversation_id=c.id) AS input_count,
+            coalesce(activity.last_activity_at,c.created_at) AS last_activity_at
+            FROM conversations c
+            JOIN LATERAL (
+                SELECT question FROM runs WHERE conversation_id=c.id ORDER BY created_at,id LIMIT 1
+            ) first_run ON true
+            LEFT JOIN LATERAL (
+                SELECT max(created_at) AS last_activity_at FROM messages WHERE conversation_id=c.id
+            ) activity ON true
+            WHERE c.kb_id=%s ORDER BY last_activity_at DESC,c.id DESC""",
+            (kb_id,),
+        )
+
     def conversation(self, cid):
         row = require(self.db.one("SELECT * FROM conversations WHERE id=%s", (valid_id(cid),)))
         row["messages"] = self.db.all(
@@ -68,10 +87,80 @@ class RunService:
             (cid,),
         )
         row["runs"] = self.db.all(
-            "SELECT id,question,execution_status,task_status,result,deadline_at,kb_version_id,created_at FROM runs WHERE conversation_id=%s ORDER BY created_at",
+            """SELECT id,conversation_id,question,execution_status,task_status,result,deadline_at,
+            kb_version_id,created_at,model_calls,tool_calls,graph_steps,active_ms FROM runs
+            WHERE conversation_id=%s ORDER BY created_at,id""",
             (cid,),
         )
         return row
+
+    def conversation_trace(self, cid):
+        session = self.conversation(cid)
+        events = self.db.all(
+            """SELECT e.* FROM trace_events e JOIN runs r ON r.id=e.run_id
+            WHERE r.conversation_id=%s ORDER BY r.created_at,r.id,e.seq""", (session["id"],),
+        )
+        by_run = {}
+        for item in events:
+            by_run.setdefault(item["run_id"], []).append(item)
+        return {
+            "session_id": session["id"], "kb_id": session["kb_id"],
+            "rounds": [{"run": run, "events": by_run.get(run["id"], [])} for run in session["runs"]],
+        }
+
+    def model_call(self, rid, call_number):
+        run = self.get(rid)
+        row = require(self.db.one(
+            "SELECT * FROM model_invocations WHERE run_id=%s AND call_number=%s", (rid, call_number),
+        ), "此调用没有保存可查看的模型输入")
+        if row["status"] == "running" and run["execution_status"] == "finished":
+            row["status"] = "unknown"
+        # Defense in depth: never serve the private action/checkpoint transcript.
+        return public_model_payload(row)
+
+    def model_started(self, job, action_id, phase, adapter, model, request):
+        request = public_model_payload(request)
+        with self.db.tx() as c:
+            fence(c, job["id"], job["lease_token"])
+            run = require(c.execute("SELECT model_calls FROM runs WHERE id=%s", (job["resource_id"],)).fetchone())
+            number = run["model_calls"]
+            c.execute(
+                """UPDATE model_invocations SET status='unknown'
+                WHERE run_id=%s AND action_id=%s AND status='running' AND call_number!=%s""",
+                (job["resource_id"], action_id, number),
+            )
+            c.execute(
+                """INSERT INTO model_invocations(run_id,call_number,action_id,phase,adapter,model,status,request)
+                VALUES(%s,%s,%s,%s,%s,%s,'running',%s) ON CONFLICT DO NOTHING""",
+                (job["resource_id"], number, action_id, phase, adapter, model, Jsonb(request)),
+            )
+            event(c, job["resource_id"], f"model.started:{number}", "model.started", {
+                "call_number": number, "action_id": action_id, "phase": phase, "model": model,
+                "adapter": adapter, "message_count": len(request.get("messages", [])),
+            })
+
+    def model_finished(self, job, action_id, response=None, error=None, recovered=False):
+        with self.db.tx() as c:
+            fence(c, job["id"], job["lease_token"])
+            record = c.execute(
+                """SELECT * FROM model_invocations WHERE run_id=%s AND action_id=%s
+                AND status='running' ORDER BY call_number DESC LIMIT 1 FOR UPDATE""",
+                (job["resource_id"], action_id),
+            ).fetchone()
+            if not record:  # Completed replay or a legacy action with no audit record.
+                return
+            status = "failed" if error else "completed"
+            row = c.execute(
+                """UPDATE model_invocations SET status=%s,response=%s,error=%s,finished_at=clock_timestamp(),
+                elapsed_ms=EXTRACT(EPOCH FROM(clock_timestamp()-started_at))*1000
+                WHERE run_id=%s AND call_number=%s RETURNING elapsed_ms""",
+                (status, Jsonb(public_model_payload(response)), Jsonb(error), job["resource_id"], record["call_number"]),
+            ).fetchone()
+            event(c, job["resource_id"], f"model.finished:{record['call_number']}", f"model.{status}", {
+                "call_number": record["call_number"], "action_id": action_id, "phase": record["phase"],
+                "model": record["model"], "elapsed_ms": row["elapsed_ms"], "recovered": recovered,
+                **({"error": error} if error else {"response": public_model_payload(response)}),
+            })
 
     def create_run(self, cid, question, key):
         cid = valid_id(cid)
@@ -159,6 +248,9 @@ class RunService:
         return self.get(job["resource_id"])
 
     def remaining(self, rid):
+        return self.budget(rid)["active_seconds_remaining"]
+
+    def budget(self, rid):
         with self.db.pool.connection() as c:
             r = require(
                 c.execute("SELECT *,clock_timestamp() AS db_now FROM runs WHERE id=%s", (rid,)).fetchone()
@@ -166,7 +258,31 @@ class RunService:
         elapsed = r["active_ms"] / 1000
         if r["segment_started_at"]:
             elapsed += (r["db_now"] - r["segment_started_at"]).total_seconds()
-        return r["config"]["active_timeout_seconds"] - elapsed
+        cfg = r["config"]
+        return {
+            "run_id": str(r["id"]),
+            "tool_calls_used": r["tool_calls"],
+            "tool_calls_limit": cfg["max_tool_calls"],
+            "tool_calls_remaining": max(0, cfg["max_tool_calls"] - r["tool_calls"]),
+            "model_calls_remaining": max(0, cfg["max_model_calls"] - r["model_calls"]),
+            "graph_steps_remaining": max(0, cfg["max_graph_steps"] - r["graph_steps"]),
+            "active_seconds_remaining": max(0, cfg["active_timeout_seconds"] - elapsed),
+        }
+
+    def limit_result(self, rid, code, message):
+        """Report verified execution progress when no model budget remains to close."""
+        counts = self.db.one(
+            """SELECT count(*) FILTER (WHERE output ? 'candidates') searches,
+            count(*) FILTER (WHERE output ? 'evidence') reads FROM run_actions
+            WHERE run_id=%s AND kind='tool' AND status='done'""",
+            (rid,),
+        )
+        return final_result(
+            "incomplete", code,
+            f"本轮已完成 {counts['searches']} 次检索、{counts['reads']} 次原文读取。"
+            f"{message}。尚未形成完整、可核验的答复，请重新提问或缩小问题范围。",
+            gaps=["尚未完成当前问题所需结论的查证"],
+        )
 
     def reserve_action(self, job, action_id, kind, body):
         """Return cached output if done, else atomically reserve budget before external work."""
@@ -191,8 +307,18 @@ class RunService:
             cfg = run["config"]
             column = {"model": "model_calls", "tool": "tool_calls", "step": "graph_steps"}[kind]
             limit = {"model": "max_model_calls", "tool": "max_tool_calls", "step": "max_graph_steps"}[kind]
-            if elapsed >= cfg["active_timeout_seconds"] or run[column] >= cfg[limit]:
-                raise AppError("EXECUTION_LIMIT", f"执行时间或 {column} 上限已达到", 409)
+            if elapsed >= cfg["active_timeout_seconds"]:
+                raise AppError("EXECUTION_LIMIT", f"本轮活跃执行时间已达到 {cfg['active_timeout_seconds']} 秒上限", 409)
+            if run[column] >= cfg[limit]:
+                if kind == "tool":
+                    raise AppError(
+                        "TOOL_CALL_LIMIT",
+                        f"本轮检索/原文读取已达到 {cfg[limit]} 次上限；本次工具未执行。"
+                        "请调用 finish_answer，汇总已核实内容和具体缺口；未完成必要查证时使用 incomplete",
+                        409,
+                    )
+                label = {"model": "模型调用", "step": "执行步数"}[kind]
+                raise AppError("EXECUTION_LIMIT", f"本轮{label}已达到 {cfg[limit]} 次上限", 409)
             # Column is chosen from a fixed internal mapping, never user supplied.
             c.execute(f"UPDATE runs SET {column}={column}+1 WHERE id=%s", (run["id"],))
             if old:

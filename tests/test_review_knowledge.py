@@ -133,8 +133,9 @@ def test_competing_publications_cannot_overwrite_a_newer_manifest(knowledge):
     kb = h.create()
     a = h.initial(kb)
     one = h.start(kb, a, auto_publish=False)
+    b = h.build(one)
     two = h.start(kb, a, auto_publish=False)
-    b, c = h.build(one), h.build(two)
+    c = h.build(two)
     h.service.publish(kb, b, a, h.key())
     with pytest.raises(AppError) as stale:
         h.service.publish(kb, c, a, h.key())
@@ -149,7 +150,8 @@ def test_invalid_embedding_never_replaces_published_snapshot(knowledge):
     h = knowledge
     kb = h.create()
     a = h.initial(kb)
-    pending = h.start(kb, a)
+    replacement = h.upload(kb, amount=600)
+    pending = h.start(kb, a, [{"action": "replace", "document_id": "DREV", "upload_id": replacement}])
 
     class BadShape(MockEmbedder):
         def encode(self, texts):

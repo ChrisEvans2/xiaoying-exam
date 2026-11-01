@@ -1,0 +1,1020 @@
+{
+  "evidence_type": "live_model",
+  "case_id": "QA20",
+  "input": {
+    "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+    "history": []
+  },
+  "followup_input": null,
+  "fault_injection": {
+    "read": "always",
+    "search_document_ids": [
+      "D04"
+    ]
+  },
+  "history_runs": [],
+  "initial": {
+    "id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+    "conversation_id": "f1ede17a-010f-402c-8602-544f93f72146",
+    "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+    "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+    "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 6,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "incomplete",
+    "result": {
+      "answer": "目前无法确定上海出差住宿费的报销上限：已检索到《境内差旅住宿费用标准》相关条目，但原文读取连续超时，未能取得可引用的具体标准。",
+      "citations": [],
+      "reason_code": "evidence_read_failed",
+      "task_status": "incomplete",
+      "information_gaps": [
+        "《境内差旅住宿费用标准》（D04）原文未能读取，上海对应的每人每晚上限金额及适用人员级别不明"
+      ]
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 0,
+    "deadline_at": null,
+    "model_calls": 7,
+    "tool_calls": 5,
+    "graph_steps": 13,
+    "active_ms": 10068.858,
+    "segment_started_at": null,
+    "next_event_seq": 37,
+    "created_at": "2026-11-01T17:28:12.653873+00:00"
+  },
+  "run": {
+    "id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+    "conversation_id": "f1ede17a-010f-402c-8602-544f93f72146",
+    "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+    "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+    "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 6,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "incomplete",
+    "result": {
+      "answer": "目前无法确定上海出差住宿费的报销上限：已检索到《境内差旅住宿费用标准》相关条目，但原文读取连续超时，未能取得可引用的具体标准。",
+      "citations": [],
+      "reason_code": "evidence_read_failed",
+      "task_status": "incomplete",
+      "information_gaps": [
+        "《境内差旅住宿费用标准》（D04）原文未能读取，上海对应的每人每晚上限金额及适用人员级别不明"
+      ]
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 0,
+    "deadline_at": null,
+    "model_calls": 7,
+    "tool_calls": 5,
+    "graph_steps": 13,
+    "active_ms": 10068.858,
+    "segment_started_at": null,
+    "next_event_seq": 37,
+    "created_at": "2026-11-01T17:28:12.653873+00:00"
+  },
+  "trace": [
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 1,
+      "event_id": "run.queued",
+      "type": "run.queued",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "provider_mode": "live"
+      },
+      "occurred_at": "2026-11-01T17:28:12.653873+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 2,
+      "event_id": "run.started:375dd66d-3d08-4c12-b0c2-ef27fcfa9f72",
+      "type": "run.started",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "evidence_epoch": 0
+      },
+      "occurred_at": "2026-11-01T17:28:12.661733+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 3,
+      "event_id": "model.started:1",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "adapter": "DeepSeekChat",
+        "action_id": "expand:0",
+        "call_number": 1,
+        "message_count": 2
+      },
+      "occurred_at": "2026-11-01T17:28:12.710366+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 4,
+      "event_id": "model.finished:1",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "response": {
+          "intent": "knowledge",
+          "expanded_queries": [
+            "上海出差住宿费报销标准 每人每晚上限",
+            "上海住宿费报销限额 标准"
+          ],
+          "unresolved_slots": [],
+          "resolved_question": "在上海出差，住宿费每人每晚最多能报销多少？"
+        },
+        "action_id": "expand:0",
+        "recovered": false,
+        "elapsed_ms": 2106.318,
+        "call_number": 1
+      },
+      "occurred_at": "2026-11-01T17:28:14.816452+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 5,
+      "event_id": "intent:0",
+      "type": "intent.detected",
+      "payload": {
+        "intent": "knowledge",
+        "requires_knowledge": true
+      },
+      "occurred_at": "2026-11-01T17:28:14.820446+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 6,
+      "event_id": "expanded:0",
+      "type": "query.expanded",
+      "payload": {
+        "intent": "knowledge",
+        "expanded_queries": [
+          "在上海出差，住宿费每人每晚最多能报销多少？",
+          "上海出差住宿费报销标准 每人每晚上限",
+          "上海住宿费报销限额 标准"
+        ],
+        "unresolved_slots": [],
+        "resolved_question": "在上海出差，住宿费每人每晚最多能报销多少？"
+      },
+      "occurred_at": "2026-11-01T17:28:14.823128+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 7,
+      "event_id": "model.started:2",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:0",
+        "call_number": 2,
+        "message_count": 4
+      },
+      "occurred_at": "2026-11-01T17:28:14.845946+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 8,
+      "event_id": "model.finished:2",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_CAIuLPULn9UDS44mCp0A9977",
+              "type": "function",
+              "function": {
+                "name": "search_knowledge",
+                "arguments": "{\"queries\": [\"上海出差住宿费报销标准 每人每晚上限\", \"住宿费报销限额 上海 标准\", \"差旅费管理办法 住宿费 上海\"], \"reason\": \"检索上海出差住宿费报销标准\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:0",
+        "recovered": false,
+        "elapsed_ms": 1150.565,
+        "call_number": 2
+      },
+      "occurred_at": "2026-11-01T17:28:15.996927+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 9,
+      "event_id": "decision:0",
+      "type": "agent.decision",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "budget": {
+          "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+          "tool_calls_used": 0,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 6,
+          "graph_steps_remaining": 38,
+          "model_calls_remaining": 11,
+          "active_seconds_remaining": 177.824662
+        },
+        "tool_call_id": "call_00_ET_CAIuLPULn9UDS44mCp0A9977"
+      },
+      "occurred_at": "2026-11-01T17:28:16.000757+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 10,
+      "event_id": "tool.started:0",
+      "type": "tool.started",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "reason": "检索上海出差住宿费报销标准",
+        "arguments": {
+          "queries": [
+            "上海出差住宿费报销标准 每人每晚上限",
+            "住宿费报销限额 上海 标准",
+            "差旅费管理办法 住宿费 上海"
+          ]
+        },
+        "tool_call_id": "call_00_ET_CAIuLPULn9UDS44mCp0A9977"
+      },
+      "occurred_at": "2026-11-01T17:28:16.012123+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 11,
+      "event_id": "tool.completed:0",
+      "type": "tool.completed",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "degraded": false,
+        "failures": [],
+        "candidates": [
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 5,
+            "chunk_id": "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "rrf_score": 0.09836065573770493,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.9825232028961182,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 6,
+            "chunk_id": "9c04f688-d34d-5743-b2cc-544a1ea4d5cc",
+            "rrf_score": 0.09651817716333845,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.25160297751426697,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 7,
+            "chunk_id": "75943a17-4142-537c-ba78-e90085fca35f",
+            "rrf_score": 0.09405043713842462,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.20981089770793915,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 9,
+            "chunk_id": "bf583cc8-0a4a-5e1b-95c4-fd9a9a5bd548",
+            "rrf_score": 0.094253663003663,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.09342522919178009,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 3,
+            "chunk_id": "3453f4f1-c783-59b6-8f0a-2c398486e173",
+            "rrf_score": 0.091615675990676,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.050853341817855835,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 8,
+            "chunk_id": "9dab1f61-d3b8-5831-8783-5b75a00f8dfd",
+            "rrf_score": 0.09163624365830249,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.016780218109488487,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 0,
+            "chunk_id": "a67eb890-c05c-5968-ac7c-e2ff161f1310",
+            "rrf_score": 0.08674948240165631,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.0004011917917523533,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          },
+          {
+            "title": "境内差旅住宿费用标准",
+            "ordinal": 1,
+            "chunk_id": "598d18ba-2e12-5816-849f-8235f40c3d46",
+            "rrf_score": 0.08979199027487,
+            "document_id": "D04",
+            "heading_path": [
+              "境内差旅住宿费用标准"
+            ],
+            "rerank_score": 0.0003347540623508394,
+            "version_date": "2026-08-01",
+            "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+          }
+        ],
+        "query_count": 3,
+        "tool_call_id": "call_00_ET_CAIuLPULn9UDS44mCp0A9977",
+        "candidate_count": 10
+      },
+      "occurred_at": "2026-11-01T17:28:16.312183+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 12,
+      "event_id": "model.started:3",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:1",
+        "call_number": 3,
+        "message_count": 7
+      },
+      "occurred_at": "2026-11-01T17:28:16.327568+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 13,
+      "event_id": "model.finished:3",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_svTYkrHvBlNWFzgsOO9F3385",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D04\", \"limit\": 8, \"reason\": \"读取住宿费标准全文以确认上海上限\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:1",
+        "recovered": false,
+        "elapsed_ms": 762.522,
+        "call_number": 3
+      },
+      "occurred_at": "2026-11-01T17:28:17.089950+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 14,
+      "event_id": "decision:1",
+      "type": "agent.decision",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+          "tool_calls_used": 1,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 5,
+          "graph_steps_remaining": 36,
+          "model_calls_remaining": 10,
+          "active_seconds_remaining": 176.340761
+        },
+        "tool_call_id": "call_00_ET_svTYkrHvBlNWFzgsOO9F3385"
+      },
+      "occurred_at": "2026-11-01T17:28:17.094621+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 15,
+      "event_id": "tool.started:1",
+      "type": "tool.started",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "reason": "读取住宿费标准全文以确认上海上限",
+        "arguments": {
+          "limit": 8,
+          "document_id": "D04"
+        },
+        "tool_call_id": "call_00_ET_svTYkrHvBlNWFzgsOO9F3385"
+      },
+      "occurred_at": "2026-11-01T17:28:17.113110+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 16,
+      "event_id": "tool.completed:1",
+      "type": "tool.failed",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "error": {
+          "code": "TIMEOUT",
+          "message": "测试注入：原文读取超时",
+          "retryable": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_ET_svTYkrHvBlNWFzgsOO9F3385"
+      },
+      "occurred_at": "2026-11-01T17:28:17.123802+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 17,
+      "event_id": "model.started:4",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:2",
+        "call_number": 4,
+        "message_count": 10
+      },
+      "occurred_at": "2026-11-01T17:28:17.140348+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 18,
+      "event_id": "model.finished:4",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_PVdpHa7diC7BEnSNJaLC8275",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"chunk_ids\": [\"056e529f-30c9-5a26-8425-e6322daac3a5\", \"9c04f688-d34d-5743-b2cc-544a1ea4d5cc\"], \"reason\": \"超时后改用候选chunk读取上海住宿标准原文\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:2",
+        "recovered": false,
+        "elapsed_ms": 1156.313,
+        "call_number": 4
+      },
+      "occurred_at": "2026-11-01T17:28:18.296509+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 19,
+      "event_id": "decision:2",
+      "type": "agent.decision",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+          "tool_calls_used": 2,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 4,
+          "graph_steps_remaining": 34,
+          "model_calls_remaining": 9,
+          "active_seconds_remaining": 175.528529
+        },
+        "tool_call_id": "call_00_PVdpHa7diC7BEnSNJaLC8275"
+      },
+      "occurred_at": "2026-11-01T17:28:18.301268+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 20,
+      "event_id": "tool.started:2",
+      "type": "tool.started",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "reason": "超时后改用候选chunk读取上海住宿标准原文",
+        "arguments": {
+          "chunk_ids": [
+            "056e529f-30c9-5a26-8425-e6322daac3a5",
+            "9c04f688-d34d-5743-b2cc-544a1ea4d5cc"
+          ]
+        },
+        "tool_call_id": "call_00_PVdpHa7diC7BEnSNJaLC8275"
+      },
+      "occurred_at": "2026-11-01T17:28:18.316538+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 21,
+      "event_id": "tool.completed:2",
+      "type": "tool.failed",
+      "payload": {
+        "step": 2,
+        "tool": "read_document",
+        "error": {
+          "code": "TIMEOUT",
+          "message": "测试注入：原文读取超时",
+          "retryable": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_PVdpHa7diC7BEnSNJaLC8275"
+      },
+      "occurred_at": "2026-11-01T17:28:18.327172+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 22,
+      "event_id": "model.started:5",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:3",
+        "call_number": 5,
+        "message_count": 13
+      },
+      "occurred_at": "2026-11-01T17:28:18.343456+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 23,
+      "event_id": "model.finished:5",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_M9zpmHfFKMpIswhIaxTE0112",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"chunk_ids\": [\"056e529f-30c9-5a26-8425-e6322daac3a5\"], \"reason\": \"再次尝试读取单条上海住宿标准候选\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:3",
+        "recovered": false,
+        "elapsed_ms": 1193.093,
+        "call_number": 5
+      },
+      "occurred_at": "2026-11-01T17:28:19.535289+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 24,
+      "event_id": "decision:3",
+      "type": "agent.decision",
+      "payload": {
+        "step": 3,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+          "tool_calls_used": 3,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 3,
+          "graph_steps_remaining": 32,
+          "model_calls_remaining": 8,
+          "active_seconds_remaining": 174.325114
+        },
+        "tool_call_id": "call_00_M9zpmHfFKMpIswhIaxTE0112"
+      },
+      "occurred_at": "2026-11-01T17:28:19.541813+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 25,
+      "event_id": "tool.started:3",
+      "type": "tool.started",
+      "payload": {
+        "step": 3,
+        "tool": "read_document",
+        "reason": "再次尝试读取单条上海住宿标准候选",
+        "arguments": {
+          "chunk_ids": [
+            "056e529f-30c9-5a26-8425-e6322daac3a5"
+          ]
+        },
+        "tool_call_id": "call_00_M9zpmHfFKMpIswhIaxTE0112"
+      },
+      "occurred_at": "2026-11-01T17:28:19.559425+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 26,
+      "event_id": "tool.completed:3",
+      "type": "tool.failed",
+      "payload": {
+        "step": 3,
+        "tool": "read_document",
+        "error": {
+          "code": "TIMEOUT",
+          "message": "测试注入：原文读取超时",
+          "retryable": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_M9zpmHfFKMpIswhIaxTE0112"
+      },
+      "occurred_at": "2026-11-01T17:28:19.570588+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 27,
+      "event_id": "model.started:6",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:4",
+        "call_number": 6,
+        "message_count": 16
+      },
+      "occurred_at": "2026-11-01T17:28:19.589260+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 28,
+      "event_id": "model.finished:6",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_PSWhjh2HhZKBQFOj1CS37856",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_version_id\": \"cf8b2a59-bf90-43c4-8914-6e322d4e7e7f\", \"offset\": 0, \"limit\": 4, \"reason\": \"按文档版本尝试读取住宿标准正文\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:4",
+        "recovered": false,
+        "elapsed_ms": 1224.389,
+        "call_number": 6
+      },
+      "occurred_at": "2026-11-01T17:28:20.813920+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 29,
+      "event_id": "decision:4",
+      "type": "agent.decision",
+      "payload": {
+        "step": 4,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+          "tool_calls_used": 4,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 2,
+          "graph_steps_remaining": 30,
+          "model_calls_remaining": 7,
+          "active_seconds_remaining": 173.079894
+        },
+        "tool_call_id": "call_00_PSWhjh2HhZKBQFOj1CS37856"
+      },
+      "occurred_at": "2026-11-01T17:28:20.818467+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 30,
+      "event_id": "tool.started:4",
+      "type": "tool.started",
+      "payload": {
+        "step": 4,
+        "tool": "read_document",
+        "reason": "按文档版本尝试读取住宿标准正文",
+        "arguments": {
+          "limit": 4,
+          "offset": 0,
+          "document_version_id": "cf8b2a59-bf90-43c4-8914-6e322d4e7e7f"
+        },
+        "tool_call_id": "call_00_PSWhjh2HhZKBQFOj1CS37856"
+      },
+      "occurred_at": "2026-11-01T17:28:20.832825+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 31,
+      "event_id": "tool.completed:4",
+      "type": "tool.failed",
+      "payload": {
+        "step": 4,
+        "tool": "read_document",
+        "error": {
+          "code": "TIMEOUT",
+          "message": "测试注入：原文读取超时",
+          "retryable": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_PSWhjh2HhZKBQFOj1CS37856"
+      },
+      "occurred_at": "2026-11-01T17:28:20.843995+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 32,
+      "event_id": "model.started:7",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:5",
+        "call_number": 7,
+        "message_count": 19
+      },
+      "occurred_at": "2026-11-01T17:28:20.860824+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 33,
+      "event_id": "model.finished:7",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_C6IpBmXXZyuvv7RMt8Sy4173",
+              "type": "function",
+              "function": {
+                "name": "finish_answer",
+                "arguments": "{\"answer\": \"目前无法确定上海出差住宿费的报销上限：已检索到《境内差旅住宿费用标准》相关条目，但原文读取连续超时，未能取得可引用的具体标准。\", \"citations\": [], \"information_gaps\": [\"《境内差旅住宿费用标准》（D04）原文未能读取，上海对应的每人每晚上限金额及适用人员级别不明\"], \"task_status\": \"incomplete\", \"reason_code\": \"evidence_read_failed\", \"reason\": \"多次尝试读取住宿标准原文均超时，仅有检索元数据，不足以给出金额。\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:5",
+        "recovered": false,
+        "elapsed_ms": 1825.147,
+        "call_number": 7
+      },
+      "occurred_at": "2026-11-01T17:28:22.685186+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 34,
+      "event_id": "decision:5",
+      "type": "agent.decision",
+      "payload": {
+        "step": 5,
+        "tool": "finish_answer",
+        "budget": {
+          "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+          "tool_calls_used": 5,
+          "tool_calls_limit": 6,
+          "tool_calls_remaining": 1,
+          "graph_steps_remaining": 28,
+          "model_calls_remaining": 6,
+          "active_seconds_remaining": 171.808001
+        },
+        "tool_call_id": "call_00_C6IpBmXXZyuvv7RMt8Sy4173"
+      },
+      "occurred_at": "2026-11-01T17:28:22.691436+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 35,
+      "event_id": "tool.started:5",
+      "type": "tool.started",
+      "payload": {
+        "step": 5,
+        "tool": "finish_answer",
+        "reason": "多次尝试读取住宿标准原文均超时，仅有检索元数据，不足以给出金额。",
+        "arguments": {
+          "answer": "目前无法确定上海出差住宿费的报销上限：已检索到《境内差旅住宿费用标准》相关条目，但原文读取连续超时，未能取得可引用的具体标准。",
+          "citations": [],
+          "reason_code": "evidence_read_failed",
+          "task_status": "incomplete",
+          "information_gaps": [
+            "《境内差旅住宿费用标准》（D04）原文未能读取，上海对应的每人每晚上限金额及适用人员级别不明"
+          ]
+        },
+        "tool_call_id": "call_00_C6IpBmXXZyuvv7RMt8Sy4173"
+      },
+      "occurred_at": "2026-11-01T17:28:22.711455+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 36,
+      "event_id": "tool.completed:5",
+      "type": "tool.completed",
+      "payload": {
+        "step": 5,
+        "tool": "finish_answer",
+        "result": {
+          "accepted": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_C6IpBmXXZyuvv7RMt8Sy4173"
+      },
+      "occurred_at": "2026-11-01T17:28:22.716386+00:00"
+    },
+    {
+      "run_id": "70f3ed77-b71d-44d5-a540-4a85093fd6d0",
+      "seq": 37,
+      "event_id": "run.finished",
+      "type": "run.finished",
+      "payload": {
+        "answer": "目前无法确定上海出差住宿费的报销上限：已检索到《境内差旅住宿费用标准》相关条目，但原文读取连续超时，未能取得可引用的具体标准。",
+        "citations": [],
+        "reason_code": "evidence_read_failed",
+        "task_status": "incomplete",
+        "information_gaps": [
+          "《境内差旅住宿费用标准》（D04）原文未能读取，上海对应的每人每晚上限金额及适用人员级别不明"
+        ]
+      },
+      "occurred_at": "2026-11-01T17:28:22.730226+00:00"
+    }
+  ],
+  "read_evidence": [],
+  "model_calls": [
+    {
+      "call_number": 1,
+      "phase": "expand",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 2106.318,
+      "error": null
+    },
+    {
+      "call_number": 2,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1150.565,
+      "error": null
+    },
+    {
+      "call_number": 3,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 762.522,
+      "error": null
+    },
+    {
+      "call_number": 4,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1156.313,
+      "error": null
+    },
+    {
+      "call_number": 5,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1193.093,
+      "error": null
+    },
+    {
+      "call_number": 6,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1224.389,
+      "error": null
+    },
+    {
+      "call_number": 7,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1825.147,
+      "error": null
+    }
+  ],
+  "citation_integrity": true,
+  "expected": {
+    "status": "incomplete",
+    "reference_answer": "当前无法读取住宿制度原文，因此本次未能核实上海住宿报销上限。任务未完成，原因是文档读取失败；可以在工具恢复后重试。不得把缓存记忆中的金额当成本次已核实答案，也不能伪造引用。",
+    "required_facts": [
+      "任务未完成",
+      "说明工具读取失败",
+      "没有可用原文证据，不能给出确定金额或原文引用",
+      "到工具调用上限时明确说明达到上限"
+    ],
+    "forbidden_claims": [
+      "把 500 元或其他金额作为本次已核实答案",
+      "伪造原文引用",
+      "声称任务已完成",
+      "无限重试"
+    ],
+    "evidence": [],
+    "information_gaps": [
+      "文档读取失败，无法获得住宿标准原文"
+    ]
+  },
+  "expected_final_status": "incomplete",
+  "semantic_verdict": "pending_source_review",
+  "initial_status_matches": true,
+  "final_status_matches": true
+}

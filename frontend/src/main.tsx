@@ -11,7 +11,10 @@ import type {
   Doc,
   Citation,
   Run,
+  Conversation,
+  ConversationSummary,
   Trace,
+  SessionTrace,
   Job,
   Pending,
 } from "./types";
@@ -27,6 +30,40 @@ const labels: Record<string, string> = {
 };
 const short = (id: string | null | undefined) =>
   id ? id.slice(0, 8) : "未发布";
+const historyDate = (value: string) =>
+  new Date(value).toLocaleString("zh-CN", {
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+const documentDraftKey = "xiaoying:document-drafts";
+function readDocumentDrafts(): Record<string, Pending[]> {
+  try {
+    const saved = JSON.parse(localStorage.getItem(documentDraftKey) ?? "{}");
+    if (!saved || typeof saved !== "object" || Array.isArray(saved)) return {};
+    return Object.fromEntries(
+      Object.entries(saved).map(([id, items]) => [
+        id,
+        Array.isArray(items)
+          ? items.filter(
+              (item): item is Pending =>
+                item &&
+                typeof item.document_id === "string" &&
+                typeof item.name === "string" &&
+                ["add", "replace", "remove"].includes(item.action) &&
+                (item.action === "remove" ||
+                  typeof item.upload_id === "string"),
+            )
+          : [],
+      ]),
+    );
+  } catch {
+    return {};
+  }
+}
 
 async function api<T>(
   path: string,
@@ -66,7 +103,8 @@ function App() {
     [mode, setMode] = useState("");
   const [name, setName] = useState(""),
     [creating, setCreating] = useState(false),
-    [pending, setPending] = useState<Pending[]>([]),
+    [documentDrafts, setDocumentDrafts] = useState(readDocumentDrafts),
+    [knowledgeLoading, setKnowledgeLoading] = useState(false),
     [jobId, setJobId] = useState<string | null>(null),
     [job, setJob] = useState<Job | null>(null);
   const [config, setConfig] = useState<ChunkConfig>({
@@ -77,12 +115,16 @@ function App() {
     }),
     [metadata, setMetadata] = useState("{}");
   const [conversationId, setConversationId] = useState<string | null>(null),
+    [conversations, setConversations] = useState<ConversationSummary[]>([]),
+    [conversationLoading, setConversationLoading] = useState(false),
+    [historyLoading, setHistoryLoading] = useState(false),
+    [historyError, setHistoryError] = useState(""),
     [runs, setRuns] = useState<Run[]>([]),
     [question, setQuestion] = useState(""),
     [busy, setBusy] = useState(false),
     [uploading, setUploading] = useState(false);
   const [traceId, setTraceId] = useState<string | null>(null),
-    [trace, setTrace] = useState<Trace[]>([]),
+    [sessionTrace, setSessionTrace] = useState<SessionTrace | null>(null),
     [connection, setConnection] = useState(""),
     [supplement, setSupplement] = useState(""),
     [supplementVersion, setSupplementVersion] = useState("");
@@ -100,12 +142,27 @@ function App() {
   const fileInput = useRef<HTMLInputElement>(null),
     bottom = useRef<HTMLDivElement>(null);
   const selectedKb = useRef(kbId),
-    knowledgeRequest = useRef(0);
+    jobKb = useRef(""),
+    knowledgeRequest = useRef(0),
+    conversationRequest = useRef(0),
+    historyRequest = useRef(0),
+    drafts = useRef(new Map<string, string>());
   selectedKb.current = kbId;
+  const pending = documentDrafts[kbId] ?? [];
+  const setPending = (
+    update: Pending[] | ((items: Pending[]) => Pending[]),
+    id = kbId,
+  ) => {
+    setDocumentDrafts((all) => ({
+      ...all,
+      [id]: typeof update === "function" ? update(all[id] ?? []) : update,
+    }));
+  };
   const current = kbs.find((k) => k.id === kbId);
   const active = runs.find((r) => r.execution_status !== "finished");
   const building =
     busy ||
+    knowledgeLoading ||
     (!!jobId && !job) ||
     job?.status === "pending" ||
     job?.status === "running";
@@ -122,27 +179,108 @@ function App() {
     setKbs(list);
     return list;
   };
-  const reloadKnowledge = async (id = kbId) => {
+  const reloadKnowledge = async (id = kbId, restoreConfig = true) => {
     if (!id) return;
     const request = ++knowledgeRequest.current;
-    const [list, all] = await Promise.all([
-      api<Version[]>(`/api/v1/knowledge-bases/${id}/versions`),
-      api<KB[]>("/api/v1/knowledge-bases"),
-    ]);
-    const selected = all.find((k) => k.id === id);
-    const documents = selected?.current_version_id
-      ? await api<Doc[]>(
-          `/api/v1/knowledge-bases/${id}/documents?version_id=${selected.current_version_id}`,
-        )
-      : [];
-    if (selectedKb.current !== id || request !== knowledgeRequest.current)
-      return;
-    setKbs(all);
-    setVersions(list);
-    setDocs(documents);
-    const version = list.find((v) => v.id === selected?.current_version_id);
-    if (version) setConfig(version.config.chunking);
+    if (selectedKb.current === id) setKnowledgeLoading(true);
+    try {
+      const [list, all, builds] = await Promise.all([
+        api<Version[]>(`/api/v1/knowledge-bases/${id}/versions`),
+        api<KB[]>("/api/v1/knowledge-bases"),
+        api<Job[]>(`/api/v1/knowledge-bases/${id}/builds`),
+      ]);
+      const selected = all.find((k) => k.id === id);
+      const documents = selected?.current_version_id
+        ? await api<Doc[]>(
+            `/api/v1/knowledge-bases/${id}/documents?version_id=${selected.current_version_id}`,
+          )
+        : [];
+      if (selectedKb.current !== id || request !== knowledgeRequest.current)
+        return;
+      setKbs(all);
+      setVersions(list);
+      setDocs(documents);
+      const latestBuild = builds[0] ?? null;
+      jobKb.current = id;
+      setJob(latestBuild);
+      setJobId(latestBuild?.id ?? null);
+      const version = list.find(
+        (v) =>
+          v.id ===
+          (latestBuild?.status === "pending" ||
+          latestBuild?.status === "running"
+            ? latestBuild.resource_id
+            : selected?.current_version_id),
+      );
+      if (restoreConfig && version) setConfig(version.config.chunking);
+      setPending(
+        (items) =>
+          items.map((item) =>
+            item.action === "remove"
+              ? item
+              : {
+                  ...item,
+                  action: documents.some(
+                    (doc) => doc.document_id === item.document_id,
+                  )
+                    ? "replace"
+                    : "add",
+                },
+          ),
+        id,
+      );
+    } finally {
+      if (selectedKb.current === id && request === knowledgeRequest.current)
+        setKnowledgeLoading(false);
+    }
   };
+  const reloadConversations = async (id = kbId) => {
+    const request = ++historyRequest.current;
+    try {
+      const list = await api<ConversationSummary[]>(
+        `/api/v1/knowledge-bases/${id}/conversations`,
+      );
+      if (selectedKb.current === id && request === historyRequest.current) {
+        setConversations(list);
+        setHistoryError("");
+      }
+      return list;
+    } catch (e) {
+      if (selectedKb.current === id && request === historyRequest.current)
+        setHistoryError((e as Error).message);
+      throw e;
+    }
+  };
+  const openConversation = async (cid: string, id = kbId, showChat = true) => {
+    const request = ++conversationRequest.current;
+    setConversationLoading(true);
+    if (showChat) setView("chat");
+    setError("");
+    try {
+      const value = await api<Conversation>(`/api/v1/conversations/${cid}`);
+      if (selectedKb.current !== id || request !== conversationRequest.current)
+        return;
+      if (value.kb_id !== id) throw new Error("会话不属于当前知识库");
+      setConversationId(cid);
+      setRuns(value.runs);
+      setTraceId(value.runs.at(-1)?.id ?? null);
+      setCitation(null);
+      setSupplement("");
+      setSupplementVersion("");
+      setQuestion(drafts.current.get(`${id}:${cid}`) ?? "");
+      localStorage.setItem(`xiaoying:conversation:${id}`, cid);
+      if (showChat) setView("chat");
+    } catch (e) {
+      if (selectedKb.current === id && request === conversationRequest.current)
+        setError((e as Error).message);
+    } finally {
+      if (selectedKb.current === id && request === conversationRequest.current)
+        setConversationLoading(false);
+    }
+  };
+  useEffect(() => {
+    localStorage.setItem(documentDraftKey, JSON.stringify(documentDrafts));
+  }, [documentDrafts]);
   useEffect(() => {
     void guard(async () => {
       const list = await reloadKbs();
@@ -153,11 +291,13 @@ function App() {
   }, []);
   useEffect(() => {
     let alive = true;
+    ++conversationRequest.current;
+    ++historyRequest.current;
     setVersions([]);
     setDocs([]);
     setError("");
     setNotice("");
-    setPending([]);
+    jobKb.current = "";
     setJobId(null);
     setJob(null);
     setRuns([]);
@@ -166,29 +306,41 @@ function App() {
     setSupplement("");
     setSupplementVersion("");
     setConversationId(null);
+    setConversations([]);
+    setHistoryError("");
+    setConversationLoading(false);
+    setHistoryLoading(!!kbId);
+    setQuestion(drafts.current.get(`${kbId}:new`) ?? "");
     if (kbId) {
       localStorage.setItem("xiaoying:kb", kbId);
-      void guard(async () => {
-        await reloadKnowledge(kbId);
-        const cid = localStorage.getItem(`xiaoying:conversation:${kbId}`);
-        if (cid) {
-          const value = await api<{ runs: Run[] }>(
-            `/api/v1/conversations/${cid}`,
-          );
-          if (alive) {
-            if (selectedKb.current === kbId) setConversationId(cid);
-            setRuns(value.runs);
-            setTraceId(value.runs.at(-1)?.id ?? null);
-          }
+      void guard(() => reloadKnowledge(kbId));
+      void (async () => {
+        try {
+          const list = await reloadConversations(kbId);
+          if (!alive) return;
+          const saved = localStorage.getItem(`xiaoying:conversation:${kbId}`);
+          const cid =
+            saved === ""
+              ? null
+              : (list.find((item) => item.id === saved)?.id ?? list[0]?.id);
+          if (cid) await openConversation(cid, kbId, false);
+        } catch {
+          // The history panel provides the error and a retry without blocking knowledge access.
+        } finally {
+          if (alive) setHistoryLoading(false);
         }
-      });
+      })();
     }
     return () => {
       alive = false;
     };
   }, [kbId]);
   useEffect(() => {
-    if (!jobId) return;
+    if (view === "knowledge" && kbId)
+      void guard(() => reloadKnowledge(kbId, false));
+  }, [view]);
+  useEffect(() => {
+    if (!jobId || jobKb.current !== kbId) return;
     let alive = true,
       done = false,
       polling = false;
@@ -198,12 +350,24 @@ function App() {
       polling = true;
       try {
         const value = await api<Job>(`/api/v1/jobs/${jobId}`);
-        if (!alive || selectedKb.current !== id) return;
+        if (!alive || selectedKb.current !== id || jobKb.current !== id) return;
         setJob(value);
         if (value.status === "done" || value.status === "failed") {
           done = true;
           if (value.status === "done") {
-            setPending([]);
+            const submitted = value.payload?.changes ?? [];
+            setPending(
+              (items) =>
+                items.filter(
+                  (item) =>
+                    !submitted.some(
+                      (change) =>
+                        change.document_id === item.document_id &&
+                        (change.upload_id ?? null) === (item.upload_id ?? null),
+                    ),
+                ),
+              id,
+            );
             await reloadKnowledge(id);
             if (alive && selectedKb.current === id)
               setNotice(
@@ -254,45 +418,85 @@ function App() {
     };
   }, [active?.id, kbId]);
   useEffect(() => {
-    setTrace([]);
+    setSessionTrace(null);
     setConnection("");
-    if (!traceId) return;
-    const stream = new EventSource(`/api/v1/runs/${traceId}/events`);
-    setConnection("连接中");
+    if (!conversationId || view !== "trace") return;
     let alive = true;
-    const refresh = async () => {
-      const run = await api<Run>(`/api/v1/runs/${traceId}`);
-      if (alive)
-        setRuns((list) => list.map((r) => (r.id === run.id ? run : r)));
-    };
-    stream.onopen = () => {
-      if (alive) setConnection("实时同步");
-    };
-    stream.onmessage = (e) => {
-      if (!alive) return;
-      const row = JSON.parse(e.data) as Trace;
-      setTrace((items) =>
-        items.some((i) => i.seq === row.seq) ? items : [...items, row],
-      );
-      void refresh().catch((e) => {
-        if (alive) setError(e.message);
-      });
-      if (row.type === "run.finished") {
-        stream.close();
-        setConnection("记录已完整保存");
+    let stream: EventSource | null = null;
+    setConnection("加载会话记录…");
+    void (async () => {
+      try {
+        const snapshot = await api<SessionTrace>(
+          `/api/v1/conversations/${conversationId}/trace`,
+        );
+        if (!alive) return;
+        setSessionTrace(snapshot);
+        const running = snapshot.rounds.find(
+          (item) => item.run.execution_status !== "finished",
+        );
+        if (!running) {
+          setConnection("记录已完整保存");
+          return;
+        }
+        const runId = running.run.id;
+        const after = running.events.at(-1)?.seq ?? 0;
+        stream = new EventSource(
+          `/api/v1/runs/${runId}/events?after_seq=${after}`,
+        );
+        stream.onopen = () => {
+          if (alive) setConnection("实时同步");
+        };
+        stream.onmessage = (e) => {
+          if (!alive) return;
+          const row = JSON.parse(e.data) as Trace;
+          setSessionTrace(
+            (value) =>
+              value && {
+                ...value,
+                rounds: value.rounds.map((item) =>
+                  item.run.id !== runId ||
+                  item.events.some((event) => event.seq === row.seq)
+                    ? item
+                    : { ...item, events: [...item.events, row] },
+                ),
+              },
+          );
+          if (
+            row.type === "run.finished" ||
+            row.type === "clarification.requested"
+          ) {
+            void api<Run>(`/api/v1/runs/${runId}`)
+              .then((run) => {
+                if (alive)
+                  setRuns((items) =>
+                    items.map((item) => (item.id === run.id ? run : item)),
+                  );
+              })
+              .catch((e) => {
+                if (alive) setError(e.message);
+              });
+          }
+          if (row.type === "run.finished") {
+            stream?.close();
+            setConnection("记录已完整保存");
+            void reloadConversations().catch(() => {});
+          }
+        };
+        stream.onerror = () => {
+          if (alive) setConnection("正在恢复连接");
+        };
+      } catch (e) {
+        if (alive) {
+          setConnection("会话记录加载失败");
+          setError((e as Error).message);
+        }
       }
-    };
-    stream.onerror = () => {
-      if (alive) setConnection("正在恢复连接");
-    };
-    void refresh().catch((e) => {
-      if (alive) setError(e.message);
-    });
+    })();
     return () => {
       alive = false;
-      stream.close();
+      stream?.close();
     };
-  }, [traceId]);
+  }, [conversationId, view, active?.id, runs.length]);
   useEffect(() => {
     const timer = setInterval(() => setClock(Date.now()), 1000);
     return () => clearInterval(timer);
@@ -302,7 +506,7 @@ function App() {
       const region = bottom.current?.parentElement;
       region?.scrollTo({ top: region.scrollHeight, behavior: "smooth" });
     }
-  }, [runs.length, view]);
+  }, [runs.length, conversationId, view]);
   useEffect(() => {
     let alive = true;
     setSource(null);
@@ -352,20 +556,22 @@ function App() {
           upload_id: string;
           metadata: { document_id: string };
         }>(`/api/v1/knowledge-bases/${uploadKb}/uploads`, form);
-        if (selectedKb.current !== uploadKb) break;
-        setPending((list) => [
-          ...list.filter((x) => x.document_id !== item.metadata.document_id),
-          {
-            upload_id: item.upload_id,
-            document_id: item.metadata.document_id,
-            name: file.name,
-            action: docs.some(
-              (d) => d.document_id === item.metadata.document_id,
-            )
-              ? "replace"
-              : "add",
-          },
-        ]);
+        setPending(
+          (list) => [
+            ...list.filter((x) => x.document_id !== item.metadata.document_id),
+            {
+              upload_id: item.upload_id,
+              document_id: item.metadata.document_id,
+              name: file.name,
+              action: docs.some(
+                (d) => d.document_id === item.metadata.document_id,
+              )
+                ? "replace"
+                : "add",
+            },
+          ],
+          uploadKb,
+        );
       }
     });
     setUploading(false);
@@ -373,7 +579,9 @@ function App() {
   };
   const build = () =>
     guard(async () => {
+      if (!kbId || building || uploading) return;
       setBusy(true);
+      setNotice("");
       try {
         const result = await api<{ job_id: string }>(
           `/api/v1/knowledge-bases/${kbId}/builds`,
@@ -385,15 +593,27 @@ function App() {
           },
         );
         if (selectedKb.current !== kbId) return;
+        jobKb.current = kbId;
         setJobId(result.job_id);
         setJob(null);
+      } catch (e) {
+        if (selectedKb.current === kbId)
+          await reloadKnowledge(kbId).catch(() => {});
+        throw e;
       } finally {
         setBusy(false);
       }
     });
   const send = () =>
     guard(async () => {
-      if (!question.trim() || active || busy) return;
+      if (
+        !question.trim() ||
+        active ||
+        busy ||
+        conversationLoading ||
+        historyLoading
+      )
+        return;
       setBusy(true);
       try {
         let cid = conversationId;
@@ -413,13 +633,16 @@ function App() {
         setRuns((list) => [...list, run]);
         setTraceId(run.id);
         setQuestion("");
+        drafts.current.delete(`${kbId}:${cid}`);
+        if (!conversationId) drafts.current.delete(`${kbId}:new`);
+        await reloadConversations().catch(() => {});
       } finally {
         setBusy(false);
       }
     });
   const clarify = (action: string) =>
     guard(async () => {
-      if (!active) return;
+      if (!active || conversationLoading || historyLoading) return;
       setBusy(true);
       try {
         await api(`/api/v1/runs/${active.id}/clarification`, {
@@ -436,12 +659,19 @@ function App() {
       }
     });
   const newConversation = () => {
-    if (active || busy) return;
+    if (active || busy || historyLoading) return;
+    ++conversationRequest.current;
+    setConversationLoading(false);
+    setError("");
     setConversationId(null);
     setRuns([]);
     setTraceId(null);
     setView("chat");
-    localStorage.removeItem(`xiaoying:conversation:${kbId}`);
+    setCitation(null);
+    setSupplement("");
+    setSupplementVersion("");
+    setQuestion(drafts.current.get(`${kbId}:new`) ?? "");
+    localStorage.setItem(`xiaoying:conversation:${kbId}`, "");
   };
   const remaining = active?.deadline_at
     ? Math.max(0, Math.ceil((Date.parse(active.deadline_at) - clock) / 1000))
@@ -497,10 +727,10 @@ function App() {
           </select>
           <button
             className="secondary new-chat"
-            disabled={!kbId || !!active || busy}
+            disabled={!kbId || !!active || busy || historyLoading}
             onClick={newConversation}
           >
-            ＋ 新对话
+            ＋ 新会话
           </button>
           <nav aria-label="知识库管理">
             <button
@@ -512,6 +742,79 @@ function App() {
               文档与版本 <small>{docs.length}</small>
             </button>
           </nav>
+          {kbId && (
+            <section
+              className="history-panel"
+              aria-labelledby="history-heading"
+            >
+              <div className="section-label" id="history-heading">
+                历史会话
+              </div>
+              {historyLoading ? (
+                <p className="history-status" role="status">
+                  加载中…
+                </p>
+              ) : historyError ? (
+                <div className="history-status" role="alert">
+                  历史加载失败
+                  <button
+                    className="text-button"
+                    onClick={() => void reloadConversations().catch(() => {})}
+                  >
+                    重试
+                  </button>
+                </div>
+              ) : conversations.length ? (
+                <>
+                  <select
+                    className="history-select"
+                    aria-label="历史会话"
+                    value={conversationId ?? ""}
+                    disabled={busy}
+                    onChange={(e) => {
+                      if (e.target.value) void openConversation(e.target.value);
+                    }}
+                  >
+                    <option value="" disabled>
+                      选择历史会话
+                    </option>
+                    {conversations.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.title} · {item.input_count}轮 ·{" "}
+                        {historyDate(item.last_activity_at)}
+                      </option>
+                    ))}
+                  </select>
+                  <nav className="history-list" aria-label="历史会话">
+                    {conversations.map((item) => (
+                      <button
+                        key={item.id}
+                        className={
+                          item.id === conversationId
+                            ? "history-item selected"
+                            : "history-item"
+                        }
+                        aria-current={
+                          item.id === conversationId ? "true" : undefined
+                        }
+                        title={item.title}
+                        disabled={busy}
+                        onClick={() => void openConversation(item.id)}
+                      >
+                        <span>{item.title}</span>
+                        <time dateTime={item.last_activity_at}>
+                          {item.input_count}轮 ·{" "}
+                          {historyDate(item.last_activity_at)}
+                        </time>
+                      </button>
+                    ))}
+                  </nav>
+                </>
+              ) : (
+                <p className="history-status">暂无历史会话</p>
+              )}
+            </section>
+          )}
           <div className="sidebar-bottom">
             <details>
               <summary>新建知识库</summary>
@@ -552,79 +855,94 @@ function App() {
           )}
           {view === "chat" ? (
             <>
+              <div className="chat-session-header">
+                <span>{conversationId ? "当前会话" : "新会话"}</span>
+                <span>{runs.length}轮提问</span>
+              </div>
               <div className="conversation" aria-label="咨询对话" tabIndex={0}>
-                {!runs.length && (
+                {(conversationLoading || historyLoading) && (
+                  <p className="conversation-loading" role="status">
+                    加载对话…
+                  </p>
+                )}
+                {!runs.length && !conversationLoading && !historyLoading && (
                   <div className="empty-state">
                     <h1>有什么需要查证？</h1>
                   </div>
                 )}
-                {runs.map((run) => (
-                  <article className="turn" key={run.id}>
-                    <div className="user-message">
-                      <small>你</small>
-                      <p>{run.question}</p>
-                    </div>
-                    <div className="answer">
-                      <div className="answer-header">
-                        <span className="small-mark">青</span>
-                        <strong>知识助手</strong>
-                        <span className={`status ${run.task_status ?? ""}`}>
-                          {labels[run.task_status ?? run.execution_status]}
-                        </span>
-                        <button
-                          className="text-button"
-                          onClick={() => {
-                            setTraceId(run.id);
-                            setView("trace");
-                          }}
-                        >
-                          查看过程
-                        </button>
+                {!conversationLoading &&
+                  !historyLoading &&
+                  runs.map((run) => (
+                    <article className="turn" key={run.id}>
+                      <div className="user-message">
+                        <small>你</small>
+                        <p>{run.question}</p>
                       </div>
-                      {run.result ? (
-                        <>
-                          <p className="answer-text">{run.result.answer}</p>
-                          {run.result.citations.length > 0 && (
-                            <div className="citations">
-                              {run.result.citations.map((c, i) => (
-                                <button
-                                  key={c.evidence_id + ":" + i}
-                                  className="citation"
-                                  onClick={() => setCitation(c)}
-                                >
-                                  <span>{String(i + 1).padStart(2, "0")}</span>
-                                  <div>
-                                    <strong>{c.document_id}</strong>
-                                    <small>{c.version_date}</small>
-                                  </div>
-                                  <span>↗</span>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                          {run.result.information_gaps.length > 0 && (
-                            <div className="gaps">
-                              <strong>还缺少的信息</strong>
-                              <ul>
-                                {run.result.information_gaps.map((gap, i) => (
-                                  <li key={i}>{gap}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div className="loading-line">
-                          <span className="pulse" />
-                          正在核对资料与原文…
+                      <div className="answer">
+                        <div className="answer-header">
+                          <span className="small-mark">青</span>
+                          <strong>知识助手</strong>
+                          <span className={`status ${run.task_status ?? ""}`}>
+                            {labels[run.task_status ?? run.execution_status]}
+                          </span>
+                          <button
+                            className="text-button"
+                            onClick={() => {
+                              setTraceId(run.id);
+                              setView("trace");
+                            }}
+                          >
+                            查看过程
+                          </button>
                         </div>
-                      )}
-                    </div>
-                  </article>
-                ))}
+                        {run.result ? (
+                          <>
+                            <p className="answer-text">{run.result.answer}</p>
+                            {run.result.citations.length > 0 && (
+                              <div className="citations">
+                                {run.result.citations.map((c, i) => (
+                                  <button
+                                    key={c.evidence_id + ":" + i}
+                                    className="citation"
+                                    onClick={() => setCitation(c)}
+                                  >
+                                    <span>
+                                      {String(i + 1).padStart(2, "0")}
+                                    </span>
+                                    <div>
+                                      <strong>{c.document_id}</strong>
+                                      <small>{c.version_date}</small>
+                                    </div>
+                                    <span>↗</span>
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                            {run.result.information_gaps.length > 0 && (
+                              <div className="gaps">
+                                <strong>还缺少的信息</strong>
+                                <ul>
+                                  {run.result.information_gaps.map((gap, i) => (
+                                    <li key={i}>{gap}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div className="loading-line">
+                            <span className="pulse" />
+                            正在核对资料与原文…
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
                 <div ref={bottom} />
               </div>
-              {active?.execution_status === "waiting" ? (
+              {!conversationLoading &&
+              !historyLoading &&
+              active?.execution_status === "waiting" ? (
                 <section className="clarification">
                   <div className="row">
                     <h3>补充信息</h3>
@@ -701,7 +1019,14 @@ function App() {
                   <textarea
                     id="question"
                     value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                    disabled={conversationLoading || historyLoading || busy}
+                    onChange={(e) => {
+                      setQuestion(e.target.value);
+                      drafts.current.set(
+                        `${kbId}:${conversationId ?? "new"}`,
+                        e.target.value,
+                      );
+                    }}
                     onKeyDown={(e) => {
                       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
                         e.preventDefault();
@@ -721,6 +1046,8 @@ function App() {
                     <button
                       disabled={
                         busy ||
+                        conversationLoading ||
+                        historyLoading ||
                         !!active ||
                         !question.trim() ||
                         !current?.current_version_id
@@ -736,9 +1063,15 @@ function App() {
             </>
           ) : view === "trace" ? (
             <TraceView
+              key={conversationId}
+              sessionId={conversationId}
               runs={runs}
               selectedId={traceId}
-              events={trace}
+              rounds={
+                sessionTrace?.session_id === conversationId
+                  ? sessionTrace.rounds
+                  : []
+              }
               connection={connection}
               onSelect={setTraceId}
             />
@@ -756,9 +1089,11 @@ function App() {
                 <h2>
                   {uploading
                     ? "正在保存文件…"
-                    : building
-                      ? "正在构建，请完成后再上传"
-                      : "拖动文档到这里"}
+                    : knowledgeLoading
+                      ? "正在恢复构建状态…"
+                      : building
+                        ? "正在构建，请完成后再上传"
+                        : "拖动文档到这里"}
                 </h2>
                 <p>Markdown、Word、HTML、PDF、TXT · 单文件不超过 20 MiB</p>
                 <button
@@ -863,7 +1198,11 @@ function App() {
                   }
                   onClick={build}
                 >
-                  构建并发布新版本
+                  {knowledgeLoading
+                    ? "正在恢复状态…"
+                    : building
+                      ? "后台构建中…"
+                      : "构建并发布新版本"}
                 </button>
               </div>
               {job && (
@@ -879,11 +1218,24 @@ function App() {
                         : "正在处理文档"}
                   </strong>
                   <p>
-                    {job.progress?.stage}{" "}
+                    {job.progress?.stage === "ready"
+                      ? "已完成"
+                      : job.progress?.stage === "indexing"
+                        ? "已处理"
+                        : "等待处理"}{" "}
                     {job.progress?.completed !== undefined
                       ? `${job.progress.completed} / ${job.progress.total}`
                       : ""}
                   </p>
+                  {job.progress?.reused !== undefined && (
+                    <p>
+                      复用 {job.progress.reused} 份 · 新构建{" "}
+                      {job.progress.rebuilt ?? 0} 份
+                    </p>
+                  )}
+                  {(job.status === "pending" || job.status === "running") && (
+                    <p>任务在后台继续，可离开此页面，返回后自动恢复进度。</p>
+                  )}
                   {job.progress?.publish_error && (
                     <p>{job.progress.publish_error.message}</p>
                   )}

@@ -1,6 +1,6 @@
 # 独立代码审查与边界测试
 
-日期：2026-10-31。审查角色：本次开发的 review subagent。
+审查角色：本次开发的 review subagent。
 
 本记录依据 `01-requirements.md`、`02-solution.md`、`exam.md`；确定性适配器测试只证明程序约束，不证明 DeepSeek 决策质量、真实向量召回或 MinerU OCR 效果。
 
@@ -76,7 +76,7 @@
 - `/file`：配套原文下载/PDF 预览端点，以知识库、版本和修订 ID 查询已保存文件，不接受任意磁盘路径；已测试跨库及不存在修订不能下载。
 - `scripts/demo_cases.py` / `scripts/evaluate.py`：方案验收工具，分别生成脚本夹具记录和待人工审阅的真实模型记录，不增加业务功能；已接收主代理通知并短审。
 
-## 2026-11-01：思考模式与多轮协议复审
+## 思考模式与多轮协议复审
 
 沿用原 review subagent，独立新增 `tests/test_thinking_review.py`：**34 项通过**。审查指出思考模式不能使用 `tool_choice=required`，必须保留各轮 `reasoning_content`；没有或多个工具调用的响应也不能整轮丢弃，所有调用 ID 都须得到结果。这些问题已修复。
 

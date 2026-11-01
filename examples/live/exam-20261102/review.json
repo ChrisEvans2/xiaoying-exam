@@ -1,0 +1,79 @@
+{
+  "reviewer": "Codex AI source review; not candidate independent human acceptance",
+  "batch_completion": "First batch exported all ten reports; final workspace hash check failed after a concurrent D07 edit. Original raw reports retained.",
+  "cases": [
+    {
+      "case_id": "QA01",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA03",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA04",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA11",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA16",
+      "verdict": "failed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA17",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA18",
+      "verdict": "failed",
+      "status_check": false,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA19",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "QA20",
+      "verdict": "passed",
+      "status_check": true,
+      "citation_integrity": true
+    },
+    {
+      "case_id": "REPLACEMENT",
+      "verdict": "passed",
+      "notes": "600元及新版本引用正确；首轮总体仍因两条语义/流程失败和并发资料变化而未验收通过。"
+    }
+  ],
+  "failures": [
+    {
+      "case_id": "QA16",
+      "finding": "Status was insufficient, but answer appended a recommendation to act within 15 days under a stricter interpretation, without any precedence evidence.",
+      "answer": "制度存在冲突，无法给出唯一期限：一份文件规定出差结束次日起 30 个自然日内提交，另一份同范围文件规定次日起 15 个自然日内提交（均含周末和法定节假日）；两份文件均未规定以何者为准，故不能确定你具体适用哪一个，按较严口径把握则不晚于次日起 15 个自然日内。"
+    },
+    {
+      "case_id": "QA18",
+      "finding": "Unknown eligibility conditions were not clarified; the initial run ended answered with a conditional yes, contrary to the agreed clarification workflow.",
+      "answer": "可以预借，但须同时满足：你已转正、无未结清的差旅预借款，且2000元不超过已审批的差旅预算（单次上限3000元）；申请时附出差审批记录和预算明细，经直属主管及财务审核通过后发放。试用期员工不能申请预借款，但仍可正常报销；报销审核后以核准金额抵扣借款，不足部分需退还差额。"
+    }
+  ],
+  "followup": "Both prompt constraints were strengthened; fresh final evidence is stored separately in ../exam-20261102-final/.",
+  "concurrent_workspace_change": "data/policies/D07-missing-receipts.txt was preserved; final evaluation explicitly freezes the original dataset from its Git revision."
+}

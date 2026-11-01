@@ -1,0 +1,113 @@
+{
+  "review_type": "AI-assisted source review",
+  "reviewer": "Codex",
+  "candidate_independent_human_review": "not_recorded",
+  "scope": "Nine selected original cases plus one document replacement variant; not all 20 cases and not the 40 long-manual cases.",
+  "results": [
+    {
+      "case_id": "QA01",
+      "record": "QA01.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "上海500元/人/晚、含税、按实际金额报销与超出自付均有D04支持。"
+    },
+    {
+      "case_id": "QA03",
+      "record": "QA03.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "改写问法仍回答上海500元，金额、口径及条件与QA01一致。"
+    },
+    {
+      "case_id": "QA04",
+      "record": "QA04.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "实际前置问题建立上海住宿主题；追问正确承接，试用期与转正标准相同。"
+    },
+    {
+      "case_id": "QA11",
+      "record": "QA11.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "实际前置问题建立预借款主题；试用期不可申请，但仍可正常报销，均有D06支持。"
+    },
+    {
+      "case_id": "QA16",
+      "record": "QA16.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "初次引用D01的30天和D02的15天，查证后只追问一次；补充仍无优先级时保留冲突并结束，未推荐15天或30天。"
+    },
+    {
+      "case_id": "QA17",
+      "record": "QA17.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "查证范围仅为大陆差旅，初次请求境外制度；补充仍无资料后结束，没有把国内金额套用于东京。"
+    },
+    {
+      "case_id": "QA18",
+      "record": "QA18.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "先集中确认转正、预算审批、未清借款三个条件；补充后才确认2000元资格及审批材料，不重复追问。"
+    },
+    {
+      "case_id": "QA19",
+      "record": "QA19.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "首次读取TIMEOUT后，真实模型缩小读取范围重试；成功读取后才给出500元与原文引用。"
+    },
+    {
+      "case_id": "QA20",
+      "record": "QA20.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "no_citations_expected",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "四次原文读取均TIMEOUT，真实模型在第5次业务工具后提前结束为incomplete，无金额结论或伪造引用；低于6次上限。"
+    },
+    {
+      "case_id": "REPLACEMENT",
+      "record": "REPLACEMENT.json",
+      "verdict": "passed",
+      "facts_and_conditions": "passed",
+      "citation_support": "passed",
+      "forbidden_claims": "absent",
+      "trace_behavior": "passed",
+      "notes": "仅在副本中将D04的500改600并发布新版本；模型重新检索读取新修订，回答600元，原有500元版本保留。"
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "important_boundary": "Correct incomplete handling in QA20 is an abnormal-case pass, not a successful business answer.",
+  "first_attempt_review": "../exam-20261102/review.json",
+  "concurrent_workspace_change": "D07 workspace edit preserved. These results apply to the frozen original corpus in sources/baseline, not the modified workspace D07."
+}

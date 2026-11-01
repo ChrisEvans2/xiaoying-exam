@@ -1,0 +1,2204 @@
+{
+  "schema_version": 2,
+  "suite_id": "workflow-40-v1",
+  "created_date": "2026-11-01",
+  "purpose": "澄岳八份长篇流程手册的40题开发验证集；参考答案和预期状态不等于真实模型输出。",
+  "company": "澄岳示例科技有限公司",
+  "corpus_root": "data/workflow_manuals",
+  "execution_status": "not_run",
+  "business_document_changes": [],
+  "category_counts": {
+    "可回答": 10,
+    "证据不足": 10,
+    "超出范围": 10,
+    "错误前提": 10
+  },
+  "source_snapshot": [
+    {
+      "document_id": "WF01",
+      "path": "data/workflow_manuals/WF01-leave.txt",
+      "sha256": "c9418897e8646ac8ce91fd9bbe2f26c464c90995c7832b641bf272332ac98ced"
+    },
+    {
+      "document_id": "WF02",
+      "path": "data/workflow_manuals/WF02-expense.md",
+      "sha256": "995ca4bef1c6355fe4c9af9f3dfed643aaf3767b2ef09c96ae4342058330b89a"
+    },
+    {
+      "document_id": "WF03",
+      "path": "data/workflow_manuals/WF03-travel.docx",
+      "sha256": "9042fc54eeaa7ad91abd6f93a287667a959d0ec2ad65dd45b885b44eba46cb1e"
+    },
+    {
+      "document_id": "WF04",
+      "path": "data/workflow_manuals/WF04-offboarding.docx",
+      "sha256": "77673cefe81ef994b861d23e6d10278153630ec924025fe0e9808de639691028"
+    },
+    {
+      "document_id": "WF05",
+      "path": "data/workflow_manuals/WF05-procurement.html",
+      "sha256": "857453c1bc8b37256f9c109aa891afbe42daed18a654e6f02a140343e92402c8"
+    },
+    {
+      "document_id": "WF06",
+      "path": "data/workflow_manuals/WF06-contract.html",
+      "sha256": "313f8a54060c7a8b668773abba34312302e77b462fa55da13dfbfb0abeb69e03"
+    },
+    {
+      "document_id": "WF07",
+      "path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+      "sha256": "0398f19cc6da48aba5dd1d7d3db01f44612aed4f741e035db53d72d0aa66852b"
+    },
+    {
+      "document_id": "WF08",
+      "path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+      "sha256": "3f184cff9d418012c2ae6424023224eef0c9b64c5572113896ac67affd9864ef"
+    }
+  ],
+  "evaluation_rules": [
+    "只使用本套WF01—WF08，不能混入青屿D01—D08。文档清单、测试题、参考答案与AI使用记录均不作为检索资料。",
+    "只向受测模型提供input和正常工具接口，不注入expected、source_snapshot或错误前提解释。",
+    "错误前提类应明确纠正用户前提并给出证据；错误说法不能成为参考答案。",
+    "缺少可补充的个案事实或人工结果时，预期awaiting_user；明确资料细节缺失或超范围且无法据现有资料解决时，预期insufficient。",
+    "超范围的evidence仅支持适用边界，不支持所请求的境外金额、法律天数、税额或现实赔偿结论。",
+    "证据不足与超范围不等于禁止，不可用常识或别家公司规定补成确定制度。",
+    "按required_facts、forbidden_claims、适用条件和实际引用判定，允许合理措辞变化；状态匹配不等于语义通过。",
+    "quote在验证时仅忽略物理换行与空白；source_locator来自实际本地解析。PDF页码为一基页码，离线test_text核验不代表MinerU表格或双栏解析验收。",
+    "calculations仅用于检查参考答案的算术一致性，不表示已经执行模型或自动判定其数值答复。",
+    "本次不导入、不发布知识库、不连接业务数据库、不调用真实模型、不构建索引。原20题及其执行入口默认数据集保留。"
+  ],
+  "cases": [
+    {
+      "id": "WQA01",
+      "category": "可回答",
+      "topic": "请假时长",
+      "input": {
+        "question": "我是澄岳员工，周五下午请年假4小时，下周一请8小时，中间周末不排班；按8小时折算一天，应该扣多少小时、多少个工作日？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "扣12小时，折算1.5个工作日；不排班的周末不扣假。应按本人已确认班表逐段计算。",
+        "required_facts": [
+          "4+8=12小时",
+          "12÷8=1.5个工作日",
+          "中间周末不排班，不扣假"
+        ],
+        "forbidden_claims": [
+          "按四个自然日扣四天",
+          "周末照常扣16小时"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF01",
+            "source_path": "data/workflow_manuals/WF01-leave.txt",
+            "locator": "3.4 申请时长",
+            "source_locator": {
+              "line_start": 106,
+              "line_end": 106
+            },
+            "quote": "按实际覆盖的排班小时汇总，显示小时数与折算工作日。本样例八小时折算一工作日，不按自然天数扣假。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF01",
+            "source_path": "data/workflow_manuals/WF01-leave.txt",
+            "locator": "6.9 节假日与轮班",
+            "source_locator": {
+              "line_start": 333,
+              "line_end": 333
+            },
+            "quote": "休假区间包含周末、节假日或轮班休息日时。以已确认的个人排班为准逐段扣减，不以办公室日历替代轮班日历。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "calculations": [
+          {
+            "expression": "4+8",
+            "result": "12",
+            "unit": "小时"
+          },
+          {
+            "expression": "12/8",
+            "result": "1.5",
+            "unit": "工作日"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA02",
+      "category": "可回答",
+      "topic": "出差餐补",
+      "input": {
+        "question": "澄岳批准的境内公务出差共3个自然日，3天早餐都由酒店提供，另有1顿客户提供的午餐，没有其他供餐或私人停留，餐补合计多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "合计200元：3×100−3×20−1×40=200元。按实际公务自然日计补贴，并扣除已提供的早餐和午餐。",
+        "required_facts": [
+          "每天100元",
+          "早餐每顿扣20元，午餐每顿扣40元",
+          "合计200元"
+        ],
+        "forbidden_claims": [
+          "使用青屿每天80元的标准",
+          "免费早餐不用扣",
+          "发放完整300元"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.7 餐补规则",
+            "source_locator": {
+              "paragraph": 136
+            },
+            "quote": "公务期间按自然日计算每天一百元。早餐、午餐、晚餐已供餐时分别扣二十元、四十元、四十元。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "calculations": [
+          {
+            "expression": "3*100-3*20-40",
+            "result": "200",
+            "unit": "元"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA03",
+      "category": "可回答",
+      "topic": "出差预借款",
+      "input": {
+        "question": "我已转正，澄岳出差行程和4000元预算都已批准；公司统一支付2500元，剩余1500元需要我垫付，本次预借款的规则上限是多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "规则上限为1200元，即个人拟垫付1500元的80%；公司统一支付的2500元不计入基数。这个上限不等于已经获批或到账。",
+        "required_facts": [
+          "个人拟垫付基数1500元",
+          "1500×80%=1200元",
+          "公司统一支付部分不计入预借基数",
+          "上限不是实际批准或到账"
+        ],
+        "forbidden_claims": [
+          "按总预算4000元预借3200元",
+          "直接套用另一公司的3000元封顶"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 140
+            },
+            "quote": "已批准行程确需个人垫付费用。预借不超过个人拟垫付预算的八成，转正状态未确认人员走人工复核。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 141
+            },
+            "quote": "已由公司统一支付的机票酒店不能计入预借基数。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "calculations": [
+          {
+            "expression": "1500*0.8",
+            "result": "1200",
+            "unit": "元"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA04",
+      "category": "可回答",
+      "topic": "报销借款冲抵",
+      "input": {
+        "question": "我在澄岳同一业务下预借2600元，最终获批费用3100元，没有退款或其他抵扣，出纳还应向我支付多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "先冲抵同一业务借款2600元，再向员工支付差额500元；费用、借款冲抵和付款记录应相互关联。",
+        "required_facts": [
+          "先冲抵2600元",
+          "员工应收差额500元",
+          "费用与结算记录关联"
+        ],
+        "forbidden_claims": [
+          "再向员工支付完整3100元",
+          "冲抵后借款仍保留2600元未清"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.12 借款冲抵",
+            "source_locator": {
+              "line_start": 322,
+              "line_end": 322
+            },
+            "quote": "申请人有未结清且与本业务相关的预借款。先按获批费用冲抵借款，差额为正再付款，为负则办理退回。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "calculations": [
+          {
+            "expression": "3100-2600",
+            "result": "500",
+            "unit": "元"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA05",
+      "category": "可回答",
+      "topic": "订阅采购总成本",
+      "input": {
+        "question": "澄岳拟签一项承诺3年的软件订阅：首年4500元，后两年各8500元，没有其他费用。采购应按多少总额、走哪个金额档的复核？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "承诺期总额为21500元，超过2万元，按较大采购路线，由采购负责人、部门负责人及财务负责人共同复核；不能只按首年4500元审批。",
+        "required_facts": [
+          "4500+8500+8500=21500元",
+          "按承诺期整体费用判断",
+          "超过2万元，较大采购复核",
+          "采购负责人、部门负责人和财务负责人共同复核"
+        ],
+        "forbidden_claims": [
+          "只按首年4500元走普通比价审批",
+          "分三年付款就可以忽略后两年承诺"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "6.6 整体成本",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(16)",
+              "item_id": null
+            },
+            "quote": "订阅或服务含后续持续费用。计算承诺期内席位、实施、支持及退出费用，明确续费责任。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "4 审批路线与授权范围",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(4) > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3)",
+              "item_id": null
+            },
+            "quote": "较大采购 超过两万元 采购负责人、部门负责人及财务负责人共同复核",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "calculations": [
+          {
+            "expression": "4500+8500+8500",
+            "result": "21500",
+            "unit": "元"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA06",
+      "category": "可回答",
+      "topic": "合同最终稿变化",
+      "input": {
+        "question": "澄岳合同获批稿写验收后付款，准备盖章的纸稿却变成签署后三日付款。用印保管人现在该怎么处理？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "先暂停用印，比对并记录付款条款差异，送相关审核人重新会签，由财务核对资金影响、授权人确认最终条件，再生成并核对获批最终版本；不能直接盖章。",
+        "required_facts": [
+          "暂停用印",
+          "付款条件是重要变化，需重新确认",
+          "财务核对影响及授权人确认",
+          "更新并核对最终版本"
+        ],
+        "forbidden_claims": [
+          "页数相同即可盖章",
+          "经办人口头说同意就能沿用旧批准"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF06",
+            "source_path": "data/workflow_manuals/WF06-contract.html",
+            "locator": "10.3 盖章稿不一致",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(10) > p:nth-of-type(9)",
+              "item_id": null
+            },
+            "quote": "获批文件约定验收后付款，纸质稿改为签署后三日付款。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF06",
+            "source_path": "data/workflow_manuals/WF06-contract.html",
+            "locator": "10.3 盖章稿不一致",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(10) > p:nth-of-type(10)",
+              "item_id": null
+            },
+            "quote": "属于重要付款条件变化，暂停用印并重新会签。财务核对影响，授权人确认最终条件，记录新版本摘要。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA07",
+      "category": "可回答",
+      "topic": "入职培训与回访",
+      "input": {
+        "question": "澄岳新人已经领电脑，但安全培训还没完成，敏感系统角色怎么处理？人力资源应在到岗后的第几个工作日回访？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "将设备标为完成、培训保留待办，敏感系统角色暂不开通，培训与验证完成后按批准角色开放；人力资源在到岗第五个工作日回访。",
+        "required_facts": [
+          "敏感系统角色暂不开通",
+          "培训与验证完成后按批准角色开放",
+          "到岗第五个工作日回访"
+        ],
+        "forbidden_claims": [
+          "领到电脑即能开放敏感角色",
+          "把五个工作日改成五个自然日"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "10.6 补办培训；第 12 页",
+            "source_locator": {
+              "line_start": 22,
+              "line_end": 39,
+              "page": 12,
+              "clause": "10."
+            },
+            "quote": "入职单标记设备完成、培训待办，敏感系统角色暂不开通。带教安排培训与验证，完成后技术按批准角色开放。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "5.8 回访并关闭补办；第 6 页",
+            "source_locator": {
+              "line_start": 10,
+              "line_end": 17,
+              "page": 6,
+              "clause": "5."
+            },
+            "quote": "人力资源在到岗第五个工作日组织回访。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA08",
+      "category": "可回答",
+      "topic": "资产维修门槛",
+      "input": {
+        "question": "澄岳公司显示器已经检测需要付费维修，报价1200元。除了技术检测和主管意见，还要增加谁确认？报价批了能直接算修好了吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "费用超过1000元，应增加预算负责人确认，并比较保修、维修和替代成本。报价获批只代表可以按批准安排维修，仍需核验实际维修结果，不能标记已经修好。",
+        "required_facts": [
+          "超过1000元增加预算负责人确认",
+          "比较保修、维修与替代方案",
+          "报价批准不等于实际维修完成"
+        ],
+        "forbidden_claims": [
+          "1200元无需预算负责人确认",
+          "报价通过即维修完成"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "6.10 维修批准；第 7 页",
+            "source_locator": {
+              "line_start": 21,
+              "line_end": 30,
+              "page": 7,
+              "clause": "6."
+            },
+            "quote": "比较保修、维修成本和替代方案，费用超过一千元增加预算负责人确认。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "10.5 付费维修门槛；第 10 页",
+            "source_locator": {
+              "line_start": 42,
+              "line_end": 52,
+              "page": 10,
+              "clause": "10."
+            },
+            "quote": "报价批准不等于实际维修完成。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA09",
+      "category": "可回答",
+      "topic": "离职异地归还",
+      "input": {
+        "question": "澄岳远程员工离职后用快递寄还电脑，确认资产归还需要哪两类证据？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "既要有物流签收，也要有资产管理员对实物编号、数量、配件和状态的核对回执；物流签收与实物核验分别记录。涉及数据的还要按对应流程处理。",
+        "required_facts": [
+          "物流签收",
+          "资产管理员实物核对",
+          "两类证据分别确认"
+        ],
+        "forbidden_claims": [
+          "快递显示签收就等于设备和全部配件均合格归还"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "6.13 远程归还",
+            "source_locator": {
+              "paragraph": 160
+            },
+            "quote": "员工异地办公无法现场交还实物。约定公司认可的寄送方式、清单和接收地址，保留运单及签收核验。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "6.13 远程归还",
+            "source_locator": {
+              "paragraph": 161
+            },
+            "quote": "物流签收不自动代表箱内物品与状态已确认。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "12.4 电脑寄出就算归还了吗",
+            "source_locator": {
+              "paragraph": 264
+            },
+            "quote": "需要物流签收和管理员实物核对，两项证据共同确认。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA10",
+      "category": "可回答",
+      "topic": "出差结果与报销时限",
+      "input": {
+        "question": "只按澄岳这套WF手册，公务出差返回后的任务结果何时提交？适用普通费用规则的报销申请，20天从返回日还是费用发生日计算？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "任务结果在返程后两个工作日内提交。普通业务费用在费用发生次日起20个自然日内提交，不统一从返程日或开票日起算；迟交另按说明与复核流程处理。",
+        "required_facts": [
+          "任务结果：返程后两个工作日内",
+          "普通费用：发生次日起20个自然日内",
+          "费用起算点不是统一返程日或开票日"
+        ],
+        "forbidden_claims": [
+          "套用青屿D01的30天或D02的15天",
+          "全部费用从返程次日统一算20天"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.15 结果与结算期限",
+            "source_locator": {
+              "paragraph": 168
+            },
+            "quote": "两工作日内提交结果，费用按本批报销手册二十自然日规则提交。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "5.7 返回并提交结果",
+            "source_locator": {
+              "paragraph": 103
+            },
+            "quote": "返程后两个工作日内提交简要任务结果。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.1 报销提交期限",
+            "source_locator": {
+              "line_start": 234,
+              "line_end": 234
+            },
+            "quote": "普通业务费用在发生次日起二十个自然日内提交。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA11",
+      "category": "证据不足",
+      "topic": "请假排班缺失",
+      "input": {
+        "question": "我在澄岳想连续休假5个自然日，个人班表、每天工时和具体起止时刻还没给你。请直接算一共扣多少请假小时。",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "现在不能算出确定小时数。需要具体起止时刻、个人已确认班表及每天实际覆盖的排班小时，再逐段累计；不能直接把5个自然日乘8。",
+        "required_facts": [
+          "目前不能确定小时数",
+          "需要个人班表和具体起止时刻",
+          "按实际覆盖的排班小时计算"
+        ],
+        "forbidden_claims": [
+          "无条件回答40小时",
+          "把办公室工作日历代替个人班表"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF01",
+            "source_path": "data/workflow_manuals/WF01-leave.txt",
+            "locator": "3.4 申请时长",
+            "source_locator": {
+              "line_start": 67,
+              "line_end": 80
+            },
+            "quote": "按实际覆盖的排班小时汇总，显示小时数与折算工作日。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF01",
+            "source_path": "data/workflow_manuals/WF01-leave.txt",
+            "locator": "6.9 节假日与轮班",
+            "source_locator": {
+              "line_start": 333,
+              "line_end": 333
+            },
+            "quote": "以已确认的个人排班为准逐段扣减，不以办公室日历替代轮班日历。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "具体开始与结束时刻",
+          "个人已确认班表及覆盖工时"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA12",
+      "category": "证据不足",
+      "topic": "预借基数缺失",
+      "input": {
+        "question": "我已转正，澄岳行程和4000元出差总预算已批准，但还没说明哪些费用公司统一支付、哪些要我垫付。本次预借上限能确定吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "尚不能确定具体金额。先补充公司统一支付和个人拟垫付的预算明细，按个人拟垫付部分的80%计算；不能默认全部4000元均需垫付。",
+        "required_facts": [
+          "缺少个人拟垫付预算明细",
+          "按个人拟垫付部分80%计算",
+          "公司统一支付部分排除"
+        ],
+        "forbidden_claims": [
+          "直接承诺能预借3200元",
+          "直接套用固定3000元上限"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 140
+            },
+            "quote": "预借不超过个人拟垫付预算的八成，转正状态未确认人员走人工复核。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 141
+            },
+            "quote": "已由公司统一支付的机票酒店不能计入预借基数。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "公司统一支付明细",
+          "个人拟垫付预算"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA13",
+      "category": "证据不足",
+      "topic": "银行到账承诺缺失",
+      "input": {
+        "question": "我的澄岳报销已经财务审核通过，银行显示处理中，而且没有成功回执。只靠这套手册能确定具体哪一天到账吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "不能确定具体到账日。当前只能确认审核完成、支付处理中；手册不承诺实际到账时间，需要银行回执及后续核对，不能编造日期。",
+        "required_facts": [
+          "无法确定具体到账日",
+          "审核完成与支付处理中分别表述",
+          "手册没有实际到账承诺"
+        ],
+        "forbidden_claims": [
+          "明天到账",
+          "两个工作日必到账",
+          "已经到账"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.15 付款结果",
+            "source_locator": {
+              "line_start": 346,
+              "line_end": 346
+            },
+            "quote": "财务审核通过但银行尚未反馈。分别展示待付款、支付处理中、支付成功或支付失败，按回执推进状态。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.15 付款结果",
+            "source_locator": {
+              "line_start": 348,
+              "line_end": 348
+            },
+            "quote": "本手册不承诺银行实际到账时间。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "银行成功回执及实际结算结果",
+          "手册没有可据以确定具体到账日的承诺"
+        ],
+        "gap_type": "policy_and_external_evidence"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA14",
+      "category": "证据不足",
+      "topic": "合同文件未提供",
+      "input": {
+        "question": "我在澄岳有一份2万元合同要用印，获批版、最终稿及文件摘要都没发给你。你能确认最终稿和获批版完全一致吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "不能确认一致。需要获批版本、拟用印完整最终稿及附件、文件摘要和批准记录，完成实际比对后才能给出一致性结论。",
+        "required_facts": [
+          "不能在未见版本时确认一致",
+          "需要获批版与最终稿及附件",
+          "需要批准记录和文件摘要比对"
+        ],
+        "forbidden_claims": [
+          "因为金额不高就确认版本一致",
+          "推断只改了格式"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF06",
+            "source_path": "data/workflow_manuals/WF06-contract.html",
+            "locator": "6.12 印章使用",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(34)",
+              "item_id": null
+            },
+            "quote": "用印文件必须与已批准最终版一致。核对文件摘要、页数、附件、份数和印章类别，登记领用与交还。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "获批版本及批准记录",
+          "完整最终稿和附件",
+          "两版文件摘要与差异"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA15",
+      "category": "证据不足",
+      "topic": "比价条件不完整",
+      "input": {
+        "question": "澄岳三家采购报价是5600、5100、4800元，但规格、税费、交期和售后都没给。你现在能选出最合适的供应商吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "不能仅凭三个价格确定最合适者。需要先统一规格、数量、税费、交期和服务条件，再比较满足需求程度、总成本和交付风险；最低价格不能代替完整比较。",
+        "required_facts": [
+          "现有信息不足以选定供应商",
+          "统一可比口径",
+          "综合需求、总成本和交付风险"
+        ],
+        "forbidden_claims": [
+          "直接选4800元",
+          "价格最低必然最合适"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "6.4 报价数量",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(10)",
+              "item_id": null
+            },
+            "quote": "普通比价采购需要三家可比报价。统一数量、税费、交期和服务条件，缺少可比供应商时走例外。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "6.5 综合评价",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(13)",
+              "item_id": null
+            },
+            "quote": "最低价格可能伴随交付与服务风险。按满足需求、总成本、交付、支持和风险说明推荐理由。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "规格和数量",
+          "税费及整体成本",
+          "交期与售后服务条件"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA16",
+      "category": "证据不足",
+      "topic": "故障原因未检测",
+      "input": {
+        "question": "我交回澄岳电脑时外观正常，但开不了机，目前没有技术检测结果。能直接确定是自然故障还是我保管不当吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "不能确定故障原因或责任。管理员先记录收到实物、功能待检测，由技术检测并比较原使用记录，必要时核对双方说明；归还接收与责任认定分开。",
+        "required_facts": [
+          "故障原因和责任不能提前确定",
+          "实物已收与功能待检测分别登记",
+          "需要技术检测及历史记录核对"
+        ],
+        "forbidden_claims": [
+          "确定是员工损坏",
+          "确定是自然故障",
+          "未经检测自动赔偿"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "9.2 归还后发现故障；第 9 页",
+            "source_locator": {
+              "line_start": 19,
+              "line_end": 28,
+              "page": 9,
+              "clause": "9."
+            },
+            "quote": "管理员记录已收到实物，功能状态标待检测。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "9.2 归还后发现故障；第 9 页",
+            "source_locator": {
+              "line_start": 19,
+              "line_end": 28,
+              "page": 9,
+              "clause": "9."
+            },
+            "quote": "技术检测并与原使用记录比较，必要时核对双方说明。归还接收和责任认定分开处理。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "技术检测结果",
+          "原使用记录及相关事实说明"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA17",
+      "category": "证据不足",
+      "topic": "实际到岗记录冲突",
+      "input": {
+        "question": "澄岳系统中写周一到岗，新员工却说周三才第一次来，接待人和人力资源都还没核实。这笔实际到岗日期究竟应记哪天？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "暂不能选定某一天。先区分系统字段是计划还是实际记录，取得接待人和人力资源对真实到岗事件的核验，保留原记录、员工说明和更正依据。",
+        "required_facts": [
+          "现在不能确定实际到岗日",
+          "区分计划与实际字段",
+          "接待人与人力资源核验真实事件"
+        ],
+        "forbidden_claims": [
+          "系统写周一就一定周一",
+          "员工口头说周三就直接覆盖历史"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "3.4 实际到岗；第 3 页",
+            "source_locator": {
+              "line_start": 13,
+              "line_end": 16,
+              "page": 3,
+              "clause": "3."
+            },
+            "quote": "由接待人与人力资源确认真实到岗事件。预计日期不能自动写成实际日期。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "6.14 信息更正；第 8 页",
+            "source_locator": {
+              "line_start": 19,
+              "line_end": 23,
+              "page": 8,
+              "clause": "6."
+            },
+            "quote": "本人发现姓名、账户或组织资料错误。通过本人核验与对应责任部门更正，保留旧值、新值和依据。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "系统日期字段的含义与来源",
+          "接待人与人力资源的实际到岗核验"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA18",
+      "category": "证据不足",
+      "topic": "离职日期待核验",
+      "input": {
+        "question": "澄岳员工说最后工作日是15日，主管说20日，人力资源还没有核验结论。系统现在应把哪个日期定为最终结果？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "目前不能自行选15日或20日。分别保留双方陈述与原始时间证据，转授权人员确认办理安排，系统保持人工处理中，不通过改提交时间消除分歧。",
+        "required_facts": [
+          "不能自行选定15日或20日",
+          "保留双方陈述和证据",
+          "转授权人员确认并保持人工处理中"
+        ],
+        "forbidden_claims": [
+          "以主管的20日为绝对准则",
+          "直接确认员工15日有法律效力"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "9.6 日期意见不一致",
+            "source_locator": {
+              "paragraph": 219
+            },
+            "quote": "人力资源保留各方陈述和原始时间证据。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "9.6 日期意见不一致",
+            "source_locator": {
+              "paragraph": 220
+            },
+            "quote": "转授权人员确认办理安排并书面反馈，系统标为人工处理中。不通过修改提交日期消除分歧。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "原始时间与沟通证据",
+          "授权人员对办理安排的核验结论"
+        ],
+        "gap_type": "incident_facts"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA19",
+      "category": "证据不足",
+      "topic": "预借人工复核待定",
+      "input": {
+        "question": "我的澄岳行程及2000元个人垫付预算已批准，但转正状态尚未确认，资格人工复核也没结果。本次最终一定能获批多少预借款？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "不能确认最终资格或获批金额。转正状态未确认应走人工复核；若相关条件通过，预算比例上限为1600元，但这只是条件成立时的理论上限，不是已获批额度。",
+        "required_facts": [
+          "转正状态未确认，需要人工复核",
+          "当前不能确定最终获批金额",
+          "1600元仅为条件成立时的比例上限"
+        ],
+        "forbidden_claims": [
+          "保证获批1600元",
+          "直接认定一律不能申请",
+          "套用青屿试用期规则自动否决"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 140
+            },
+            "quote": "已批准行程确需个人垫付费用。预借不超过个人拟垫付预算的八成，转正状态未确认人员走人工复核。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [
+          "转正状态确认",
+          "人工复核与正式批准结果"
+        ],
+        "gap_type": "manual_review",
+        "calculations": [
+          {
+            "expression": "2000*0.8",
+            "result": "1600",
+            "unit": "元"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA20",
+      "category": "证据不足",
+      "topic": "具体联系人缺失",
+      "input": {
+        "question": "请只从澄岳这8份手册告诉我：负责报销咨询的财务专员具体姓名、手机号和当天值班时间是什么？不要猜。",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "手册能定位财务部等职责角色，但没有提供具体专员姓名、手机号或当天值班表，无法据此给出这些信息。需要补充经确认的内部通讯录或值班资料。",
+        "required_facts": [
+          "可定位到财务职责角色",
+          "没有具体姓名、手机号和当天值班资料",
+          "说明所需补充来源"
+        ],
+        "forbidden_claims": [
+          "编造联系人或电话号码",
+          "用案例人物充当实际财务联系人"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "2.4 财务审核人",
+            "source_locator": {
+              "line_start": 42,
+              "line_end": 42
+            },
+            "quote": "核验凭证、金额、重复票号、计入期间与例外手续，不替代业务主管证明业务发生。",
+            "evidence_role": "role_context"
+          },
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "8.5 催办与升级路径",
+            "source_locator": {
+              "line_start": 398,
+              "line_end": 398
+            },
+            "quote": "申请人先在原单查看缺项和当前责任人，再通过受控提醒渠道催办。",
+            "evidence_role": "role_context"
+          }
+        ],
+        "information_gaps": [
+          "具体人员与手机号通讯录",
+          "当天值班表"
+        ],
+        "gap_type": "missing_policy_detail"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA21",
+      "category": "超出范围",
+      "topic": "境外住宿",
+      "input": {
+        "question": "我是澄岳员工，去日本东京公务出差，酒店每晚最多可以报销多少日元？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "这套手册只覆盖境内普通公务，不覆盖日本等境外差旅，无法给出东京酒店限额或汇率；需要适用的境外差旅制度。资料缺失不等于禁止报销。",
+        "required_facts": [
+          "日本出差超出境内范围",
+          "不能给出东京限额",
+          "需要境外制度"
+        ],
+        "forbidden_claims": [
+          "套用550元或400元境内标准",
+          "编造日元限额或汇率",
+          "断言所有境外住宿禁止报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "paragraph": 10
+            },
+            "quote": "只覆盖境内普通公务，不覆盖境外及港澳台、长期驻场、派遣、外包和实习生待遇。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "适用日本的境外差旅制度"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA22",
+      "category": "超出范围",
+      "topic": "港澳差旅",
+      "input": {
+        "question": "澄岳员工去香港出差，应该按甲类城市550元还是乙类城市400元住宿标准执行？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "两项都不能直接套用。手册明确不覆盖港澳台，需补充适用香港的差旅规定后才能确定标准。",
+        "required_facts": [
+          "香港属于明确排除的范围",
+          "不能在550和400中强行二选一",
+          "需补充适用规定"
+        ],
+        "forbidden_claims": [
+          "香港默认属于甲类",
+          "香港默认属于其他境内乙类"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "paragraph": 10
+            },
+            "quote": "只覆盖境内普通公务，不覆盖境外及港澳台、长期驻场、派遣、外包和实习生待遇。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "香港差旅住宿规定"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA23",
+      "category": "超出范围",
+      "topic": "实习生差旅",
+      "input": {
+        "question": "我是在澄岳实习的学生，能否直接套用正式员工预借款的80%上限和申请资格？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "不能据此确认实习生待遇或资格。出差手册明确不覆盖实习生，需要适用实习生的制度或授权确认；也不能因为未覆盖就断言一律不允许。",
+        "required_facts": [
+          "实习生待遇未覆盖",
+          "不能直接确定资格或套用员工比例",
+          "需要专门适用依据"
+        ],
+        "forbidden_claims": [
+          "实习生当然能借80%",
+          "实习生一律禁止预借"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "paragraph": 10
+            },
+            "quote": "只覆盖境内普通公务，不覆盖境外及港澳台、长期驻场、派遣、外包和实习生待遇。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "实习生差旅与预借制度"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA24",
+      "category": "超出范围",
+      "topic": "现实离职经济补偿",
+      "input": {
+        "question": "请按澄岳离职手册计算我现实劳动争议中应拿多少经济补偿，并直接判断公司有没有违法。",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "手册仅为模拟办理流程，不提供现实经济补偿、合同解除或争议处理结论，无法计算金额或判定违法。需由人力资源及授权专业人员根据适用事实和依据处理。",
+        "required_facts": [
+          "模拟流程不提供现实经济补偿和争议判断",
+          "不能计算或认定违法",
+          "转授权专业人员"
+        ],
+        "forbidden_claims": [
+          "直接给出N或N+1等补偿结论",
+          "直接认定公司违法或合法"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "paragraph": 10
+            },
+            "quote": "本手册仅构建模拟审批样本，不提供现实劳动合同解除、通知期限、经济补偿或争议处理意见。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "现实争议的适用依据与事实，本手册不提供"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA25",
+      "category": "超出范围",
+      "topic": "现实婚假天数",
+      "input": {
+        "question": "按澄岳请假手册，上海员工现实中法定婚假究竟有多少天？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "手册不提供现实地区的法定天数或资格判断，不能据此回答上海法定婚假天数。模拟系统中的婚育假由人力资源人工核验。",
+        "required_facts": [
+          "没有现实地区法定天数",
+          "不能给出确定天数",
+          "由人力资源核验适用情况"
+        ],
+        "forbidden_claims": [
+          "编造上海法定婚假天数",
+          "把模拟一小时起申当作婚假总天数"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF01",
+            "source_path": "data/workflow_manuals/WF01-leave.txt",
+            "locator": "6.6 婚育类复核",
+            "source_locator": {
+              "line_start": 308,
+              "line_end": 308
+            },
+            "quote": "本手册不提供现实地区的法定天数或资格判断。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "现实地区适用规定与资格依据"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA26",
+      "category": "超出范围",
+      "topic": "现实税务抵扣",
+      "input": {
+        "question": "我有一张澄岳报销用的餐饮发票，请根据WF02直接判断今年依法能抵扣多少增值税。",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "WF02只提供合成报销操作规则，不判断现实税法中的抵扣资格，不能计算本票依法可抵扣的税额；需适用的财税依据和专业核验。",
+        "required_facts": [
+          "手册不判断现实可抵扣资格",
+          "不能计算可抵扣税额",
+          "需专业财税核验"
+        ],
+        "forbidden_claims": [
+          "拿票面金额乘一个自行选择的税率",
+          "因为能报销就一定能税务抵扣"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.8 凭证抬头",
+            "source_locator": {
+              "line_start": 292,
+              "line_end": 292
+            },
+            "quote": "本样例不判断现实税法中的可抵扣资格。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "现实税务适用依据和发票抵扣核验"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA27",
+      "category": "超出范围",
+      "topic": "危化生产采购",
+      "input": {
+        "question": "澄岳工厂要采购生产用危险化学品，直接照办公采购手册走三家比价和2万元门槛就够了吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "不能用普通办公采购手册确认该采购路线。生产原材料等不在其范围，危险物品也不属于普通办公资产管理，需要专门采购、安全及管理规定。",
+        "required_facts": [
+          "普通办公采购不覆盖生产原材料",
+          "危险物品不属于普通办公资产范围",
+          "不能直接套用办公门槛"
+        ],
+        "forbidden_claims": [
+          "三家比价就足以完成危化品采购授权",
+          "不足2万元就无需专门要求"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(1) > p:nth-of-type(2)",
+              "item_id": null
+            },
+            "quote": "生产原材料、工程建设、涉密设备、金融产品和个人福利批量采购不在范围内。",
+            "evidence_role": "scope_boundary"
+          },
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "1 适用目标与办理边界；第 2 页",
+            "source_locator": {
+              "line_start": 1,
+              "line_end": 22,
+              "page": 2
+            },
+            "quote": "生产设备、危险物品、个人自购物品和不动产不在范围内。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "生产及危险物品采购的专门制度"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA28",
+      "category": "超出范围",
+      "topic": "融资担保合同",
+      "input": {
+        "question": "澄岳准备签500万元融资担保合同，可以按WF06超过5万元的普通合同路线办理吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "不能直接套用。WF06明确将投融资、担保等排除在普通合同入口之外，需要专门制度和授权专业审查。不能只因金额落入大额档就认定路线适用。",
+        "required_facts": [
+          "投融资和担保不走普通入口",
+          "不能套用普通大额合同路线",
+          "需专门制度和专业授权"
+        ],
+        "forbidden_claims": [
+          "超过5万元的普通路线足以办理担保",
+          "只有金额是审查条件"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF06",
+            "source_path": "data/workflow_manuals/WF06-contract.html",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(1) > p:nth-of-type(2)",
+              "item_id": null
+            },
+            "quote": "劳动合同、投融资、担保、不动产及争议和解不走普通入口。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "融资担保专门制度及授权"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA29",
+      "category": "超出范围",
+      "topic": "外包人员入场",
+      "input": {
+        "question": "外包供应商派来的工程师下周到澄岳办公，可以直接按普通新员工入职手册全套开通账号吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "不能直接套用普通新员工入口。手册不覆盖外包、劳务派遣等情形，需要适用外包入场、身份及访问授权流程，不能默认复制员工权限。",
+        "required_facts": [
+          "外包不在普通入职入口范围",
+          "需外包身份与访问制度",
+          "不能默认开全套员工权限"
+        ],
+        "forbidden_claims": [
+          "外包人员当普通员工全部开通",
+          "没有外包规定就永久拒绝一切访问"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "1 适用目标与办理边界；第 1 页",
+            "source_locator": {
+              "line_start": 1,
+              "line_end": 19,
+              "page": 1
+            },
+            "quote": "录用谈判、实习、劳务派遣、外包和跨境工作不在普通入口。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "外包人员入场及访问授权制度"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA30",
+      "category": "超出范围",
+      "topic": "不动产会计折旧",
+      "input": {
+        "question": "请用澄岳办公资产手册确定公司新买写字楼在现实会计中应折旧多少年。",
+        "history": []
+      },
+      "expected": {
+        "status": "insufficient",
+        "reference_answer": "该手册既不覆盖不动产，也不涉及现实会计折旧，无法确定写字楼折旧年限；需适用的资产与会计依据。",
+        "required_facts": [
+          "不动产不在范围",
+          "现实会计折旧不在范围",
+          "不能给出折旧年限"
+        ],
+        "forbidden_claims": [
+          "根据电脑寿命推断写字楼年限",
+          "编造一个法定折旧年限"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "1 适用目标与办理边界；第 2 页",
+            "source_locator": {
+              "line_start": 1,
+              "line_end": 22,
+              "page": 2
+            },
+            "quote": "本手册使用虚构设备和内部管理规则，不涉及现实会计折旧、税务、赔偿认定或工资扣减。",
+            "evidence_role": "scope_boundary"
+          },
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "1 适用目标与办理边界；第 2 页",
+            "source_locator": {
+              "line_start": 1,
+              "line_end": 22,
+              "page": 2
+            },
+            "quote": "生产设备、危险物品、个人自购物品和不动产不在范围内。",
+            "evidence_role": "scope_boundary"
+          }
+        ],
+        "information_gaps": [
+          "不动产及现实会计折旧依据"
+        ],
+        "gap_type": "outside_scope"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA31",
+      "category": "错误前提",
+      "topic": "冻结余额",
+      "input": {
+        "question": "澄岳年假总余额20小时，其中8小时被另一张待审单冻结。我再申请16小时肯定够，因为20大于16，对吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不够。扣除冻结8小时后当前可用只有12小时，不能覆盖新的16小时申请。应调整申请，或撤回不再需要的旧单并确认冻结释放；不能重复占用。",
+        "required_facts": [
+          "当前可用20−8=12小时",
+          "12小时不足覆盖16小时",
+          "需调整或释放真实不再需要的冻结"
+        ],
+        "forbidden_claims": [
+          "同意余额足够",
+          "允许手工负余额通过"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF01",
+            "source_path": "data/workflow_manuals/WF01-leave.txt",
+            "locator": "6.2 年假余额",
+            "source_locator": {
+              "line_start": 270,
+              "line_end": 270
+            },
+            "quote": "申请年假时可用余额必须覆盖新申请时长。先扣除其他待审单冻结部分，余额不足时提示拆分假别并分别审批。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "总余额可被忽略冻结额重复使用",
+        "calculations": [
+          {
+            "expression": "20-8",
+            "result": "12",
+            "unit": "小时"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA32",
+      "category": "错误前提",
+      "topic": "迟交自动拒付",
+      "input": {
+        "question": "澄岳费用超过发生次日起20个自然日才提交，就肯定自动拒付、不能补救了，对吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不能这样判断。超过期限应附迟交说明交部门负责人复核；迟交不自动等于拒付，是否可办理依据补充核验结果，也不能反过来保证一定通过。",
+        "required_facts": [
+          "超过期限附迟交说明",
+          "部门负责人复核",
+          "不自动拒付，也不保证通过"
+        ],
+        "forbidden_claims": [
+          "超20天一律拒付",
+          "补一份说明就一定通过"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.1 报销提交期限",
+            "source_locator": {
+              "line_start": 234,
+              "line_end": 234
+            },
+            "quote": "普通业务费用在发生次日起二十个自然日内提交。跨月费用同时填写所属业务期间，超过期限附迟交说明交部门负责人复核。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.1 报销提交期限",
+            "source_locator": {
+              "line_start": 236,
+              "line_end": 236
+            },
+            "quote": "迟交不自动等于拒付，应依据补充核验结果处理。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "迟交等于无条件自动拒付"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA33",
+      "category": "错误前提",
+      "topic": "预借重复计算",
+      "input": {
+        "question": "澄岳批准出差总预算4000元，公司已经统一付了1000元，其他3000元我垫付。我已转正，所以仍按总预算八成借3200元，没错吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "基数不对。公司统一支付1000元应排除，按个人拟垫付3000元的80%计算，上限2400元；不能预借3200元。正式批准与发放仍须按流程确认。",
+        "required_facts": [
+          "公司已付1000元排除",
+          "个人拟垫付基数3000元",
+          "比例上限2400元"
+        ],
+        "forbidden_claims": [
+          "同意预借3200元",
+          "转正后可重复预借公司已付款项"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 140
+            },
+            "quote": "预借不超过个人拟垫付预算的八成，转正状态未确认人员走人工复核。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.8 预借款额度",
+            "source_locator": {
+              "paragraph": 141
+            },
+            "quote": "已由公司统一支付的机票酒店不能计入预借基数。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "公司统一支付的部分仍计入个人预借基数",
+        "calculations": [
+          {
+            "expression": "(4000-1000)*0.8",
+            "result": "2400",
+            "unit": "元"
+          }
+        ]
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA34",
+      "category": "错误前提",
+      "topic": "三份截图冒充三家",
+      "input": {
+        "question": "澄岳普通比价需要三家报价，我把同一家供应商的三个套餐分别截图，就算三家了吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不算。要求三家真实可比供应商，同一家不同套餐或截图不构成三家报价；无法取得可比报价应说明限制并走例外，不能伪造竞争。",
+        "required_facts": [
+          "同一家三个截图不等于三家",
+          "报价口径应可比",
+          "不足时走例外而非伪造"
+        ],
+        "forbidden_claims": [
+          "三个截图满足三家要求",
+          "只要有三个价格就合规"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "6.4 报价数量",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(11)",
+              "item_id": null
+            },
+            "quote": "三张来自同一供应商的不同截图不算三家报价。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF05",
+            "source_path": "data/workflow_manuals/WF05-procurement.html",
+            "locator": "6.4 报价数量",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(10)",
+              "item_id": null
+            },
+            "quote": "普通比价采购需要三家可比报价。统一数量、税费、交期和服务条件，缺少可比供应商时走例外。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "报价图片数量等于独立供应商数量"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA35",
+      "category": "错误前提",
+      "topic": "签署等于可付款",
+      "input": {
+        "question": "澄岳合同已由双方签署，虽然首期付款还要求收到合格交付材料、目前也没收到，但合同一签就等于付款条件全满足，可以直接付款吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不能。签署完成与付款条件满足是不同状态；合格交付材料未到，当前付款条件待满足。履约负责人确认材料后，财务再按批准节点核验付款。",
+        "required_facts": [
+          "签署不等于付款条件满足",
+          "当前合格交付材料尚缺",
+          "条件确认后办理付款核验"
+        ],
+        "forbidden_claims": [
+          "合同签完即可跳过验收材料付款",
+          "签署状态自动触发全额付款"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF06",
+            "source_path": "data/workflow_manuals/WF06-contract.html",
+            "locator": "6.7 付款节点",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(6) > p:nth-of-type(20)",
+              "item_id": null
+            },
+            "quote": "签署合同本身不代表所有付款条件已满足。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF06",
+            "source_path": "data/workflow_manuals/WF06-contract.html",
+            "locator": "10.6 签署后未付款",
+            "source_locator": {
+              "dom_path": "section:nth-of-type(10) > p:nth-of-type(22)",
+              "item_id": null
+            },
+            "quote": "当前合同可标签署完成，付款仍为条件待满足。履约负责人确认材料后财务办理付款核验。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "合同签署完成自动满足全部付款条件"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA36",
+      "category": "错误前提",
+      "topic": "新人复制完整权限",
+      "input": {
+        "question": "澄岳新人和老同事是同部门同岗位，直接复制老同事全部权限，包括管理员权限，不用额外审批对吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不对。应使用已确认岗位角色模板并核对实际需要，模板外权限逐项说明，敏感范围由系统负责人批准；不能复制同事完整权限。",
+        "required_facts": [
+          "使用已确认岗位角色模板",
+          "额外权限说明业务需要",
+          "敏感权限另行批准",
+          "不复制个人完整权限"
+        ],
+        "forbidden_claims": [
+          "同岗位可直接复制管理员权限",
+          "主管催办就算敏感权限已批"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "6.6 权限模板；第 7 页",
+            "source_locator": {
+              "line_start": 12,
+              "line_end": 16,
+              "page": 7,
+              "clause": "6."
+            },
+            "quote": "普通岗位先使用已确认岗位角色。模板外权限逐项说明业务需要，由系统负责人批准敏感范围。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF07",
+            "source_path": "data/workflow_manuals/WF07-onboarding-single-column.pdf",
+            "locator": "6.6 权限模板；第 7 页",
+            "source_locator": {
+              "line_start": 12,
+              "line_end": 16,
+              "page": 7,
+              "clause": "6."
+            },
+            "quote": "同部门同事拥有的权限不自动全部复制给新人。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "同部门同岗位可以免审复制完整权限"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA37",
+      "category": "错误前提",
+      "topic": "借用自动转长期",
+      "input": {
+        "question": "澄岳演示设备临时借用到期没还，也没提延期，系统是不是自动续借并转成我长期领用？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不会。到期未回保持到期或逾期状态，联系主管确认延期或归还；延期需要重新确认，不自动转长期领用。",
+        "required_facts": [
+          "到期未回保持逾期等状态",
+          "延期重新确认",
+          "不自动转长期领用"
+        ],
+        "forbidden_claims": [
+          "到期自动续借",
+          "逾期即默认长期领用"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "6.6 临时借用；第 6 页",
+            "source_locator": {
+              "line_start": 60,
+              "line_end": 68,
+              "page": 6,
+              "clause": "6."
+            },
+            "quote": "借用预计不超过十个工作日。写明任务和归还日，到期前三个工作日提醒，延期重新确认。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "6.6 临时借用；第 6 页",
+            "source_locator": {
+              "line_start": 60,
+              "line_end": 68,
+              "page": 6,
+              "clause": "6."
+            },
+            "quote": "到期未回保持逾期状态，不自动转为长期领用。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "到期未归还自动变成长期领用"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA38",
+      "category": "错误前提",
+      "topic": "离职缺件自动扣薪",
+      "input": {
+        "question": "澄岳离职归还电脑时少一个转接头，系统当然可以直接按原价从工资扣掉，不需要核验责任，对吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不对。先记录领用、现场差异与双方意见，转资产差异核验；系统不自动按原价扣工资或认定责任，现实责任与扣减不能凭本模拟流程直接决定。",
+        "required_facts": [
+          "先记录差异并核验事实",
+          "不自动按原价扣工资",
+          "不自动认定责任"
+        ],
+        "forbidden_claims": [
+          "缺件即自动原价扣薪",
+          "未核验就确定员工赔偿"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "6.9 资产存在差异",
+            "source_locator": {
+              "paragraph": 144
+            },
+            "quote": "实物丢失、损坏或配件数量与台账不符。记录事实、双方意见和待核验项目，转资产差异流程。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF04",
+            "source_path": "data/workflow_manuals/WF04-offboarding.docx",
+            "locator": "6.9 资产存在差异",
+            "source_locator": {
+              "paragraph": 145
+            },
+            "quote": "系统不自动按原价扣工资或认定责任。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF08",
+            "source_path": "data/workflow_manuals/WF08-assets-double-column.pdf",
+            "locator": "12.5 设备坏了会自动赔钱吗；第 11 页",
+            "source_locator": {
+              "line_start": 13,
+              "line_end": 15,
+              "page": 11,
+              "clause": "12."
+            },
+            "quote": "系统只记录事实与检测，现实责任和赔偿不由本模拟流程自动判断。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "资产差异无需核验即可自动原价扣薪"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA39",
+      "category": "错误前提",
+      "topic": "内部时限冒充银行承诺",
+      "input": {
+        "question": "澄岳手册写普通内部审批两个工作日内给意见，所以报销财务一审核通过，两个工作日内肯定银行到账，是这个意思吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不是。两个工作日是材料齐全后的内部审批服务目标，用于提醒和分派，不代表自动批准或银行结果承诺。审核与付款分开，实际支付需看银行回执，手册没有统一到账承诺。",
+        "required_facts": [
+          "两个工作日是内部审批意见目标",
+          "不代表银行到账承诺",
+          "审核与付款分开",
+          "以银行回执核对实际支付"
+        ],
+        "forbidden_claims": [
+          "保证两工作日到账",
+          "内部审批时限就是银行到账时限"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "8.2 受理与内部服务目标",
+            "source_locator": {
+              "line_start": 386,
+              "line_end": 386
+            },
+            "quote": "材料齐全的普通内部审批以两个工作日内给出意见作为模拟服务目标，执行部门收到完整授权后一个工作日内确认安排。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "8.2 受理与内部服务目标",
+            "source_locator": {
+              "line_start": 386,
+              "line_end": 386
+            },
+            "quote": "该目标用于提醒与分派，不代表自动批准，也不是银行、物流或外部服务的结果承诺。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF02",
+            "source_path": "data/workflow_manuals/WF02-expense.md",
+            "locator": "6.15 付款结果",
+            "source_locator": {
+              "line_start": 348,
+              "line_end": 348
+            },
+            "quote": "本手册不承诺银行实际到账时间。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "内部审核服务目标就是银行到账保证"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "WQA40",
+      "category": "错误前提",
+      "topic": "两家公司标准混用",
+      "input": {
+        "question": "青屿示例公司的上海住宿上限是500元，所以澄岳WF03的上海普通单晚预算上限也按500元，对吧？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不能混用两家公司的制度。澄岳WF03把上海列为甲类城市，普通单晚含税房费预算上限是550元；乙类400元。550元是上限，不是固定发放，超标需另走明确例外。",
+        "required_facts": [
+          "两套公司制度独立",
+          "澄岳上海为甲类城市",
+          "普通单晚含税预算上限550元",
+          "上限不等于固定发放"
+        ],
+        "forbidden_claims": [
+          "沿用青屿500元",
+          "按日期或看起来相似就跨公司覆盖",
+          "不论实付一律发550元"
+        ],
+        "evidence": [
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.4 住宿城市分类",
+            "source_locator": {
+              "paragraph": 124
+            },
+            "quote": "模拟甲类城市为北京、上海、深圳，其他境内城市为乙类。甲类单晚预算上限五百五十元，乙类四百元，按含税房费核对。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "6.4 住宿城市分类",
+            "source_locator": {
+              "paragraph": 125
+            },
+            "quote": "此分类只对本公司本批合成资料有效。",
+            "evidence_role": "rule"
+          },
+          {
+            "document_id": "WF03",
+            "source_path": "data/workflow_manuals/WF03-travel.docx",
+            "locator": "1 适用目标与办理边界",
+            "source_locator": {
+              "paragraph": 11
+            },
+            "quote": "本批 WF 文档独立成套，不替代 data/policies 中另一虚构公司的制度。",
+            "evidence_role": "rule"
+          }
+        ],
+        "information_gaps": [],
+        "gap_type": "none",
+        "error_premise": "青屿标准可以直接覆盖澄岳制度"
+      },
+      "trace_assertions": [
+        "依据本轮实际读取的 WF 原文作答；开发集参考答案不得作为检索资料。"
+      ],
+      "execution_status": "not_run"
+    }
+  ]
+}

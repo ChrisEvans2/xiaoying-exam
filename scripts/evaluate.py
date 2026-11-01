@@ -1,4 +1,4 @@
-"""Run the 20 cases with a real model. Only status is machine-checked; facts require review."""
+"""Run a selected QA dataset with a real model; facts and citations require human review."""
 
 import argparse
 import json
@@ -15,13 +15,16 @@ from xiaoying.worker import Worker
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--kb-id", required=True)
-    parser.add_argument("--case", default="all", help="all or QA01..QA20")
+    parser.add_argument("--case", default="all", help="all or a case ID in the selected dataset")
+    parser.add_argument(
+        "--cases-file", type=Path, default=Path("tests/fixtures/qa_cases.json"), help="QA dataset JSON"
+    )
     parser.add_argument("--output", default="examples/live")
     args = parser.parse_args()
     settings = load_settings(profile="live")
     if settings.provider_mode != "live" or not settings.deepseek_api_key:
         parser.error("真实评估需要 PROVIDER_MODE=live 和 DEEPSEEK_API_KEY；离线记录请使用 demo_cases.py")
-    dataset = json.loads(Path("tests/fixtures/qa_cases.json").read_text())
+    dataset = json.loads(args.cases_file.read_text(encoding="utf-8"))
     cases = [c for c in dataset["cases"] if args.case in {"all", c["id"]}]
     if not cases:
         parser.error("未知用例 ID")
@@ -42,7 +45,7 @@ def main():
         )
         expected = {x["document_id"]: x["sha256"] for x in dataset["source_snapshot"]}
         if {x["document_id"]: x["file_hash"] for x in manifest} != expected:
-            raise RuntimeError("评估库必须是20题对应的8份原始文件快照；文档ID或SHA不匹配")
+            raise RuntimeError("评估库必须与所选样本的原始文件快照一致；文档ID或SHA不匹配")
         config = db.one("SELECT config FROM kb_versions WHERE id=%s", (version,))["config"]
         if (
             config["provider_mode"] != "live"

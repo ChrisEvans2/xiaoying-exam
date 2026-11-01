@@ -173,7 +173,8 @@ def test_expansion_has_shared_budget_but_never_exports_reasoning_or_unknown_fiel
     result = chat_module.DeepSeekChat(sdk.settings).expand("住宿标准", [])
     assert sdk.requests[0]["max_tokens"] == sdk.settings.deepseek_max_tokens
     assert not sdk.requests[0].get("tools")
-    assert set(result) == {"resolved_question", "expanded_queries", "unresolved_slots"}
+    assert set(result) == {"intent", "resolved_question", "expanded_queries", "unresolved_slots"}
+    assert result["intent"] == "knowledge"
     assert PRIVATE not in json.dumps(result)
 
 
@@ -491,6 +492,10 @@ def test_model_action_saved_before_checkpoint_replays_reasoning_without_recallin
     assert chat.decisions == 3 and chat.expansions == 1
     assert runs.get(request["run_id"])["task_status"] == "answered"
     assert any(m.get("reasoning_content") == PRIVATE + ":1" for m in chat.inputs[1])
+    audit = knowledge.db.all("SELECT status FROM model_invocations WHERE run_id=%s", (request["run_id"],))
+    assert len(audit) == 4 and all(item["status"] == "completed" for item in audit)
+    recovered = knowledge.db.all("SELECT payload FROM trace_events WHERE run_id=%s AND type='model.completed'", (request["run_id"],))
+    assert len(recovered) == 4 and sum(bool(item["payload"]["recovered"]) for item in recovered) == 1
 
 
 @pytest.mark.integration

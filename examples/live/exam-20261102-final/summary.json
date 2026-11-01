@@ -1,0 +1,47 @@
+{
+  "evidence_type": "live_model_exam_acceptance",
+  "manifest": "manifest.json",
+  "review": "review.json",
+  "verification": "verification.json",
+  "cases": 10,
+  "passed_source_review": 10,
+  "failed_source_review": 0,
+  "business_statuses": {
+    "answered": 7,
+    "insufficient": 2,
+    "incomplete": 1
+  },
+  "total_runs_including_history": 12,
+  "total_model_calls_including_history": 73,
+  "total_tool_calls_including_history": 40,
+  "coverage": {
+    "clear_answer": [
+      "QA01"
+    ],
+    "conflict": [
+      "QA16"
+    ],
+    "out_of_corpus": [
+      "QA17"
+    ],
+    "paraphrase": [
+      "QA01",
+      "QA03"
+    ],
+    "context_followup": [
+      "QA04",
+      "QA11"
+    ],
+    "tool_failure": [
+      "QA19",
+      "QA20"
+    ],
+    "missing_user_conditions": [
+      "QA18"
+    ],
+    "document_replacement": [
+      "QA01",
+      "REPLACEMENT"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # 企业知识问答 Agent：模块化开发设计
 
-日期：2026-10-31。状态：**考生已要求按本方案开发，已完成一期代码和离线工程验证；真实模型效果待验证。**
+状态：**已完成一期代码、241项工程回归和考试六类场景的选定真实模型验收；未测范围及首轮失败见评估文档。**
 
 实现入口与差异见 [README](../README.md)、[实际评估](03-evaluation.md)、[独立审查](review-notes.md)。以下保留原方案及参数依据。
 
@@ -65,10 +65,13 @@ flowchart LR
 
 - **知识库区**：选择知识库，显示当前发布版本、文档列表；拖动上传，查看解析/索引/失败状态；编辑分块等配置并发起重建。
 - **对话区**：问题与历史、回答、引用、资料缺口、业务状态；等待补充时显示截止时间，以及“提交补充”“放弃补充”。
-- **Trace 区**：按时间显示问题扩展、检索、原文读取、工具错误、下一动作和简要依据；细节按需展开。
+- **历史会话入口**：侧栏按所选知识库列出已有 session，以首条问题、轮数和最近活动时间区分；窄屏使用下拉选择。点开恢复已有消息、引用及查证过程，可继续同一会话；“新会话”不删除历史。数据库为记录来源，浏览器只保存最近选择，无保存值时恢复该库最近的会话。
+- **Trace 区**：以当前会话为范围，按每轮提问折叠展示工具链、上下文和模型调用。显示全会话及每轮的模型/工具计数，调用节点可展开实际输入参数、返回、错误及耗时；旧记录缺失的模型输入明确标注，不反推或补造。
 - **证据面板**：展示实际读取的原文、文档 ID、版本日期和位置；PDF 支持页码与区域定位，其他格式支持章节、条款或段落定位。
 
-一期每个会话绑定一个知识库，切换知识库时创建新会话，避免把其他库的历史当成当前证据。同一会话有运行或待补充的问题时，不再创建第二个问题；不同会话可以并行。
+一期每个会话绑定一个知识库，切换知识库时读取该库历史并恢复选择，避免把其他库的历史当成当前证据。用户明确选择“新会话”后，首条消息发送时创建新 session；此后连续发送沿用相同会话 ID。同一会话有运行或待补充的问题时，不再创建第二个问题；不同会话可以并行。
+
+会话与一次执行分三层：`conversations.id` 是整段 session，包含多次用户提问；每条新问题创建一个 `runs.id`，保存该轮版本、证据及独立预算，用户补充和恢复仍属于当前轮；`model_invocations` 与 `trace_events` 记录这一轮的模型调用、上下文及工具事件。新 run 不等于新 session，也不自动清空同会话历史。上下文沿用现有兼容检查与历史拼接，由模型判断相关性；不同 session 的历史不拼接。
 
 ### 3.2 API 草案
 
@@ -81,9 +84,13 @@ flowchart LR
 | `GET /knowledge-bases/{id}/documents?version_id=…` | 指定快照内的文档及修订 |
 | `POST /knowledge-bases/{id}/uploads` | multipart 文件及元数据；返回 `upload_id`；这里只保存并校验文件 |
 | `POST /knowledge-bases/{id}/builds` | `base_version_id`、上传 ID、明确的新增/替换/移除清单、配置；返回 `job_id, version_id` |
+| `GET /knowledge-bases/{id}/builds` | 该库最近 20 个后台构建任务，进行中的任务优先；恢复进度、结果与已提交变更，不返回租约 token 或 Worker 标识 |
 | `GET /jobs/{job_id}` | 构建阶段、进度、错误；页面短轮询 |
 | `POST /knowledge-bases/{id}/versions/{version_id}/publish` | `expected_current_version_id`；发布已就绪版本 |
 | `POST /conversations`、`GET /conversations/{id}` | 创建绑定知识库的会话 / 获取历史及当前任务 |
+| `GET /knowledge-bases/{id}/conversations` | 只读列出该库已有问题的会话摘要，按最近活动倒序；不创建任务或调用模型 |
+| `GET /conversations/{id}/trace` | 当前 session 的全部轮次及各轮事件，保留各自 run ID 和顺序 |
+| `GET /runs/{run_id}/model-calls/{call_number}` | 按需读取本轮某次模型调用的输入快照、返回、状态及耗时；不读取私有 checkpoint |
 | `POST /conversations/{id}/runs` | `question`；服务端捕获当前发布版本，返回 `run_id, events_url` |
 | `GET /runs/{run_id}` | 执行状态、业务状态、结果、补充期限、最后事件序号 |
 | `POST /runs/{run_id}/clarification` | `action=submit/abandon`、补充内容；可显式附带新发布的 `version_id` |
@@ -91,6 +98,8 @@ flowchart LR
 | `GET /knowledge-bases/{id}/versions/{version_id}/documents/{document_version_id}/source` | 已授权版本的原文与定位；不接受任意磁盘路径 |
 
 “上传并构建”由前端顺序调用上传、构建两个 API，可把多个文件纳入同一版本。默认构建成功后尝试自动发布；若基线已变化，保留就绪版本并返回发布冲突，不覆盖别人已发布的内容。
+
+构建 job 持久化后由独立 Worker 执行，页面只查询状态。切换知识库、返回文档页或刷新时，前端重新发现该库任务并恢复轮询；跨库迟到响应不写入当前界面。同一知识库只允许一个 `pending/running` 构建，相同幂等键重试仍返回原任务。上传草稿按库保存在当前浏览器，完成任务只清理其已提交的上传，避免误删后来添加的草稿。
 
 写请求使用 `Idempotency-Key`：同一作用域、同一键和请求体返回原结果；同一键对应不同请求体返回 `409`。错误统一包含 `code, message, retryable, request_id`。不支持格式返回 `415`，体积超限返回 `413`，缺失必要元数据返回 `422`。
 
@@ -100,7 +109,7 @@ flowchart LR
 
 | API 值 | 页面文字 | 何时出现 |
 | --- | --- | --- |
-| `answered` | 已回答 | 完成有证据的回答 |
+| `answered` | 已回答 | 完成有证据的业务回答，或无需查证的纯社交回应 |
 | `awaiting_user` | 待用户确认 | 唯一一次补充窗口已开启 |
 | `incomplete` | 执行未完成 | 故障或预算耗尽导致必要查证未完成 |
 | `insufficient` | 资料不足 | 补充后仍缺依据、仍冲突、放弃且无法作答或等待超时 |
@@ -109,13 +118,15 @@ flowchart LR
 
 每条引用保存 `evidence_id, kb_version_id, document_id, document_version_id, version_date, chunk_id, locator, quote`。`document_id` 是 D01 等业务标识；`document_version_id` 才标识实际修订。页面显示版本日期，内部不能只靠日期定位。
 
+回答正文默认首句给结论，只回答当前问题及影响结论的必要条件；单一事实或清单通常一至两句，多问题逐点回答。原文证据保留在 `citations` 供引用面板查看，正文避免重复摘抄、章节说明和未被问到的相邻规则。简洁不省略关键限制、计时起点、单位或资料缺口；用户明确要求详解、完整流程、计算或原文时按需展开，不设置强制字数截断。
+
 ### 3.4 Trace 同步
 
-事件采用 `run_id, seq, event_id, occurred_at, type, node, step, tool_call_id, payload`。主要类型：`run.started`、`query.expanded`、`tool.started`、`tool.completed`、`tool.failed`、`agent.decision`、`clarification.requested`、`run.finished`。
+事件采用 `run_id, seq, event_id, occurred_at, type, node, step, tool_call_id, payload`。主要类型：`run.started`、`intent.detected`、`query.expanded`、`tool.started`、`tool.completed`、`tool.failed`、`agent.decision`、`clarification.requested`、`run.finished`。
 
 事件先写 PostgreSQL，提交后才能经 SSE 发出；同一 run 的 `seq` 严格递增，前端按序号去重、断线续读。SSE 心跳建议每 15 秒发送一次；浏览器断线不取消任务，刷新后从结果 API 与事件表恢复。第一期不逐 token 输出未经校验的答案，最终答案校验完成后展示。
 
-Trace 只含工具参数、返回摘要、计数、耗时和简短动作依据；不展示模型内部思维文本、密钥或完整调试 state。完整证据通过引用面板读取。LangGraph 流式事件须转成项目事件契约，不能直接将框架调试输出发送给前端。参考：[LangGraph Streaming](https://docs.langchain.com/oss/python/langgraph/streaming)。
+Trace 包含工具参数、返回摘要、计数、耗时和简短动作依据，并提供按需展开的模型输入与返回。请求快照与实际 SDK 参数共用构造函数，保存系统提示、同会话历史、用户输入、工具结果及工具定义；隐藏内部思考和凭据字段，不直接公开完整私有 checkpoint 或框架调试 state。`model.started/completed/failed` 保存调用序号和阶段，完整输入独立存储并在用户展开时读取，避免随 SSE 重复传输。完整证据仍通过引用面板读取。参考：[LangGraph Streaming](https://docs.langchain.com/oss/python/langgraph/streaming)。
 
 ## 4. Agent 模块：理解、决策与有界执行
 
@@ -123,8 +134,9 @@ Trace 只含工具参数、返回摘要、计数、耗时和简短动作依据�
 
 ```mermaid
 flowchart TD
-    START[载入问题、历史和版本快照] --> EXPAND[模型理解与问题扩展]
-    EXPAND --> DECIDE[模型选择下一动作]
+    START[载入问题、历史和版本快照] --> EXPAND[模型判断需求并理解问题]
+    EXPAND -->|非业务需求| SOCIAL[简短回应，不调用知识库]
+    EXPAND -->|业务问题或不确定| DECIDE[模型选择下一动作]
     DECIDE -->|检索或原文读取| TOOL[预算检查并执行工具]
     TOOL -->|结果或错误作为观察| DECIDE
     DECIDE -->|证据足够| CHECK[生成回答并校验引用]
@@ -145,6 +157,8 @@ Agent state 至少包含：`run_id, conversation_id, messages, original_question
 
 ### 4.2 问题扩展与工具
 
+先在已有的无工具问题理解请求中识别需求，不另加分类请求。模型返回 `intent`：`greeting / thanks / farewell / capabilities / unrelated / knowledge`。纯问候、致谢、告别及助手能力介绍使用服务端限定的简短回应；`unrelated` 覆盖与企业业务无关的闲聊、八卦、笑话、段子、游戏、诗歌等，简短引导回企业业务咨询。这些分支一次模型调用后结束，不进入检索/读取循环；模型不能在该路径提交任意业务答案。当前输入优先，单独“你好”不能唤起历史未完成业务；“你好，报销找谁？”、“谢谢，那试用期呢？”和“继续查”仍按业务问题处理，结合相关历史补全。含业务问题的娱乐混合输入（如“用段子解释报销审批流程”）仍须查证事实；单纯讲笑话或写诗不因属于创作请求而触发检索。缺失或未知分类保守进入业务查证；补充恢复保留原业务请求，不转为闲聊。需求及分支写入 `intent.detected`，查证页按轮展示。
+
 扩展结果最多为“原始问句 + 1 个上下文补全问句 + 1 个同义问句”。例如前文为上海住宿上限，本轮“那试用期员工呢？”补全为“试用期员工在上海出差的住宿报销上限是多少”。只从当前输入和可追溯历史补全条件，未知城市、身份、审批状态进入 `unresolved_slots`，不能猜测。扩展词用于检索，不产生制度事实。
 
 | 工具 / 接口 | 参数 | 结果与边界 |
@@ -154,11 +168,11 @@ Agent state 至少包含：`run_id, conversation_id, messages, original_question
 | `request_clarification` | 缺口、集中询问的问题 | 经过一次性门禁后挂起；不是普通外部工具 |
 | `finish_answer` | 回答、证据 ID、逐项引用、状态建议 | 服务端校验引用、状态与剩余预算后落盘 |
 
-工具的知识库和版本由服务端注入，模型不能改写；不能访问任意 URL、数据库或文件系统。读取工具也能按文档 ID 查证跨文档引用，不局限于首轮 Top-K。单次读取初始限制为 10,000 tokens，超长内容分页读取并明确返回未读范围。服务端强制校验合法状态迁移；模型不能跳过补充机会直接结束为“资料不足”。预算检查放在每个执行节点入口，预算耗尽后的结果落盘不再调用模型。
+工具的知识库和版本由服务端注入，模型不能改写；不能访问任意 URL、数据库或文件系统。读取工具也能按文档 ID 查证跨文档引用，不局限于首轮 Top-K。单次读取初始限制为 10,000 tokens，超长内容分页读取并明确返回未读范围。服务端强制校验合法状态迁移；模型不能跳过补充机会直接结束为“资料不足”。预算检查放在每个执行节点入口。检索/读取次数耗尽时禁止新增业务工具执行，在模型、步数和时间预算内允许收尾；模型、步数或活跃时间耗尽后的结果落盘不再调用模型。
 
-DeepSeek 通过适配器配置 `base_url, model, api_key, timeout`。2026-11-01 按考生要求调整为默认开启思考模式：问题扩展和 Agent 决策均发送 `thinking.type=enabled`，默认 `reasoning_effort=high`、`max_tokens=16384`，可通过 `.env` 调整并写入每个 run 的配置快照。思考模式使用 `tool_choice=auto`，不能使用 `required` 或指定工具；模型只生成调用请求，工具由应用执行。输出截断或异常结束时不执行该响应中的工具。
+DeepSeek 通过适配器配置 `base_url, model, api_key, timeout`。按考生要求调整为默认开启思考模式：问题扩展和 Agent 决策均发送 `thinking.type=enabled`，默认 `reasoning_effort=high`、`max_tokens=16384`，可通过 `.env` 调整并写入每个 run 的配置快照。思考模式使用 `tool_choice=auto`，不能使用 `required` 或指定工具；模型只生成调用请求，工具由应用执行。输出截断或异常结束时不执行该响应中的工具。
 
-带工具的模型消息完整保存 `reasoning_content` 并在后续请求逐字回传，包括没有工具调用的 assistant 消息和用户补充后的请求。该字段只存于后端动作账本与 checkpoint，不进入对外会话、Trace 或 CLI 导出。问题扩展是独立、无工具的 JSON 请求，仅返回公开扩展字段。每个 `tool_call_id` 必须匹配一个结果；保留一次一个工具的策略，模型返回多个调用时逐项反馈“本轮未执行”，再要求重选；没有调用工具的直接回答不绕过引用校验，须继续调用 `finish_answer`。
+带工具的模型消息完整保存 `reasoning_content` 并在后续请求逐字回传，包括没有工具调用的 assistant 消息和用户补充后的请求。该字段只存于后端动作账本与 checkpoint，不进入对外会话、Trace 或 CLI 导出。需求判断及问题扩展是独立、无工具的 JSON 请求，仅返回公开分类/扩展字段。每个 `tool_call_id` 必须匹配一个结果；保留一次一个工具的策略，模型返回多个调用时逐项反馈“本轮未执行”，再要求重选；业务分支中没有调用工具的直接回答不绕过引用校验，须继续调用 `finish_answer`。社交分支只保存实际发给用户的限定回应，不生成内部思考，后续业务追问仍保留同会话完整上下文。
 
 每个问题仍有独立 run、预算与证据。相同会话、知识库版本及模型/思考配置的新问题，从上一个已完成且协议完整的 checkpoint 续接模型消息，追加新用户问题，并要求重新读取本轮引用。模型/版本变更、旧协议或不完整历史从公开会话记录重建新上下文，不拼接无法闭合的工具历史；同一 run 的补充与 Worker 恢复保留完整私有上下文，证据 epoch 变化时沿用原设计重建上下文。已有 live run 缺少新配置快照或恢复配置不一致时返回 `CONFIG_MISMATCH`，用户需重新提问。参考：[DeepSeek Tool Calls](https://api-docs.deepseek.com/guides/tool_calls/)、[Thinking Mode](https://api-docs.deepseek.com/guides/thinking_mode/)、[多轮对话](https://api-docs.deepseek.com/guides/multi_round_chat/)、[Chat Completions 参数](https://api-docs.deepseek.com/api/create-chat-completion/)。实际验证范围记录在 [AI 使用记录](04-ai-usage.md)。
 
@@ -273,6 +287,7 @@ Embedding 与 rerank 优先作为独立适配器运行，是否本机进程或�
 | `run_actions` / `evidence_reads` | 动作 ID、计数预留、输入/输出摘要、成功读取的原文范围；动作 ID 唯一 |
 | `clarifications` | `run_id, payload, status, deadline_at, response`；唯一 `run_id`，只允许一次补充窗口 |
 | `trace_events` | `run_id, seq, event_id, payload`；唯一 `(run_id, seq)` 与 `event_id` |
+| `model_invocations` | 本轮调用序号、逻辑动作 ID、阶段、模型、适配器、输入、返回、错误及时间；输入已移除私有思考/凭据字段；恢复不重复已完成调用，未知结果重试单独计次 |
 | LangGraph checkpoint 表 | 使用官方 PostgreSQL saver 的表结构与迁移；和业务状态分开管理 |
 
 引用和最终结果保存在 run 中，通过证据 ID 关联读取记录。用组合外键或等效约束防止 chunk、文档修订和快照跨库错配。`chunks(kb_version_id, document_version_id)` 建 B-tree，`search_vector` 建 GIN；任务待领取状态和补充待超时状态建部分索引。
@@ -284,10 +299,11 @@ Embedding 与 rerank 优先作为独立适配器运行，是否本机进程或�
 版本状态：`pending → building → ready`，失败为 `failed`。是否当前发布版本由知识库指针表示；旧版本仍可被历史 run 读取。
 
 1. 在短事务中冻结目标文档清单、基线版本和配置，插入版本与构建 job；任务提交和资源创建同事务，避免“有版本没任务”。
-2. Worker 在事务外解析与计算，分批写入非公开的构建区。每批写入验证当前 job 的租约 token；重试使用唯一键并核对内容哈希，防止重复 chunk。
-3. 完整检查目标清单、chunk 与向量后标记 `ready`；失败或不完整版本不能成为当前版本。
-4. 发布时 `SELECT … FOR UPDATE` 锁定知识库行，检查 `current_version_id == expected_current_version_id`，再切换指针。两个构建基于同一旧版本时只允许一个直接发布，另一个返回 `VERSION_CONFLICT`，基于新版本重新构建，防止丢失另一批上传。
-5. 创建 run 时捕获当前版本；之后所有检索、读取和引用使用该快照，且保留被 run 引用的旧文件、块与索引。首期不自动清理历史版本，后续清理必须检查引用关系。
+2. 对照基线的逻辑文档 ID 与修订：新 ID 新增，已有 ID 替换，同格式、内容哈希和元数据均相同的重复上传沿用既有修订。基线已就绪、构建配置完全一致且修订未变时，在短事务内复制原文块、分块、全文检索向量和 embedding 到新快照，生成归属新版本的 chunk ID，不重新解析、分块或调用向量模型。移除的文档不进入新快照；配置变化或缺少可复用原文/索引时重新处理。
+3. Worker 在事务外解析与计算新增/变更文档，分批写入非公开的构建区；每批写入验证当前 job 的租约 token。进度持久化记录完成数、复用数和新构建数，重试仍受原始截止时间与快照不可变约束。
+4. 完整检查目标清单、chunk 与向量后标记 `ready`；失败或不完整版本不能成为当前版本。
+5. 发布时 `SELECT … FOR UPDATE` 锁定知识库行，检查 `current_version_id == expected_current_version_id`，再切换指针。多个已就绪版本基于同一旧版本时只允许一个直接发布，另一个返回 `VERSION_CONFLICT`，基于新版本重新构建，防止丢失另一批上传。
+6. 创建 run 时捕获当前版本；之后所有检索、读取和引用使用该快照，且保留被 run 引用的旧文件、块与索引。首期不自动清理历史版本，后续清理必须检查引用关系。
 
 原文件持久化完成后才登记可构建上传；数据库与文件系统不能共用事务，因此失败留下的孤立文件通过引用检查回收，不删除已被文档修订引用的文件。
 
@@ -336,6 +352,8 @@ Embedding 与 rerank 优先作为独立适配器运行，是否本机进程或�
 | DB 锁 / 普通语句 / 空闲事务超时 | 2 / 10 / 10 秒 | 作用于业务连接；索引构建和迁移使用独立有界配置 |
 
 业务工具与模型 SDK 的透明自动重试首期关闭，让可恢复错误进入模型观察；基础设施恢复仍受上述预算限制。查询阶段每次最多 3 个变体、6 路各 20 条召回、60 条重排、8 条候选返回，避免单个“工具调用”内部无限扩张。
+
+每次决策向模型提供当前 run 的剩余检索/读取次数、模型次数、执行步数及活跃时间。剩余模型或执行步数不足以再查证并收尾时，提示直接调用 `finish_answer`；工具次数为零时也要求收尾，已有充分证据可正常回答，必要查证未完成则说明已核实内容和具体缺口，以 `incomplete` 结束。超额业务工具请求作为 `TOOL_CALL_LIMIT` 观察返回，保持调用与结果 ID 配对；模型忽略提示继续循环仍受原有总上限限制。时间、模型或步数硬限制触发时，由程序返回实际完成的检索/读取次数与明确的终止原因，不据此宣称制度不存在。没有预算处理用户补充时不进入等待。决策预算快照随动作持久化，恢复重放使用相同提示，避免重复调用和输入哈希冲突。
 
 密钥只在后端环境变量中；首期按本地单用户部署。所有读取仍校验会话、知识库与版本关系，上传内容视为资料而非执行指令。开放到公网或多人使用前需补齐认证与授权，不把本地示例宣称为多租户生产系统。
 

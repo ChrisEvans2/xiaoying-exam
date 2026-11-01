@@ -44,6 +44,10 @@ export type Result = {
 };
 export type Run = {
   id: string;
+  conversation_id?: string;
+  model_calls?: number;
+  tool_calls?: number;
+  created_at?: string;
   question: string;
   execution_status: string;
   task_status: string | null;
@@ -51,20 +55,51 @@ export type Run = {
   deadline_at: string | null;
   kb_version_id: string;
 };
+export type ConversationSummary = {
+  id: string;
+  kb_id: string;
+  title: string;
+  created_at: string;
+  last_activity_at: string;
+  input_count: number;
+};
+export type Conversation = {
+  id: string;
+  kb_id: string;
+  runs: Run[];
+};
 export type Trace = {
   seq: number;
   type: string;
   occurred_at: string;
   payload: Record<string, unknown>;
 };
+export type SessionTrace = {
+  session_id: string;
+  kb_id: string;
+  rounds: { run: Run; events: Trace[] }[];
+};
+export type ModelInvocation = {
+  call_number: number;
+  phase: string;
+  adapter: string;
+  model: string;
+  status: string;
+  request: { messages?: Record<string, unknown>[]; [key: string]: unknown };
+  response: unknown;
+};
 export type Job = {
   id: string;
+  resource_id: string;
   status: string;
+  payload?: { changes?: Pending[] };
   error?: { code: string; message: string };
   progress?: {
     stage: string;
     completed?: number;
     total?: number;
+    reused?: number;
+    rebuilt?: number;
     published?: boolean;
     publish_error?: { message: string };
   };

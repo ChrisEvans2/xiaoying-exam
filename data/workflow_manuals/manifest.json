@@ -1,0 +1,189 @@
+{
+  "company": "澄岳示例科技有限公司",
+  "synthetic": true,
+  "version_date": "2026-11-01",
+  "counting": "正文汉字数 不含标题元数据页眉页脚 统计 Unicode 汉字区间 不含数字标点和格式标记",
+  "documents": [
+    {
+      "document_id": "WF01",
+      "title": "员工请假申请与销假操作手册",
+      "filename": "WF01-leave.txt",
+      "format": "txt",
+      "body_han_characters": 14005,
+      "body_characters_without_whitespace": 15112,
+      "bytes": 47276,
+      "sha256": "c9418897e8646ac8ce91fd9bbe2f26c464c90995c7832b641bf272332ac98ced",
+      "verification": {
+        "id": "WF01",
+        "body_han_characters": 14005,
+        "all_body_paragraphs_extracted": true
+      }
+    },
+    {
+      "document_id": "WF02",
+      "title": "日常费用报销与付款核验手册",
+      "filename": "WF02-expense.md",
+      "format": "md",
+      "body_han_characters": 13540,
+      "body_characters_without_whitespace": 14639,
+      "bytes": 45852,
+      "sha256": "995ca4bef1c6355fe4c9af9f3dfed643aaf3767b2ef09c96ae4342058330b89a",
+      "verification": {
+        "id": "WF02",
+        "body_han_characters": 13540,
+        "all_body_paragraphs_extracted": true
+      }
+    },
+    {
+      "document_id": "WF03",
+      "title": "公务出差申请与行程变更操作手册",
+      "filename": "WF03-travel.docx",
+      "format": "docx",
+      "body_han_characters": 13550,
+      "body_characters_without_whitespace": 14650,
+      "bytes": 55968,
+      "sha256": "9042fc54eeaa7ad91abd6f93a287667a959d0ec2ad65dd45b885b44eba46cb1e",
+      "verification": {
+        "id": "WF03",
+        "body_han_characters": 13550,
+        "rendered_pages": 23,
+        "tables": 2,
+        "native_multilevel_numbering": true,
+        "repeated_table_headers": true,
+        "all_body_paragraphs_extracted": true,
+        "all_pages_visually_reviewed": true
+      }
+    },
+    {
+      "document_id": "WF04",
+      "title": "员工离职申请与工作交接操作手册",
+      "filename": "WF04-offboarding.docx",
+      "format": "docx",
+      "body_han_characters": 13532,
+      "body_characters_without_whitespace": 14620,
+      "bytes": 55634,
+      "sha256": "77673cefe81ef994b861d23e6d10278153630ec924025fe0e9808de639691028",
+      "verification": {
+        "id": "WF04",
+        "body_han_characters": 13532,
+        "rendered_pages": 22,
+        "tables": 2,
+        "native_multilevel_numbering": true,
+        "repeated_table_headers": true,
+        "all_body_paragraphs_extracted": true,
+        "all_pages_visually_reviewed": true
+      }
+    },
+    {
+      "document_id": "WF05",
+      "title": "办公采购申请与验收付款操作手册",
+      "filename": "WF05-procurement.html",
+      "format": "html",
+      "body_han_characters": 13240,
+      "body_characters_without_whitespace": 14336,
+      "bytes": 50892,
+      "sha256": "857453c1bc8b37256f9c109aa891afbe42daed18a654e6f02a140343e92402c8",
+      "verification": {
+        "id": "WF05",
+        "body_han_characters": 13240,
+        "tables": 2,
+        "valid_section_anchors": 15,
+        "external_dependencies": 0,
+        "all_body_paragraphs_extracted": true,
+        "viewport_widths_without_horizontal_overflow": [
+          1200,
+          390
+        ]
+      }
+    },
+    {
+      "document_id": "WF06",
+      "title": "业务合同审查与用印申请操作手册",
+      "filename": "WF06-contract.html",
+      "format": "html",
+      "body_han_characters": 13360,
+      "body_characters_without_whitespace": 14472,
+      "bytes": 51300,
+      "sha256": "313f8a54060c7a8b668773abba34312302e77b462fa55da13dfbfb0abeb69e03",
+      "verification": {
+        "id": "WF06",
+        "body_han_characters": 13360,
+        "tables": 2,
+        "valid_section_anchors": 15,
+        "external_dependencies": 0,
+        "all_body_paragraphs_extracted": true,
+        "viewport_widths_without_horizontal_overflow": [
+          1200,
+          390
+        ]
+      }
+    },
+    {
+      "document_id": "WF07",
+      "title": "新员工入职申请与岗位开通操作手册",
+      "filename": "WF07-onboarding-single-column.pdf",
+      "format": "pdf",
+      "body_han_characters": 13360,
+      "body_characters_without_whitespace": 14427,
+      "bytes": 362511,
+      "sha256": "0398f19cc6da48aba5dd1d7d3db01f44612aed4f741e035db53d72d0aa66852b",
+      "body_columns": 1,
+      "verification": {
+        "id": "WF07",
+        "body_han_characters": 13360,
+        "pages": 15,
+        "tables_detected": 2,
+        "embedded_fonts": [
+          "/AAAAAA+ArialUnicodeMS",
+          "/AAAAAB+ArialUnicodeMS",
+          "/AAAAAC+ArialUnicodeMS",
+          "/AAAAAD+ArialUnicodeMS"
+        ],
+        "body_columns": 1,
+        "text_bounds_valid": true,
+        "all_body_paragraphs_extracted": true,
+        "all_pages_visually_reviewed": true
+      }
+    },
+    {
+      "document_id": "WF08",
+      "title": "办公资产领用借还与维修操作手册",
+      "filename": "WF08-assets-double-column.pdf",
+      "format": "pdf",
+      "body_han_characters": 13184,
+      "body_characters_without_whitespace": 14294,
+      "bytes": 362846,
+      "sha256": "3f184cff9d418012c2ae6424023224eef0c9b64c5572113896ac67affd9864ef",
+      "body_columns": 2,
+      "verification": {
+        "id": "WF08",
+        "body_han_characters": 13184,
+        "pages": 13,
+        "tables_detected": 3,
+        "embedded_fonts": [
+          "/AAAAAA+ArialUnicodeMS",
+          "/AAAAAB+ArialUnicodeMS",
+          "/AAAAAC+ArialUnicodeMS",
+          "/AAAAAD+ArialUnicodeMS"
+        ],
+        "body_columns": 2,
+        "text_bounds_valid": true,
+        "all_body_paragraphs_extracted": true,
+        "all_pages_visually_reviewed": true
+      }
+    }
+  ],
+  "verification_summary": {
+    "business_documents": 8,
+    "formats": 5,
+    "all_body_counts_exceed_10000": true,
+    "all_body_paragraphs_extractable": true,
+    "pdf_fonts_embedded": true,
+    "docx_native_numbering": true,
+    "rendered_pages_visually_reviewed": 73,
+    "html_desktop_and_mobile_layout": "pass",
+    "project_file_validation": "8/8 pass",
+    "project_metadata_extraction": "8/8 pass",
+    "project_non_pdf_local_parsing": "6/6 pass"
+  }
+}

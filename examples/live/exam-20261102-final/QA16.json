@@ -1,0 +1,2447 @@
+{
+  "evidence_type": "live_model",
+  "case_id": "QA16",
+  "input": {
+    "question": "出差结束后，我最晚多少天内要提交差旅报销申请？",
+    "history": []
+  },
+  "followup_input": {
+    "content": "没有更多的优先级或替代关系说明，请保留冲突。"
+  },
+  "fault_injection": {
+    "read": 0,
+    "search_document_ids": null
+  },
+  "history_runs": [],
+  "initial": {
+    "id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+    "conversation_id": "6316b511-41ce-423e-af5e-ed44a7e7222f",
+    "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+    "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+    "question": "出差结束后，我最晚多少天内要提交差旅报销申请？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 8,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "waiting",
+    "task_status": "awaiting_user",
+    "result": {
+      "answer": "现有两份制度对同一范围（中国大陆境内公务差旅、劳动合同员工含试用期）规定了不同的提交时限：《差旅报销基本规定》为出差结束次日起 30 个自然日内，《财务差旅报销受理指引》为出差结束次日起 15 个自然日内（均含周末和法定节假日）。两份文件均未说明效力先后或优先适用规则，因此无法确定最晚提交天数，需要确认以哪一份为准（或是否有冲突适用规则）。",
+      "action_id": "tool:6",
+      "citations": [
+        {
+          "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅报销基本规定",
+          "locator": [
+            {
+              "end": 46,
+              "start": 0,
+              "block_id": "b1",
+              "line_end": 14,
+              "line_start": 14
+            }
+          ],
+          "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+          "document_id": "D01",
+          "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89",
+          "version_date": "2026-08-01",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+        },
+        {
+          "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "财务差旅报销受理指引",
+          "locator": [
+            {
+              "end": 46,
+              "bbox": [
+                126,
+                310,
+                863,
+                348
+              ],
+              "page": 1,
+              "start": 0,
+              "block_id": "b3",
+              "reading_order": 3,
+              "coordinate_system": "normalized_1000"
+            }
+          ],
+          "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+          "document_id": "D02",
+          "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85",
+          "version_date": "2026-09-15",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+        }
+      ],
+      "questions": [
+        "差旅报销提交时限应适用《差旅报销基本规定》的 30 个自然日，还是《财务差旅报销受理指引》的 15 个自然日？",
+        "公司是否有制度层级或特别规定优先的正式文件可确认二者适用顺序？"
+      ],
+      "deadline_at": "2026-11-01T17:37:19.200684+00:00",
+      "reason_code": "conflicting_rules_no_priority",
+      "task_status": "awaiting_user",
+      "clarification_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "information_gaps": [
+        "两份制度适用对象与范围相同，但时限分别为 30 个自然日和 15 个自然日，缺少时效力优先、新旧替代或特别规定优先的说明",
+        "未确认应适用《差旅报销基本规定》还是《财务差旅报销受理指引》"
+      ]
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 1,
+    "deadline_at": "2026-11-01T17:37:19.200684+00:00",
+    "model_calls": 8,
+    "tool_calls": 5,
+    "graph_steps": 15,
+    "active_ms": 13231.358,
+    "segment_started_at": null,
+    "next_event_seq": 40,
+    "created_at": "2026-11-01T17:27:05.981209+00:00"
+  },
+  "run": {
+    "id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+    "conversation_id": "6316b511-41ce-423e-af5e-ed44a7e7222f",
+    "kb_id": "2d6082d4-ba48-4e88-b91f-e95915f97eb7",
+    "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+    "question": "出差结束后，我最晚多少天内要提交差旅报销申请？",
+    "config": {
+      "provider_mode": "live",
+      "deepseek_model": "deepseek-v4-flash",
+      "max_tool_calls": 8,
+      "reranker_model": "/Users/sleepy/Data/work_code/AI-agent learning/xiaoying-exam/.runtime/models/bge-reranker-v2-m3",
+      "max_graph_steps": 40,
+      "max_model_calls": 12,
+      "deepseek_thinking": true,
+      "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+      "deepseek_max_tokens": 16384,
+      "read_timeout_seconds": 5.0,
+      "tool_timeout_seconds": 20.0,
+      "clarification_seconds": 600.0,
+      "model_timeout_seconds": 45.0,
+      "queue_timeout_seconds": 60.0,
+      "active_timeout_seconds": 180.0,
+      "deepseek_reasoning_effort": "high"
+    },
+    "execution_status": "finished",
+    "task_status": "insufficient",
+    "result": {
+      "answer": "无法确定唯一时限：两份制度适用同一范围，但《差旅报销基本规定》要求出差结束次日起 30 个自然日内提交，《财务差旅报销受理指引》要求出差结束次日起 15 个自然日内提交，且无优先级或替代关系说明，冲突保留，需由公司确认适用哪一份。",
+      "citations": [
+        {
+          "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "差旅报销基本规定",
+          "locator": [
+            {
+              "end": 46,
+              "start": 0,
+              "block_id": "b1",
+              "line_end": 14,
+              "line_start": 14
+            }
+          ],
+          "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+          "document_id": "D01",
+          "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89",
+          "version_date": "2026-08-01",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+        },
+        {
+          "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+          "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+          "title": "财务差旅报销受理指引",
+          "locator": [
+            {
+              "end": 46,
+              "bbox": [
+                126,
+                310,
+                863,
+                348
+              ],
+              "page": 1,
+              "start": 0,
+              "block_id": "b3",
+              "reading_order": 3,
+              "coordinate_system": "normalized_1000"
+            }
+          ],
+          "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+          "document_id": "D02",
+          "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85",
+          "version_date": "2026-09-15",
+          "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+          "evidence_epoch": 0,
+          "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+        }
+      ],
+      "reason_code": "conflicting_rules_no_priority",
+      "task_status": "insufficient",
+      "information_gaps": [
+        "两份制度适用范围相同但时限分别为 30 和 15 个自然日，制度中缺少优先级或替代关系说明",
+        "用户补充确认无更多优先级依据，冲突未消解"
+      ]
+    },
+    "evidence_epoch": 0,
+    "clarification_count": 1,
+    "deadline_at": "2026-11-01T17:37:19.200684+00:00",
+    "model_calls": 10,
+    "tool_calls": 5,
+    "graph_steps": 19,
+    "active_ms": 17040.301,
+    "segment_started_at": null,
+    "next_event_seq": 52,
+    "created_at": "2026-11-01T17:27:05.981209+00:00"
+  },
+  "trace": [
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 1,
+      "event_id": "run.queued",
+      "type": "run.queued",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "provider_mode": "live"
+      },
+      "occurred_at": "2026-11-01T17:27:05.981209+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 2,
+      "event_id": "run.started:a8cc4a02-f47c-4c80-9345-aa4fd90cf461",
+      "type": "run.started",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "evidence_epoch": 0
+      },
+      "occurred_at": "2026-11-01T17:27:05.987287+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 3,
+      "event_id": "model.started:1",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "adapter": "DeepSeekChat",
+        "action_id": "expand:0",
+        "call_number": 1,
+        "message_count": 2
+      },
+      "occurred_at": "2026-11-01T17:27:06.032727+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 4,
+      "event_id": "model.finished:1",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "response": {
+          "intent": "knowledge",
+          "expanded_queries": [
+            "出差结束后最晚多少天内提交差旅报销申请",
+            "差旅报销申请提交时限"
+          ],
+          "unresolved_slots": [],
+          "resolved_question": "出差结束后，最晚多少天内要提交差旅报销申请？"
+        },
+        "action_id": "expand:0",
+        "recovered": false,
+        "elapsed_ms": 1524.132,
+        "call_number": 1
+      },
+      "occurred_at": "2026-11-01T17:27:07.556368+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 5,
+      "event_id": "intent:0",
+      "type": "intent.detected",
+      "payload": {
+        "intent": "knowledge",
+        "requires_knowledge": true
+      },
+      "occurred_at": "2026-11-01T17:27:07.560155+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 6,
+      "event_id": "expanded:0",
+      "type": "query.expanded",
+      "payload": {
+        "intent": "knowledge",
+        "expanded_queries": [
+          "出差结束后，我最晚多少天内要提交差旅报销申请？",
+          "出差结束后，最晚多少天内要提交差旅报销申请？",
+          "出差结束后最晚多少天内提交差旅报销申请"
+        ],
+        "unresolved_slots": [],
+        "resolved_question": "出差结束后，最晚多少天内要提交差旅报销申请？"
+      },
+      "occurred_at": "2026-11-01T17:27:07.563157+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 7,
+      "event_id": "model.started:2",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:0",
+        "call_number": 2,
+        "message_count": 4
+      },
+      "occurred_at": "2026-11-01T17:27:07.585904+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 8,
+      "event_id": "model.finished:2",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_QdXd7psDnslDgs79gCyw8155",
+              "type": "function",
+              "function": {
+                "name": "search_knowledge",
+                "arguments": "{\"queries\": [\"出差结束后最晚多少天内提交差旅报销申请\", \"差旅费报销 提交时限 天数\", \"出差 报销 期限 规定\"], \"reason\": \"检索差旅报销申请提交时限的制度条款\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:0",
+        "recovered": false,
+        "elapsed_ms": 1035.176,
+        "call_number": 2
+      },
+      "occurred_at": "2026-11-01T17:27:08.621341+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 9,
+      "event_id": "decision:0",
+      "type": "agent.decision",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 0,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 8,
+          "graph_steps_remaining": 38,
+          "model_calls_remaining": 11,
+          "active_seconds_remaining": 178.409968
+        },
+        "tool_call_id": "call_00_ET_QdXd7psDnslDgs79gCyw8155"
+      },
+      "occurred_at": "2026-11-01T17:27:08.625425+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 10,
+      "event_id": "tool.started:0",
+      "type": "tool.started",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "reason": "检索差旅报销申请提交时限的制度条款",
+        "arguments": {
+          "queries": [
+            "出差结束后最晚多少天内提交差旅报销申请",
+            "差旅费报销 提交时限 天数",
+            "出差 报销 期限 规定"
+          ]
+        },
+        "tool_call_id": "call_00_ET_QdXd7psDnslDgs79gCyw8155"
+      },
+      "occurred_at": "2026-11-01T17:27:08.639111+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 11,
+      "event_id": "tool.completed:0",
+      "type": "tool.completed",
+      "payload": {
+        "step": 0,
+        "tool": "search_knowledge",
+        "degraded": false,
+        "failures": [],
+        "candidates": [
+          {
+            "title": "差旅报销基本规定",
+            "ordinal": 1,
+            "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+            "rrf_score": 0.09626216077828981,
+            "document_id": "D01",
+            "heading_path": [
+              "差旅报销基本规定"
+            ],
+            "rerank_score": 0.9932827949523926,
+            "version_date": "2026-08-01",
+            "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+          },
+          {
+            "title": "财务差旅报销受理指引",
+            "ordinal": 6,
+            "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+            "rrf_score": 0.09685431790138295,
+            "document_id": "D02",
+            "heading_path": [
+              "财务差旅报销受理指引"
+            ],
+            "rerank_score": 0.9929452538490295,
+            "version_date": "2026-09-15",
+            "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 7,
+            "chunk_id": "a0e58cd4-f37c-5f1b-88c5-d02fea793c83",
+            "rrf_score": 0.05775835275835276,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.08825574070215225,
+            "version_date": "2026-08-01",
+            "document_version_id": "62e355f7-c26d-40f8-a45e-21a1d6bdeeaf"
+          },
+          {
+            "title": "境内差旅餐费补贴规定",
+            "ordinal": 2,
+            "chunk_id": "469e0d0c-d136-5dd7-a803-48e23574bc1c",
+            "rrf_score": 0.05767409871998619,
+            "document_id": "D05",
+            "heading_path": [
+              "境内差旅餐费补贴规定"
+            ],
+            "rerank_score": 0.08818776160478592,
+            "version_date": "2026-08-01",
+            "document_version_id": "13a0e5cc-92b2-44c8-a4cb-6229147bcbd3"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 10,
+            "chunk_id": "e4e97d7f-2e3d-56b0-8257-2ad4d10b3e07",
+            "rrf_score": 0.08905124726020248,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.03234584629535675,
+            "version_date": "2026-08-01",
+            "document_version_id": "62e355f7-c26d-40f8-a45e-21a1d6bdeeaf"
+          },
+          {
+            "title": "差旅报销基本规定",
+            "ordinal": 2,
+            "chunk_id": "a87b859c-8882-5952-9bbd-269f85bcd21c",
+            "rrf_score": 0.0854329449416093,
+            "document_id": "D01",
+            "heading_path": [
+              "差旅报销基本规定"
+            ],
+            "rerank_score": 0.03155830502510071,
+            "version_date": "2026-08-01",
+            "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+          },
+          {
+            "title": "财务差旅报销受理指引",
+            "ordinal": 7,
+            "chunk_id": "b2e94a71-4133-5533-bf38-f07be95b876e",
+            "rrf_score": 0.08322452745053364,
+            "document_id": "D02",
+            "heading_path": [
+              "财务差旅报销受理指引"
+            ],
+            "rerank_score": 0.02650276944041252,
+            "version_date": "2026-09-15",
+            "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+          },
+          {
+            "title": "差旅预借款管理规定",
+            "ordinal": 6,
+            "chunk_id": "677db2cf-f9c8-5d86-85e0-9ef60853f4d1",
+            "rrf_score": 0.04199689316359487,
+            "document_id": "D06",
+            "heading_path": [
+              "差旅预借款管理规定"
+            ],
+            "rerank_score": 0.023593569174408913,
+            "version_date": "2026-08-01",
+            "document_version_id": "62e355f7-c26d-40f8-a45e-21a1d6bdeeaf"
+          }
+        ],
+        "query_count": 3,
+        "tool_call_id": "call_00_ET_QdXd7psDnslDgs79gCyw8155",
+        "candidate_count": 38
+      },
+      "occurred_at": "2026-11-01T17:27:09.259745+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 12,
+      "event_id": "model.started:3",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:1",
+        "call_number": 3,
+        "message_count": 7
+      },
+      "occurred_at": "2026-11-01T17:27:09.276328+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 13,
+      "event_id": "model.finished:3",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_LeoDEAdg8YBmBxoTfCvk9983",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"chunk_ids\": [\"7c3840ac-ae02-5c16-ad95-0327592a3829\", \"310e0e1a-a9cf-5b4d-b99c-cf976597d477\"], \"reason\": \"读取差旅报销基本规定与财务受理指引中关于提交时限的原文\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:1",
+        "recovered": false,
+        "elapsed_ms": 1344.778,
+        "call_number": 3
+      },
+      "occurred_at": "2026-11-01T17:27:10.620681+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 14,
+      "event_id": "decision:1",
+      "type": "agent.decision",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 1,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 7,
+          "graph_steps_remaining": 36,
+          "model_calls_remaining": 10,
+          "active_seconds_remaining": 176.717733
+        },
+        "tool_call_id": "call_00_LeoDEAdg8YBmBxoTfCvk9983"
+      },
+      "occurred_at": "2026-11-01T17:27:10.626778+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 15,
+      "event_id": "tool.started:1",
+      "type": "tool.started",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "reason": "读取差旅报销基本规定与财务受理指引中关于提交时限的原文",
+        "arguments": {
+          "chunk_ids": [
+            "7c3840ac-ae02-5c16-ad95-0327592a3829",
+            "310e0e1a-a9cf-5b4d-b99c-cf976597d477"
+          ]
+        },
+        "tool_call_id": "call_00_LeoDEAdg8YBmBxoTfCvk9983"
+      },
+      "occurred_at": "2026-11-01T17:27:10.642743+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 16,
+      "event_id": "tool.completed:1",
+      "type": "tool.completed",
+      "payload": {
+        "step": 1,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 46,
+                "start": 0,
+                "block_id": "b1",
+                "line_end": 14,
+                "line_start": 14
+              }
+            ],
+            "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+            "document_id": "D01",
+            "evidence_id": "022919bc-50d5-5d30-8bc0-4689d32f9e02"
+          },
+          {
+            "locator": [
+              {
+                "end": 46,
+                "bbox": [
+                  126,
+                  310,
+                  863,
+                  348
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b3",
+                "reading_order": 3,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+            "document_id": "D02",
+            "evidence_id": "26d0221e-0936-5a21-8abd-c1f947e7a55d"
+          }
+        ],
+        "tool_call_id": "call_00_LeoDEAdg8YBmBxoTfCvk9983"
+      },
+      "occurred_at": "2026-11-01T17:27:10.654342+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 17,
+      "event_id": "model.started:4",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:2",
+        "call_number": 4,
+        "message_count": 10
+      },
+      "occurred_at": "2026-11-01T17:27:10.667729+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 18,
+      "event_id": "model.finished:4",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_8ORkXmHTHrlkybCNsfbl4756",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D01\", \"limit\": 8, \"reason\": \"核查差旅报销基本规定是否含效力或优先适用条款\"}"
+              }
+            },
+            {
+              "id": "call_01_KRUzPH4dUMXLzE2ME97N2973",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D02\", \"limit\": 8, \"reason\": \"核查财务差旅报销受理指引是否含效力或优先适用条款\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:2",
+        "recovered": false,
+        "elapsed_ms": 1641.782,
+        "call_number": 4
+      },
+      "occurred_at": "2026-11-01T17:27:12.309379+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 19,
+      "event_id": "decision:2",
+      "type": "agent.decision",
+      "payload": {
+        "step": 2,
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 2,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 6,
+          "graph_steps_remaining": 34,
+          "model_calls_remaining": 9,
+          "active_seconds_remaining": 175.325266
+        },
+        "accepted": false,
+        "tool_count": 2
+      },
+      "occurred_at": "2026-11-01T17:27:12.313087+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 20,
+      "event_id": "model.started:5",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:3",
+        "call_number": 5,
+        "message_count": 15
+      },
+      "occurred_at": "2026-11-01T17:27:12.338973+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 21,
+      "event_id": "model.finished:5",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_ctQmkGD3S8UUr4Ii1t0y0169",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D01\", \"limit\": 8, \"reason\": \"核查差旅报销基本规定是否含效力或优先适用条款\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:3",
+        "recovered": false,
+        "elapsed_ms": 931.512,
+        "call_number": 5
+      },
+      "occurred_at": "2026-11-01T17:27:13.269638+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 22,
+      "event_id": "decision:3",
+      "type": "agent.decision",
+      "payload": {
+        "step": 3,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 2,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 6,
+          "graph_steps_remaining": 32,
+          "model_calls_remaining": 8,
+          "active_seconds_remaining": 173.656705
+        },
+        "tool_call_id": "call_00_ET_ctQmkGD3S8UUr4Ii1t0y0169"
+      },
+      "occurred_at": "2026-11-01T17:27:13.274409+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 23,
+      "event_id": "tool.started:3",
+      "type": "tool.started",
+      "payload": {
+        "step": 3,
+        "tool": "read_document",
+        "reason": "核查差旅报销基本规定是否含效力或优先适用条款",
+        "arguments": {
+          "limit": 8,
+          "document_id": "D01"
+        },
+        "tool_call_id": "call_00_ET_ctQmkGD3S8UUr4Ii1t0y0169"
+      },
+      "occurred_at": "2026-11-01T17:27:13.293615+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 24,
+      "event_id": "tool.completed:3",
+      "type": "tool.completed",
+      "payload": {
+        "step": 3,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 25,
+                "start": 0,
+                "block_id": "b0",
+                "line_end": 12,
+                "line_start": 12
+              }
+            ],
+            "chunk_id": "3389c928-d323-500f-bd81-9948282b8eaf",
+            "document_id": "D01",
+            "evidence_id": "c862deea-e2a5-5471-8dc7-9bd5a1b130ca"
+          },
+          {
+            "locator": [
+              {
+                "end": 46,
+                "start": 0,
+                "block_id": "b1",
+                "line_end": 14,
+                "line_start": 14
+              }
+            ],
+            "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+            "document_id": "D01",
+            "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89"
+          },
+          {
+            "locator": [
+              {
+                "end": 39,
+                "start": 0,
+                "block_id": "b2",
+                "line_end": 15,
+                "line_start": 15
+              }
+            ],
+            "chunk_id": "a87b859c-8882-5952-9bbd-269f85bcd21c",
+            "document_id": "D01",
+            "evidence_id": "f716b9e8-56e6-5849-81fa-1111fb9bba0a"
+          },
+          {
+            "locator": [
+              {
+                "end": 57,
+                "start": 0,
+                "block_id": "b3",
+                "line_end": 16,
+                "line_start": 16
+              }
+            ],
+            "chunk_id": "edfe4909-0280-532d-8e79-3c6bd21db864",
+            "document_id": "D01",
+            "evidence_id": "0d0b59a5-41cb-544f-bc17-50cb2a5b4cfa"
+          },
+          {
+            "locator": [
+              {
+                "end": 37,
+                "start": 0,
+                "block_id": "b4",
+                "line_end": 17,
+                "line_start": 17
+              }
+            ],
+            "chunk_id": "b6e0f8f5-8c1b-504b-8f8c-5af106477c66",
+            "document_id": "D01",
+            "evidence_id": "aefbc036-a144-56cb-b85e-7362991f80be"
+          },
+          {
+            "locator": [
+              {
+                "end": 30,
+                "start": 0,
+                "block_id": "b5",
+                "line_end": 18,
+                "line_start": 18
+              }
+            ],
+            "chunk_id": "74c64cab-53a1-5e8b-a3d1-5e8fb087e4b0",
+            "document_id": "D01",
+            "evidence_id": "ed0b89ce-c27b-5380-a73d-1649ec3f71cd"
+          }
+        ],
+        "tool_call_id": "call_00_ET_ctQmkGD3S8UUr4Ii1t0y0169"
+      },
+      "occurred_at": "2026-11-01T17:27:13.312616+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 25,
+      "event_id": "model.started:6",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:4",
+        "call_number": 6,
+        "message_count": 18
+      },
+      "occurred_at": "2026-11-01T17:27:13.328999+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 26,
+      "event_id": "model.finished:6",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_55wGDzIHllATTrQCjpEE9476",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D02\", \"limit\": 8, \"reason\": \"核查财务差旅报销受理指引是否有优先适用或效力说明\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:4",
+        "recovered": false,
+        "elapsed_ms": 879.39,
+        "call_number": 6
+      },
+      "occurred_at": "2026-11-01T17:27:14.208332+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 27,
+      "event_id": "decision:4",
+      "type": "agent.decision",
+      "payload": {
+        "step": 4,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 3,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 5,
+          "graph_steps_remaining": 30,
+          "model_calls_remaining": 7,
+          "active_seconds_remaining": 172.664597
+        },
+        "tool_call_id": "call_00_55wGDzIHllATTrQCjpEE9476"
+      },
+      "occurred_at": "2026-11-01T17:27:14.212642+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 28,
+      "event_id": "tool.started:4",
+      "type": "tool.started",
+      "payload": {
+        "step": 4,
+        "tool": "read_document",
+        "reason": "核查财务差旅报销受理指引是否有优先适用或效力说明",
+        "arguments": {
+          "limit": 8,
+          "document_id": "D02"
+        },
+        "tool_call_id": "call_00_55wGDzIHllATTrQCjpEE9476"
+      },
+      "occurred_at": "2026-11-01T17:27:14.226451+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 29,
+      "event_id": "tool.completed:4",
+      "type": "tool.completed",
+      "payload": {
+        "step": 4,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 10,
+                "bbox": [
+                  127,
+                  93,
+                  465,
+                  121
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b0",
+                "reading_order": 0,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "4355a618-40ad-5187-b9e3-12965b891f24",
+            "document_id": "D02",
+            "evidence_id": "9328616b-31c5-5029-8355-8978b68c4e88"
+          },
+          {
+            "locator": [
+              {
+                "end": 12,
+                "bbox": [
+                  127,
+                  145,
+                  593,
+                  252
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b1",
+                "reading_order": 1,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "b5eb0980-fb79-507c-aebd-c9190cb936c4",
+            "document_id": "D02",
+            "evidence_id": "b3ed4e7c-ba8f-5dc0-ab4f-8b1668b6f567"
+          },
+          {
+            "locator": [
+              {
+                "end": 30,
+                "bbox": [
+                  127,
+                  145,
+                  593,
+                  252
+                ],
+                "page": 1,
+                "start": 12,
+                "block_id": "b1",
+                "reading_order": 1,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "7482f32b-68f1-58b1-ba5a-aefb8b8257d8",
+            "document_id": "D02",
+            "evidence_id": "ee21d0d6-4018-5dd8-8ad3-e6c0dec18054"
+          },
+          {
+            "locator": [
+              {
+                "end": 46,
+                "bbox": [
+                  127,
+                  145,
+                  593,
+                  252
+                ],
+                "page": 1,
+                "start": 30,
+                "block_id": "b1",
+                "reading_order": 1,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "cb0c5af4-6763-5d0d-8114-5dc2a3d03b2a",
+            "document_id": "D02",
+            "evidence_id": "52003e33-1b84-524a-b3bd-4a33b234641e"
+          },
+          {
+            "locator": [
+              {
+                "end": 77,
+                "bbox": [
+                  127,
+                  145,
+                  593,
+                  252
+                ],
+                "page": 1,
+                "start": 46,
+                "block_id": "b1",
+                "reading_order": 1,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "fc491da1-3d9f-5642-ab42-7b9fd9b048ac",
+            "document_id": "D02",
+            "evidence_id": "53aeed8f-902f-574f-8f7f-dcb5e2ec0eac"
+          },
+          {
+            "locator": [
+              {
+                "end": 86,
+                "bbox": [
+                  127,
+                  145,
+                  593,
+                  252
+                ],
+                "page": 1,
+                "start": 77,
+                "block_id": "b1",
+                "reading_order": 1,
+                "coordinate_system": "normalized_1000"
+              },
+              {
+                "end": 25,
+                "bbox": [
+                  127,
+                  273,
+                  583,
+                  290
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b2",
+                "reading_order": 2,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "30df78ef-d43e-5a6c-b65a-5a308a31f765",
+            "document_id": "D02",
+            "evidence_id": "479301c3-5884-5130-9c38-328ab8706b85"
+          },
+          {
+            "locator": [
+              {
+                "end": 46,
+                "bbox": [
+                  126,
+                  310,
+                  863,
+                  348
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b3",
+                "reading_order": 3,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+            "document_id": "D02",
+            "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85"
+          },
+          {
+            "locator": [
+              {
+                "end": 45,
+                "bbox": [
+                  126,
+                  369,
+                  868,
+                  407
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b4",
+                "reading_order": 4,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "b2e94a71-4133-5533-bf38-f07be95b876e",
+            "document_id": "D02",
+            "evidence_id": "ac64ac8e-1e38-552b-b7f4-6f985062745a"
+          }
+        ],
+        "tool_call_id": "call_00_55wGDzIHllATTrQCjpEE9476"
+      },
+      "occurred_at": "2026-11-01T17:27:14.248601+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 30,
+      "event_id": "model.started:7",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:5",
+        "call_number": 7,
+        "message_count": 21
+      },
+      "occurred_at": "2026-11-01T17:27:14.266736+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 31,
+      "event_id": "model.finished:7",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_VQ9E430o3clLusxDIaKt5271",
+              "type": "function",
+              "function": {
+                "name": "read_document",
+                "arguments": "{\"document_id\": \"D02\", \"offset\": 8, \"limit\": 8, \"reason\": \"继续读取受理指引后半部分，查找是否说明与基本规定的适用关系\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:5",
+        "recovered": false,
+        "elapsed_ms": 1320.581,
+        "call_number": 7
+      },
+      "occurred_at": "2026-11-01T17:27:15.587033+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 32,
+      "event_id": "decision:5",
+      "type": "agent.decision",
+      "payload": {
+        "step": 5,
+        "tool": "read_document",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 4,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 4,
+          "graph_steps_remaining": 28,
+          "model_calls_remaining": 6,
+          "active_seconds_remaining": 171.727949
+        },
+        "tool_call_id": "call_00_VQ9E430o3clLusxDIaKt5271"
+      },
+      "occurred_at": "2026-11-01T17:27:15.591635+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 33,
+      "event_id": "tool.started:5",
+      "type": "tool.started",
+      "payload": {
+        "step": 5,
+        "tool": "read_document",
+        "reason": "继续读取受理指引后半部分，查找是否说明与基本规定的适用关系",
+        "arguments": {
+          "limit": 8,
+          "offset": 8,
+          "document_id": "D02"
+        },
+        "tool_call_id": "call_00_VQ9E430o3clLusxDIaKt5271"
+      },
+      "occurred_at": "2026-11-01T17:27:15.605777+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 34,
+      "event_id": "tool.completed:5",
+      "type": "tool.completed",
+      "payload": {
+        "step": 5,
+        "tool": "read_document",
+        "degraded": false,
+        "evidence": [
+          {
+            "locator": [
+              {
+                "end": 34,
+                "bbox": [
+                  124,
+                  429,
+                  710,
+                  445
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b5",
+                "reading_order": 5,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "a6646f86-1c63-5b99-bd8a-713888d41c71",
+            "document_id": "D02",
+            "evidence_id": "73367920-771d-54f1-87e5-9559a2c3799c"
+          },
+          {
+            "locator": [
+              {
+                "end": 42,
+                "bbox": [
+                  124,
+                  466,
+                  836,
+                  482
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b6",
+                "reading_order": 6,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "5fcc1ec4-b380-5695-b17a-2af4dfde010a",
+            "document_id": "D02",
+            "evidence_id": "b82f934a-fef8-5c62-b799-31d3db1161c9"
+          }
+        ],
+        "tool_call_id": "call_00_VQ9E430o3clLusxDIaKt5271"
+      },
+      "occurred_at": "2026-11-01T17:27:15.620305+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 35,
+      "event_id": "model.started:8",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:6",
+        "call_number": 8,
+        "message_count": 24
+      },
+      "occurred_at": "2026-11-01T17:27:15.638451+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 36,
+      "event_id": "model.finished:8",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_Y22ad36QYLifFBHrbP977966",
+              "type": "function",
+              "function": {
+                "name": "request_clarification",
+                "arguments": "{\"answer\": \"现有两份制度对同一范围（中国大陆境内公务差旅、劳动合同员工含试用期）规定了不同的提交时限：《差旅报销基本规定》为出差结束次日起 30 个自然日内，《财务差旅报销受理指引》为出差结束次日起 15 个自然日内（均含周末和法定节假日）。两份文件均未说明效力先后或优先适用规则，因此无法确定最晚提交天数，需要确认以哪一份为准（或是否有冲突适用规则）。\", \"citations\": [{\"evidence_id\": \"d2a21e65-dc60-5af1-baf9-e2eade143b89\", \"quote\": \"1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。\"}, {\"evidence_id\": \"29b8c25c-6851-59f7-826e-6005e6eddc85\", \"quote\": \"1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。\"}], \"information_gaps\": [\"两份制度适用对象与范围相同，但时限分别为 30 个自然日和 15 个自然日，缺少时效力优先、新旧替代或特别规定优先的说明\", \"未确认应适用《差旅报销基本规定》还是《财务差旅报销受理指引》\"], \"questions\": [\"差旅报销提交时限应适用《差旅报销基本规定》的 30 个自然日，还是《财务差旅报销受理指引》的 15 个自然日？\", \"公司是否有制度层级或特别规定优先的正式文件可确认二者适用顺序？\"], \"reason\": \"两份同范围制度对报销提交时限规定冲突且无优先级依据，需一次集中补充确认\", \"reason_code\": \"conflicting_rules_no_priority\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:6",
+        "recovered": false,
+        "elapsed_ms": 3535.472,
+        "call_number": 8
+      },
+      "occurred_at": "2026-11-01T17:27:19.173254+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 37,
+      "event_id": "decision:6",
+      "type": "agent.decision",
+      "payload": {
+        "step": 6,
+        "tool": "request_clarification",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 5,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 3,
+          "graph_steps_remaining": 26,
+          "model_calls_remaining": 5,
+          "active_seconds_remaining": 170.355301
+        },
+        "tool_call_id": "call_00_Y22ad36QYLifFBHrbP977966"
+      },
+      "occurred_at": "2026-11-01T17:27:19.178051+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 38,
+      "event_id": "tool.started:6",
+      "type": "tool.started",
+      "payload": {
+        "step": 6,
+        "tool": "request_clarification",
+        "reason": "两份同范围制度对报销提交时限规定冲突且无优先级依据，需一次集中补充确认",
+        "arguments": {
+          "answer": "现有两份制度对同一范围（中国大陆境内公务差旅、劳动合同员工含试用期）规定了不同的提交时限：《差旅报销基本规定》为出差结束次日起 30 个自然日内，《财务差旅报销受理指引》为出差结束次日起 15 个自然日内（均含周末和法定节假日）。两份文件均未说明效力先后或优先适用规则，因此无法确定最晚提交天数，需要确认以哪一份为准（或是否有冲突适用规则）。",
+          "citations": [
+            {
+              "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+              "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89"
+            },
+            {
+              "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+              "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85"
+            }
+          ],
+          "questions": [
+            "差旅报销提交时限应适用《差旅报销基本规定》的 30 个自然日，还是《财务差旅报销受理指引》的 15 个自然日？",
+            "公司是否有制度层级或特别规定优先的正式文件可确认二者适用顺序？"
+          ],
+          "reason_code": "conflicting_rules_no_priority",
+          "information_gaps": [
+            "两份制度适用对象与范围相同，但时限分别为 30 个自然日和 15 个自然日，缺少时效力优先、新旧替代或特别规定优先的说明",
+            "未确认应适用《差旅报销基本规定》还是《财务差旅报销受理指引》"
+          ]
+        },
+        "tool_call_id": "call_00_Y22ad36QYLifFBHrbP977966"
+      },
+      "occurred_at": "2026-11-01T17:27:19.192470+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 39,
+      "event_id": "tool.completed:6",
+      "type": "tool.completed",
+      "payload": {
+        "step": 6,
+        "tool": "request_clarification",
+        "result": {
+          "answer": "现有两份制度对同一范围（中国大陆境内公务差旅、劳动合同员工含试用期）规定了不同的提交时限：《差旅报销基本规定》为出差结束次日起 30 个自然日内，《财务差旅报销受理指引》为出差结束次日起 15 个自然日内（均含周末和法定节假日）。两份文件均未说明效力先后或优先适用规则，因此无法确定最晚提交天数，需要确认以哪一份为准（或是否有冲突适用规则）。",
+          "action_id": "tool:6",
+          "citations": [
+            {
+              "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+              "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+              "title": "差旅报销基本规定",
+              "locator": [
+                {
+                  "end": 46,
+                  "start": 0,
+                  "block_id": "b1",
+                  "line_end": 14,
+                  "line_start": 14
+                }
+              ],
+              "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+              "document_id": "D01",
+              "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89",
+              "version_date": "2026-08-01",
+              "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+              "evidence_epoch": 0,
+              "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+            },
+            {
+              "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+              "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+              "title": "财务差旅报销受理指引",
+              "locator": [
+                {
+                  "end": 46,
+                  "bbox": [
+                    126,
+                    310,
+                    863,
+                    348
+                  ],
+                  "page": 1,
+                  "start": 0,
+                  "block_id": "b3",
+                  "reading_order": 3,
+                  "coordinate_system": "normalized_1000"
+                }
+              ],
+              "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+              "document_id": "D02",
+              "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85",
+              "version_date": "2026-09-15",
+              "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+              "evidence_epoch": 0,
+              "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+            }
+          ],
+          "questions": [
+            "差旅报销提交时限应适用《差旅报销基本规定》的 30 个自然日，还是《财务差旅报销受理指引》的 15 个自然日？",
+            "公司是否有制度层级或特别规定优先的正式文件可确认二者适用顺序？"
+          ],
+          "deadline_at": "2026-11-01T17:37:19.200684+00:00",
+          "reason_code": "conflicting_rules_no_priority",
+          "task_status": "awaiting_user",
+          "clarification_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "information_gaps": [
+            "两份制度适用对象与范围相同，但时限分别为 30 个自然日和 15 个自然日，缺少时效力优先、新旧替代或特别规定优先的说明",
+            "未确认应适用《差旅报销基本规定》还是《财务差旅报销受理指引》"
+          ]
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_Y22ad36QYLifFBHrbP977966"
+      },
+      "occurred_at": "2026-11-01T17:27:19.203004+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 40,
+      "event_id": "clarification.requested",
+      "type": "clarification.requested",
+      "payload": {
+        "answer": "现有两份制度对同一范围（中国大陆境内公务差旅、劳动合同员工含试用期）规定了不同的提交时限：《差旅报销基本规定》为出差结束次日起 30 个自然日内，《财务差旅报销受理指引》为出差结束次日起 15 个自然日内（均含周末和法定节假日）。两份文件均未说明效力先后或优先适用规则，因此无法确定最晚提交天数，需要确认以哪一份为准（或是否有冲突适用规则）。",
+        "action_id": "tool:6",
+        "citations": [
+          {
+            "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅报销基本规定",
+            "locator": [
+              {
+                "end": 46,
+                "start": 0,
+                "block_id": "b1",
+                "line_end": 14,
+                "line_start": 14
+              }
+            ],
+            "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+            "document_id": "D01",
+            "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89",
+            "version_date": "2026-08-01",
+            "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+            "evidence_epoch": 0,
+            "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+          },
+          {
+            "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "财务差旅报销受理指引",
+            "locator": [
+              {
+                "end": 46,
+                "bbox": [
+                  126,
+                  310,
+                  863,
+                  348
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b3",
+                "reading_order": 3,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+            "document_id": "D02",
+            "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85",
+            "version_date": "2026-09-15",
+            "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+            "evidence_epoch": 0,
+            "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+          }
+        ],
+        "questions": [
+          "差旅报销提交时限应适用《差旅报销基本规定》的 30 个自然日，还是《财务差旅报销受理指引》的 15 个自然日？",
+          "公司是否有制度层级或特别规定优先的正式文件可确认二者适用顺序？"
+        ],
+        "deadline_at": "2026-11-01T17:37:19.200684+00:00",
+        "reason_code": "conflicting_rules_no_priority",
+        "task_status": "awaiting_user",
+        "clarification_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+        "information_gaps": [
+          "两份制度适用对象与范围相同，但时限分别为 30 个自然日和 15 个自然日，缺少时效力优先、新旧替代或特别规定优先的说明",
+          "未确认应适用《差旅报销基本规定》还是《财务差旅报销受理指引》"
+        ]
+      },
+      "occurred_at": "2026-11-01T17:27:19.218837+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 41,
+      "event_id": "clarification.submitted",
+      "type": "clarification.submitted",
+      "payload": {
+        "content": "没有更多的优先级或替代关系说明，请保留冲突。",
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672"
+      },
+      "occurred_at": "2026-11-01T17:27:19.223396+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 42,
+      "event_id": "run.started:03d32605-7faa-495f-829c-b7acf2dc4337",
+      "type": "run.started",
+      "payload": {
+        "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+        "evidence_epoch": 0
+      },
+      "occurred_at": "2026-11-01T17:27:19.230516+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 43,
+      "event_id": "model.started:9",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "adapter": "DeepSeekChat",
+        "action_id": "expand:8",
+        "call_number": 9,
+        "message_count": 2
+      },
+      "occurred_at": "2026-11-01T17:27:19.281210+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 44,
+      "event_id": "model.finished:9",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "expand",
+        "response": {
+          "intent": "knowledge",
+          "expanded_queries": [
+            "差旅报销申请提交时限 出差结束后多少天内",
+            "差旅费报销流程 提交申请期限"
+          ],
+          "unresolved_slots": [],
+          "resolved_question": "出差结束后，最晚需要在多少天内提交差旅报销申请？"
+        },
+        "action_id": "expand:8",
+        "recovered": false,
+        "elapsed_ms": 1576.604,
+        "call_number": 9
+      },
+      "occurred_at": "2026-11-01T17:27:20.857170+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 45,
+      "event_id": "intent:8",
+      "type": "intent.detected",
+      "payload": {
+        "intent": "knowledge",
+        "requires_knowledge": true
+      },
+      "occurred_at": "2026-11-01T17:27:20.861471+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 46,
+      "event_id": "expanded:8",
+      "type": "query.expanded",
+      "payload": {
+        "intent": "knowledge",
+        "expanded_queries": [
+          "出差结束后，我最晚多少天内要提交差旅报销申请？\n用户补充：没有更多的优先级或替代关系说明，请保留冲突。",
+          "出差结束后，最晚需要在多少天内提交差旅报销申请？",
+          "差旅报销申请提交时限 出差结束后多少天内"
+        ],
+        "unresolved_slots": [],
+        "resolved_question": "出差结束后，最晚需要在多少天内提交差旅报销申请？"
+      },
+      "occurred_at": "2026-11-01T17:27:20.864668+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 47,
+      "event_id": "model.started:10",
+      "type": "model.started",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "adapter": "DeepSeekChat",
+        "action_id": "model:8",
+        "call_number": 10,
+        "message_count": 29
+      },
+      "occurred_at": "2026-11-01T17:27:20.889126+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 48,
+      "event_id": "model.finished:10",
+      "type": "model.completed",
+      "payload": {
+        "model": "deepseek-v4-flash",
+        "phase": "decide",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_ET_hsa9w6aoVYgdkI1KMyZq2607",
+              "type": "function",
+              "function": {
+                "name": "finish_answer",
+                "arguments": "{\"answer\": \"无法确定唯一时限：两份制度适用同一范围，但《差旅报销基本规定》要求出差结束次日起 30 个自然日内提交，《财务差旅报销受理指引》要求出差结束次日起 15 个自然日内提交，且无优先级或替代关系说明，冲突保留，需由公司确认适用哪一份。\", \"citations\": [{\"evidence_id\": \"d2a21e65-dc60-5af1-baf9-e2eade143b89\", \"quote\": \"1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。\"}, {\"evidence_id\": \"29b8c25c-6851-59f7-826e-6005e6eddc85\", \"quote\": \"1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。\"}], \"information_gaps\": [\"两份制度适用范围相同但时限分别为 30 和 15 个自然日，制度中缺少优先级或替代关系说明\", \"用户补充确认无更多优先级依据，冲突未消解\"], \"reason_code\": \"conflicting_rules_no_priority\", \"task_status\": \"insufficient\", \"reason\": \"已核对两份同范围制度原文并确认无优先级依据，按冲突并列如实结束\"}"
+              }
+            }
+          ]
+        },
+        "action_id": "model:8",
+        "recovered": false,
+        "elapsed_ms": 2109.028,
+        "call_number": 10
+      },
+      "occurred_at": "2026-11-01T17:27:22.998433+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 49,
+      "event_id": "decision:8",
+      "type": "agent.decision",
+      "payload": {
+        "step": 8,
+        "tool": "finish_answer",
+        "budget": {
+          "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+          "tool_calls_used": 5,
+          "tool_calls_limit": 8,
+          "tool_calls_remaining": 3,
+          "graph_steps_remaining": 22,
+          "model_calls_remaining": 3,
+          "active_seconds_remaining": 165.11903
+        },
+        "tool_call_id": "call_00_ET_hsa9w6aoVYgdkI1KMyZq2607"
+      },
+      "occurred_at": "2026-11-01T17:27:23.003409+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 50,
+      "event_id": "tool.started:8",
+      "type": "tool.started",
+      "payload": {
+        "step": 8,
+        "tool": "finish_answer",
+        "reason": "已核对两份同范围制度原文并确认无优先级依据，按冲突并列如实结束",
+        "arguments": {
+          "answer": "无法确定唯一时限：两份制度适用同一范围，但《差旅报销基本规定》要求出差结束次日起 30 个自然日内提交，《财务差旅报销受理指引》要求出差结束次日起 15 个自然日内提交，且无优先级或替代关系说明，冲突保留，需由公司确认适用哪一份。",
+          "citations": [
+            {
+              "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+              "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89"
+            },
+            {
+              "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+              "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85"
+            }
+          ],
+          "reason_code": "conflicting_rules_no_priority",
+          "task_status": "insufficient",
+          "information_gaps": [
+            "两份制度适用范围相同但时限分别为 30 和 15 个自然日，制度中缺少优先级或替代关系说明",
+            "用户补充确认无更多优先级依据，冲突未消解"
+          ]
+        },
+        "tool_call_id": "call_00_ET_hsa9w6aoVYgdkI1KMyZq2607"
+      },
+      "occurred_at": "2026-11-01T17:27:23.018669+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 51,
+      "event_id": "tool.completed:8",
+      "type": "tool.completed",
+      "payload": {
+        "step": 8,
+        "tool": "finish_answer",
+        "result": {
+          "accepted": true
+        },
+        "degraded": false,
+        "tool_call_id": "call_00_ET_hsa9w6aoVYgdkI1KMyZq2607"
+      },
+      "occurred_at": "2026-11-01T17:27:23.024128+00:00"
+    },
+    {
+      "run_id": "a5896adc-4ffb-4651-ae9a-dbd3bcbc9e75",
+      "seq": 52,
+      "event_id": "run.finished",
+      "type": "run.finished",
+      "payload": {
+        "answer": "无法确定唯一时限：两份制度适用同一范围，但《差旅报销基本规定》要求出差结束次日起 30 个自然日内提交，《财务差旅报销受理指引》要求出差结束次日起 15 个自然日内提交，且无优先级或替代关系说明，冲突保留，需由公司确认适用哪一份。",
+        "citations": [
+          {
+            "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "差旅报销基本规定",
+            "locator": [
+              {
+                "end": 46,
+                "start": 0,
+                "block_id": "b1",
+                "line_end": 14,
+                "line_start": 14
+              }
+            ],
+            "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+            "document_id": "D01",
+            "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89",
+            "version_date": "2026-08-01",
+            "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+            "evidence_epoch": 0,
+            "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+          },
+          {
+            "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+            "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+            "title": "财务差旅报销受理指引",
+            "locator": [
+              {
+                "end": 46,
+                "bbox": [
+                  126,
+                  310,
+                  863,
+                  348
+                ],
+                "page": 1,
+                "start": 0,
+                "block_id": "b3",
+                "reading_order": 3,
+                "coordinate_system": "normalized_1000"
+              }
+            ],
+            "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+            "document_id": "D02",
+            "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85",
+            "version_date": "2026-09-15",
+            "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+            "evidence_epoch": 0,
+            "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+          }
+        ],
+        "reason_code": "conflicting_rules_no_priority",
+        "task_status": "insufficient",
+        "information_gaps": [
+          "两份制度适用范围相同但时限分别为 30 和 15 个自然日，制度中缺少优先级或替代关系说明",
+          "用户补充确认无更多优先级依据，冲突未消解"
+        ]
+      },
+      "occurred_at": "2026-11-01T17:27:23.039066+00:00"
+    }
+  ],
+  "read_evidence": [
+    {
+      "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 46,
+          "start": 0,
+          "block_id": "b1",
+          "line_end": 14,
+          "line_start": 14
+        }
+      ],
+      "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+      "document_id": "D01",
+      "evidence_id": "022919bc-50d5-5d30-8bc0-4689d32f9e02",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    },
+    {
+      "quote": "3. 交通费与住宿费须提供有效发票或相应合法报销凭证，并附出差审批记录。电子发票与纸质发票具有相同的内部报销效力。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 57,
+          "start": 0,
+          "block_id": "b3",
+          "line_end": 16,
+          "line_start": 16
+        }
+      ],
+      "chunk_id": "edfe4909-0280-532d-8e79-3c6bd21db864",
+      "document_id": "D01",
+      "evidence_id": "0d0b59a5-41cb-544f-bc17-50cb2a5b4cfa",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    },
+    {
+      "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 46,
+          "bbox": [
+            126,
+            310,
+            863,
+            348
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b3",
+          "reading_order": 3,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+      "document_id": "D02",
+      "evidence_id": "26d0221e-0936-5a21-8abd-c1f947e7a55d",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "1. 员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 46,
+          "bbox": [
+            126,
+            310,
+            863,
+            348
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b3",
+          "reading_order": 3,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "310e0e1a-a9cf-5b4d-b99c-cf976597d477",
+      "document_id": "D02",
+      "evidence_id": "29b8c25c-6851-59f7-826e-6005e6eddc85",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "合成材料：true\n\n本文为虚构公司的合成制度，仅供项目开发与评估使用。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 86,
+          "bbox": [
+            127,
+            145,
+            593,
+            252
+          ],
+          "page": 1,
+          "start": 77,
+          "block_id": "b1",
+          "reading_order": 1,
+          "coordinate_system": "normalized_1000"
+        },
+        {
+          "end": 25,
+          "bbox": [
+            127,
+            273,
+            583,
+            290
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b2",
+          "reading_order": 2,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "30df78ef-d43e-5a6c-b65a-5a308a31f765",
+      "document_id": "D02",
+      "evidence_id": "479301c3-5884-5130-9c38-328ab8706b85",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "公司：青屿示例科技有限公司  \n",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 46,
+          "bbox": [
+            127,
+            145,
+            593,
+            252
+          ],
+          "page": 1,
+          "start": 30,
+          "block_id": "b1",
+          "reading_order": 1,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "cb0c5af4-6763-5d0d-8114-5dc2a3d03b2a",
+      "document_id": "D02",
+      "evidence_id": "52003e33-1b84-524a-b3bd-4a33b234641e",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "适用范围：中国大陆境内公务差旅；劳动合同员工（含试用期）  \n",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 77,
+          "bbox": [
+            127,
+            145,
+            593,
+            252
+          ],
+          "page": 1,
+          "start": 46,
+          "block_id": "b1",
+          "reading_order": 1,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "fc491da1-3d9f-5642-ab42-7b9fd9b048ac",
+      "document_id": "D02",
+      "evidence_id": "53aeed8f-902f-574f-8f7f-dcb5e2ec0eac",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "3. 被退回的申请应在原申请中补充材料后重新提交，不得另建重复申请。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 34,
+          "bbox": [
+            124,
+            429,
+            710,
+            445
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b5",
+          "reading_order": 5,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "a6646f86-1c63-5b99-bd8a-713888d41c71",
+      "document_id": "D02",
+      "evidence_id": "73367920-771d-54f1-87e5-9559a2c3799c",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "财务差旅报销受理指引",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 10,
+          "bbox": [
+            127,
+            93,
+            465,
+            121
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b0",
+          "reading_order": 0,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "4355a618-40ad-5187-b9e3-12965b891f24",
+      "document_id": "D02",
+      "evidence_id": "9328616b-31c5-5029-8355-8978b68c4e88",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "2. 财务受理时核对出差审批记录、费用明细和报销凭证；材料不齐全的，退回并注明待补充内容。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 45,
+          "bbox": [
+            126,
+            369,
+            868,
+            407
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b4",
+          "reading_order": 4,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "b2e94a71-4133-5533-bf38-f07be95b876e",
+      "document_id": "D02",
+      "evidence_id": "ac64ac8e-1e38-552b-b7f4-6f985062745a",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "4. 餐费补贴按《境内差旅餐费补贴规定》（D05）申请，无须提供餐饮发票。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 37,
+          "start": 0,
+          "block_id": "b4",
+          "line_end": 17,
+          "line_start": 17
+        }
+      ],
+      "chunk_id": "b6e0f8f5-8c1b-504b-8f8c-5af106477c66",
+      "document_id": "D01",
+      "evidence_id": "aefbc036-a144-56cb-b85e-7362991f80be",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    },
+    {
+      "quote": "文档 ID：D02  \n",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 12,
+          "bbox": [
+            127,
+            145,
+            593,
+            252
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b1",
+          "reading_order": 1,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "b5eb0980-fb79-507c-aebd-c9190cb936c4",
+      "document_id": "D02",
+      "evidence_id": "b3ed4e7c-ba8f-5dc0-ab4f-8b1668b6f567",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "4. 员工可通过申请编号查询当前处理状态。处于“待补充材料”状态的申请尚未完成审核。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 42,
+          "bbox": [
+            124,
+            466,
+            836,
+            482
+          ],
+          "page": 1,
+          "start": 0,
+          "block_id": "b6",
+          "reading_order": 6,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "5fcc1ec4-b380-5695-b17a-2af4dfde010a",
+      "document_id": "D02",
+      "evidence_id": "b82f934a-fef8-5c62-b799-31d3db1161c9",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "本文为虚构公司的合成制度，仅供项目开发与评估使用。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 25,
+          "start": 0,
+          "block_id": "b0",
+          "line_end": 12,
+          "line_start": 12
+        }
+      ],
+      "chunk_id": "3389c928-d323-500f-bd81-9948282b8eaf",
+      "document_id": "D01",
+      "evidence_id": "c862deea-e2a5-5471-8dc7-9bd5a1b130ca",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    },
+    {
+      "quote": "1. 员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 46,
+          "start": 0,
+          "block_id": "b1",
+          "line_end": 14,
+          "line_start": 14
+        }
+      ],
+      "chunk_id": "7c3840ac-ae02-5c16-ad95-0327592a3829",
+      "document_id": "D01",
+      "evidence_id": "d2a21e65-dc60-5af1-baf9-e2eade143b89",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    },
+    {
+      "quote": "5. 与公务无关的个人消费不予报销。同一笔费用不得重复申请。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 30,
+          "start": 0,
+          "block_id": "b5",
+          "line_end": 18,
+          "line_start": 18
+        }
+      ],
+      "chunk_id": "74c64cab-53a1-5e8b-a3d1-5e8fb087e4b0",
+      "document_id": "D01",
+      "evidence_id": "ed0b89ce-c27b-5380-a73d-1649ec3f71cd",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    },
+    {
+      "quote": "版本日期：2026-09-15  \n",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "财务差旅报销受理指引",
+      "locator": [
+        {
+          "end": 30,
+          "bbox": [
+            127,
+            145,
+            593,
+            252
+          ],
+          "page": 1,
+          "start": 12,
+          "block_id": "b1",
+          "reading_order": 1,
+          "coordinate_system": "normalized_1000"
+        }
+      ],
+      "chunk_id": "7482f32b-68f1-58b1-ba5a-aefb8b8257d8",
+      "document_id": "D02",
+      "evidence_id": "ee21d0d6-4018-5dd8-8ad3-e6c0dec18054",
+      "version_date": "2026-09-15",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "b1a34063-72a4-4650-bded-5fa782c5137f"
+    },
+    {
+      "quote": "2. 同一次出差应合并提交一份申请，写明出差事由、起止日期、目的地和各项费用。",
+      "scope": "中国大陆境内公务差旅；劳动合同员工（含试用期）",
+      "title": "差旅报销基本规定",
+      "locator": [
+        {
+          "end": 39,
+          "start": 0,
+          "block_id": "b2",
+          "line_end": 15,
+          "line_start": 15
+        }
+      ],
+      "chunk_id": "a87b859c-8882-5952-9bbd-269f85bcd21c",
+      "document_id": "D01",
+      "evidence_id": "f716b9e8-56e6-5849-81fa-1111fb9bba0a",
+      "version_date": "2026-08-01",
+      "kb_version_id": "1a04f7b7-ff5b-4d58-b3c2-86915d2ce672",
+      "evidence_epoch": 0,
+      "document_version_id": "ae542775-b975-4d7c-ae74-9b85e3cd563d"
+    }
+  ],
+  "model_calls": [
+    {
+      "call_number": 1,
+      "phase": "expand",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1524.132,
+      "error": null
+    },
+    {
+      "call_number": 2,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1035.176,
+      "error": null
+    },
+    {
+      "call_number": 3,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1344.778,
+      "error": null
+    },
+    {
+      "call_number": 4,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1641.782,
+      "error": null
+    },
+    {
+      "call_number": 5,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 931.512,
+      "error": null
+    },
+    {
+      "call_number": 6,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 879.39,
+      "error": null
+    },
+    {
+      "call_number": 7,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1320.581,
+      "error": null
+    },
+    {
+      "call_number": 8,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 3535.472,
+      "error": null
+    },
+    {
+      "call_number": 9,
+      "phase": "expand",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 1576.604,
+      "error": null
+    },
+    {
+      "call_number": 10,
+      "phase": "decide",
+      "adapter": "DeepSeekChat",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "elapsed_ms": 2109.028,
+      "error": null
+    }
+  ],
+  "citation_integrity": true,
+  "expected": {
+    "status": "awaiting_user",
+    "reference_answer": "现有资料存在冲突：D01 第 1 条规定出差结束次日起 30 个自然日内提交，D02 第 1 条规定同一起点的 15 个自然日。两份制度适用范围相同，未给出优先级或替代关系，不能仅凭 D02 日期较新选定 15 天。请确认应适用哪份制度，或提供财务对制度优先级的说明。",
+    "required_facts": [
+      "D01 为 30 个自然日",
+      "D02 为 15 个自然日",
+      "两者均从出差结束次日起计算",
+      "无法依据版本日期自行解决冲突",
+      "请求确认适用制度或补充优先级依据"
+    ],
+    "forbidden_claims": [
+      "直接认定必须 15 天内提交",
+      "直接认定必须 30 天内提交",
+      "日期较新自动覆盖旧制度",
+      "为保守起见把 15 天当作确定制度答案"
+    ],
+    "evidence": [
+      {
+        "document_id": "D01",
+        "source_path": "data/policies/D01-expense-submission.md",
+        "locator": "第 1 条",
+        "quote": "员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。"
+      },
+      {
+        "document_id": "D02",
+        "source_path": "data/policies/D02-finance-intake.pdf",
+        "locator": "第 1 条",
+        "quote": "员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。"
+      }
+    ],
+    "information_gaps": [
+      "两份制度的优先级或替代关系未明确，需要确认适用制度"
+    ]
+  },
+  "expected_final_status": "insufficient",
+  "semantic_verdict": "pending_source_review",
+  "initial_status_matches": true,
+  "final_status_matches": true
+}

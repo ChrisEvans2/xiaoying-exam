@@ -163,6 +163,10 @@ def create_app(settings=None, db=None, embedder=None):
     def build(kb_id: str, body: BuildRequest, request: Request, idempotency_key: str | None = Header(None)):
         return request.app.state.knowledge.create_build(kb_id, body, idempotency_key)
 
+    @app.get("/api/v1/knowledge-bases/{kb_id}/builds")
+    def builds(kb_id: str, request: Request):
+        return request.app.state.knowledge.builds(kb_id)
+
     @app.post("/api/v1/knowledge-bases/{kb_id}/versions/{version_id}/publish")
     def publish(
         kb_id: str,
@@ -184,9 +188,21 @@ def create_app(settings=None, db=None, embedder=None):
     def conversation(body: ConversationRequest, request: Request, idempotency_key: str | None = Header(None)):
         return request.app.state.runs.create_conversation(body.kb_id, idempotency_key)
 
+    @app.get("/api/v1/knowledge-bases/{kb_id}/conversations")
+    def conversations(kb_id: str, request: Request):
+        return request.app.state.runs.conversations(kb_id)
+
     @app.get("/api/v1/conversations/{cid}")
     def history(cid: str, request: Request):
         return request.app.state.runs.conversation(cid)
+
+    @app.get("/api/v1/conversations/{cid}/trace")
+    def session_trace(cid: str, request: Request):
+        return request.app.state.runs.conversation_trace(cid)
+
+    @app.get("/api/v1/runs/{rid}/model-calls/{call_number}")
+    def model_call(rid: str, call_number: int, request: Request):
+        return request.app.state.runs.model_call(rid, call_number)
 
     @app.post("/api/v1/conversations/{cid}/runs", status_code=202)
     def question(

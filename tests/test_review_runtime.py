@@ -50,6 +50,11 @@ class ScriptedChat:
         if not observations:
             return self.call("search_knowledge", {"queries": ["上海住宿"], "reason": "scripted test search"})
         latest = observations[-1]
+        if latest.get("error", {}).get("code") == "TOOL_CALL_LIMIT":
+            return self.call("finish_answer", {
+                "task_status": "incomplete", "answer": "检索与读取次数已用完，原文读取故障未恢复，不能确认制度内容。",
+                "reason_code": "TOOL_CALL_LIMIT", "citations": [], "information_gaps": ["原文读取故障尚未恢复"],
+            })
         if latest.get("candidates") or latest.get("error", {}).get("code") in {"TIMEOUT", "TEST_SEARCH_FAILURE"}:
             return self.call("read_document", {"document_id": "DREV", "reason": "scripted test read"})
         if latest.get("evidence"):
@@ -125,7 +130,7 @@ def test_persistent_read_failure_ends_at_budget_without_fabricated_evidence(know
     runtime.run(job)
     record = runs.get(request["run_id"])
     assert record["task_status"] == "incomplete"
-    assert record["result"]["reason_code"] == "EXECUTION_LIMIT"
+    assert record["result"]["reason_code"] == "TOOL_CALL_LIMIT"
     assert record["tool_calls"] == 4
     assert record["result"]["citations"] == []
     assert record["clarification_count"] == 0

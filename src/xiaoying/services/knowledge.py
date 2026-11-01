@@ -73,6 +73,13 @@ class KnowledgeService:
                 )
                 if str(kb["current_version_id"] or "") != str(base or ""):
                     raise AppError("VERSION_CONFLICT", "当前版本已变化，请刷新后重建", 409)
+                active = c.execute(
+                    """SELECT j.id FROM jobs j JOIN kb_versions v ON v.id=j.resource_id
+                    WHERE j.type='build' AND v.kb_id=%s AND j.status IN ('pending','running') LIMIT 1""",
+                    (kb_id,),
+                ).fetchone()
+                if active:
+                    raise AppError("BUILD_IN_PROGRESS", "该知识库已有后台构建任务，请等待完成", 409)
                 manifest = {}
                 if base:
                     for row in c.execute(
@@ -83,6 +90,7 @@ class KnowledgeService:
                             str(row["document_fk"]),
                             str(row["document_version_id"]),
                         )
+                changes = []
                 for change in body.changes:
                     exists = change.document_id in manifest
                     if change.action == "add" and exists:
@@ -91,6 +99,7 @@ class KnowledgeService:
                         raise AppError("DOCUMENT_NOT_FOUND", "替换或移除的文档不在基线版本", 409)
                     if change.action == "remove":
                         del manifest[change.document_id]
+                        changes.append({**change.model_dump(), "name": change.document_id})
                         continue
                     upload = require(
                         c.execute(
@@ -100,6 +109,19 @@ class KnowledgeService:
                     )
                     if upload["metadata"]["document_id"] != change.document_id:
                         raise AppError("DOCUMENT_ID_MISMATCH", "上传文件 ID 与变更清单不一致", 422)
+                    changes.append({**change.model_dump(), "name": upload["name"]})
+                    if exists:
+                        original = c.execute(
+                            """SELECT u.file_hash,u.storage_path,v.metadata FROM document_versions v
+                            JOIN uploads u ON u.id=v.upload_id WHERE v.id=%s""",
+                            (manifest[change.document_id][1],),
+                        ).fetchone()
+                        if (
+                            original["file_hash"] == upload["file_hash"]
+                            and original["metadata"] == upload["metadata"]
+                            and Path(original["storage_path"]).suffix == Path(upload["storage_path"]).suffix
+                        ):
+                            continue
                     d = c.execute(
                         "SELECT id FROM documents WHERE kb_id=%s AND document_id=%s",
                         (kb_id, change.document_id),
@@ -153,6 +175,7 @@ class KnowledgeService:
                                 "auto_publish": body.auto_publish,
                                 "expected_current_version_id": base,
                                 "build_timeout_seconds": self.settings.build_timeout_seconds,
+                                "changes": changes,
                             }
                         ),
                     ),
@@ -160,6 +183,51 @@ class KnowledgeService:
                 return {"job_id": job, "version_id": version}
 
             return idempotent(c, f"build:{kb_id}", key, body.model_dump(), op)
+
+    def builds(self, kb_id):
+        kb_id = valid_id(kb_id)
+        require(self.db.one("SELECT id FROM knowledge_bases WHERE id=%s", (kb_id,)))
+        return self.db.all(
+            """SELECT j.id,j.resource_id,j.status,j.progress,j.error,j.payload,j.created_at
+            FROM jobs j JOIN kb_versions v ON v.id=j.resource_id
+            WHERE j.type='build' AND v.kb_id=%s
+            ORDER BY (j.status IN ('pending','running')) DESC,j.created_at DESC,j.id DESC LIMIT 20""",
+            (kb_id,),
+        )
+
+    @staticmethod
+    def _prepare_document(c, job, version, revision):
+        fence(c, job["id"], job["lease_token"])
+        state = c.execute("SELECT status FROM kb_versions WHERE id=%s", (version,)).fetchone()
+        if state["status"] != "building":
+            raise AppError("VERSION_IMMUTABLE", "版本已不可变", 409)
+        c.execute("DELETE FROM chunks WHERE kb_version_id=%s AND document_version_id=%s", (version, revision))
+        c.execute("DELETE FROM source_blocks WHERE kb_version_id=%s AND document_version_id=%s", (version, revision))
+
+    def _reuse_document(self, job, version, base, revision, progress):
+        with self.db.tx() as c:
+            self._prepare_document(c, job, version, revision)
+            ordinals = [row["ordinal"] for row in c.execute(
+                "SELECT ordinal FROM chunks WHERE kb_version_id=%s AND document_version_id=%s ORDER BY ordinal",
+                (base, revision),
+            ).fetchall()]
+            c.execute(
+                """INSERT INTO source_blocks(kb_version_id,document_version_id,block_id,text,locator,block_type,ordinal)
+                SELECT %s,document_version_id,block_id,text,locator,block_type,ordinal FROM source_blocks
+                WHERE kb_version_id=%s AND document_version_id=%s""",
+                (version, base, revision),
+            )
+            ids = [str(uuid5(UUID(version), f"{revision}:{ordinal}")) for ordinal in ordinals]
+            c.execute(
+                """INSERT INTO chunks(id,kb_version_id,document_version_id,ordinal,text,source_ranges,
+                heading_path,search_vector,embedding,token_count)
+                SELECT ids.id,%s,c.document_version_id,c.ordinal,c.text,c.source_ranges,
+                c.heading_path,c.search_vector,c.embedding,c.token_count FROM chunks c
+                JOIN unnest(%s::uuid[],%s::int[]) AS ids(id,ordinal) ON ids.ordinal=c.ordinal
+                WHERE c.kb_version_id=%s AND c.document_version_id=%s""",
+                (version, ids, ordinals, base, revision),
+            )
+            c.execute("UPDATE jobs SET progress=%s WHERE id=%s", (Jsonb(progress), job["id"]))
 
     @staticmethod
     def _publish(c, kb_id, version, expected):
@@ -246,9 +314,32 @@ class KnowledgeService:
             WHERE m.kb_version_id=%s ORDER BY m.document_fk""",
             (version,),
         )
+        base = self.db.one(
+            "SELECT id,config,status FROM kb_versions WHERE id=%s AND kb_id=%s",
+            (record["base_version_id"], record["kb_id"]),
+        ) if record["base_version_id"] else None
+        reusable = set()
+        if base and base["status"] == "ready" and base["config"] == record["config"]:
+            reusable = {row["document_version_id"] for row in self.db.all(
+                """SELECT m.document_version_id FROM kb_version_documents m WHERE m.kb_version_id=%s
+                AND EXISTS (SELECT 1 FROM chunks c WHERE c.kb_version_id=m.kb_version_id
+                            AND c.document_version_id=m.document_version_id)
+                AND EXISTS (SELECT 1 FROM source_blocks s WHERE s.kb_version_id=m.kb_version_id
+                            AND s.document_version_id=m.document_version_id)""",
+                (base["id"],),
+            )}
+        progress = (job.get("progress") or {}) if record["status"] == "ready" else {}
+        reused, rebuilt = progress.get("reused", 0), progress.get("rebuilt", 0)
         if record["status"] != "ready":
             for index, doc in enumerate(docs):
                 remaining()
+                progress = {"stage": "indexing", "completed": index + 1, "total": len(docs),
+                            "reused": reused, "rebuilt": rebuilt}
+                if doc["id"] in reusable:
+                    reused += 1
+                    progress["reused"] = reused
+                    self._reuse_document(job, version, base["id"], doc["id"], progress)
+                    continue
                 artifacts = self.settings.data_dir / "parsed" / version / doc["id"] / str(job["lease_token"])
                 ir = bounded(
                     lambda doc=doc, artifacts=artifacts: parse_document(
@@ -271,20 +362,11 @@ class KnowledgeService:
                 if matrix.shape != (len(chunks), 1024) or not np.isfinite(matrix).all():
                     raise AppError("EMBEDDING_INVALID", "向量数量、维度或数值错误", 422)
                 remaining()
+                rebuilt += 1
+                progress.update(rebuilt=rebuilt, warnings=ir.warnings)
                 with self.db.tx() as c:
-                    fence(c, job["id"], job["lease_token"])
                     # Only unpublished building data is replaceable; a ready snapshot is never rewritten.
-                    state = c.execute("SELECT status FROM kb_versions WHERE id=%s", (version,)).fetchone()
-                    if state["status"] != "building":
-                        raise AppError("VERSION_IMMUTABLE", "版本已不可变", 409)
-                    c.execute(
-                        "DELETE FROM chunks WHERE kb_version_id=%s AND document_version_id=%s",
-                        (version, doc["id"]),
-                    )
-                    c.execute(
-                        "DELETE FROM source_blocks WHERE kb_version_id=%s AND document_version_id=%s",
-                        (version, doc["id"]),
-                    )
+                    self._prepare_document(c, job, version, doc["id"])
                     for b in ir.blocks:
                         c.execute(
                             "INSERT INTO source_blocks(kb_version_id,document_version_id,block_id,text,locator,block_type,ordinal) VALUES(%s,%s,%s,%s,%s,%s,%s)",
@@ -311,14 +393,7 @@ class KnowledgeService:
                     c.execute(
                         "UPDATE jobs SET progress=%s WHERE id=%s",
                         (
-                            Jsonb(
-                                {
-                                    "stage": "indexing",
-                                    "completed": index + 1,
-                                    "total": len(docs),
-                                    "warnings": ir.warnings,
-                                }
-                            ),
+                            Jsonb(progress),
                             job["id"],
                         ),
                     )
@@ -349,7 +424,9 @@ class KnowledgeService:
                     conflict = {"code": e.code, "message": e.message}
             c.execute(
                 "UPDATE jobs SET status='done',lease_until=NULL,progress=%s WHERE id=%s",
-                (Jsonb({"stage": "ready", "published": published, "publish_error": conflict}), job["id"]),
+                (Jsonb({"stage": "ready", "completed": len(docs), "total": len(docs),
+                        "reused": reused, "rebuilt": rebuilt,
+                        "published": published, "publish_error": conflict}), job["id"]),
             )
 
     def source(self, kb_id, version, revision):

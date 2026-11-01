@@ -1,6 +1,6 @@
 # 合成知识库说明
 
-本目录包含虚构的“青屿示例科技有限公司”的 8 份报销与差旅短制度，格式分布为 4 份 Markdown、1 份 Word、1 份 PDF、1 份 HTML 和 1 份 TXT。公司名称、制度条款、金额和日期均为项目合成内容，不代表真实公司的规定，不含真实员工或业务资料。
+`policies/` 包含虚构的“青屿示例科技有限公司”的 8 份报销与差旅短制度，格式分布为 4 份 Markdown、1 份 Word、1 份 PDF、1 份 HTML 和 1 份 TXT。新增的 `workflow_manuals/` 包含另一虚构公司“澄岳示例科技有限公司”的 8 份长篇审批流程手册，详见文末。两套资料独立成套，不互相替代。公司名称、制度条款、金额和日期均为项目合成内容，不代表真实公司的规定，不含真实员工或业务资料。
 
 ## 检索边界与格式
 
@@ -16,16 +16,16 @@
 
 ## 文档清单
 
-| 文档 ID | 版本日期 | 格式 | 文档 | 主要内容 |
-| --- | --- | --- | --- | --- |
-| D01 | 2026-08-01 | Markdown | [差旅报销基本规定](policies/D01-expense-submission.md) | 报销期限、申请内容、凭证要求 |
-| D02 | 2026-09-15 | PDF | [财务差旅报销受理指引](policies/D02-finance-intake.pdf) | 报销期限、材料退回、处理状态 |
-| D03 | 2026-08-01 | Markdown | [境内差旅交通费用规定](policies/D03-transportation.md) | 座位等级、市内交通、行程凭证 |
-| D04 | 2026-08-01 | Word | [境内差旅住宿费用标准](policies/D04-accommodation.docx) | 按城市划分的上限、试用期适用性 |
-| D05 | 2026-08-01 | Markdown | [境内差旅餐费补贴规定](policies/D05-meal-allowance.md) | 补贴金额、天数、供餐扣减 |
-| D06 | 2026-08-01 | HTML | [差旅预借款管理规定](policies/D06-travel-advance.html) | 预借款额度、试用期限制、结算 |
-| D07 | 2026-08-01 | TXT | [差旅报销凭证缺失处理指引](policies/D07-missing-receipts.txt) | 发票补取、辅助证明、材料待补充 |
-| D08 | 2026-08-01 | Markdown | [出差审批与行程变更规定](policies/D08-trip-approval-and-changes.md) | 事前审批、公务与个人原因变更 |
+| 文档 ID | 格式 | 文档 | 主要内容 |
+| --- | --- | --- | --- |
+| D01 | Markdown | [差旅报销基本规定](policies/D01-expense-submission.md) | 报销期限、申请内容、凭证要求 |
+| D02 | PDF | [财务差旅报销受理指引](policies/D02-finance-intake.pdf) | 报销期限、材料退回、处理状态 |
+| D03 | Markdown | [境内差旅交通费用规定](policies/D03-transportation.md) | 座位等级、市内交通、行程凭证 |
+| D04 | Word | [境内差旅住宿费用标准](policies/D04-accommodation.docx) | 按城市划分的上限、试用期适用性 |
+| D05 | Markdown | [境内差旅餐费补贴规定](policies/D05-meal-allowance.md) | 补贴金额、天数、供餐扣减 |
+| D06 | HTML | [差旅预借款管理规定](policies/D06-travel-advance.html) | 预借款额度、试用期限制、结算 |
+| D07 | TXT | [差旅报销凭证缺失处理指引](policies/D07-missing-receipts.txt) | 发票补取、辅助证明、材料待补充 |
+| D08 | Markdown | [出差审批与行程变更规定](policies/D08-trip-approval-and-changes.md) | 事前审批、公务与个人原因变更 |
 
 ## 场景设计说明（非业务依据）
 
@@ -36,5 +36,27 @@
 - **问题改写**：自然语言规则包含“住宿费用”“餐费补贴”“预借款”等业务表达，可用于检查“住酒店能报多少”“出差能先借钱吗”等不同问法的检索效果。
 - **工具失败**：应在后续工具实现中注入可重复的故障；不在制度正文中伪造工具错误。
 
-以上仅说明数据的设计用途，不代表 Agent 已通过验收。目前尚未生成真实问答输出、模型 Trace 或效果评估结果。
+以上仅说明数据的设计用途。当前已有固定资料快照的真实问答输出、Trace及逐项原文核验，见 [实际评估](../docs/03-evaluation.md)；结果只覆盖已执行的用例。工作区D07的后续修订独立于冻结验收资料，不能把旧快照的结果算作该修订已验证。
+
+## 长篇审批流程手册
+
+`workflow_manuals/` 为本次新增的独立资料目录，共 8 份正文文档，覆盖 TXT、Markdown、Word、HTML、PDF 五类格式。每份正文超过 1 万汉字；统计不含元数据、页眉页脚、格式标记、数字和标点。精确字数、文件大小及 SHA-256 校验值见 [manifest.json](workflow_manuals/manifest.json)，该清单不作为业务知识入库。
+
+| 文档 ID | 主题 | 格式 | 正文汉字数 | 文件 |
+| --- | --- | --- | ---: | --- |
+| WF01 | 请假申请与销假 | TXT | 14,005 | [请假手册](workflow_manuals/WF01-leave.txt) |
+| WF02 | 日常费用报销与付款 | Markdown | 13,540 | [报销手册](workflow_manuals/WF02-expense.md) |
+| WF03 | 出差申请与行程变更 | Word | 13,550 | [出差手册](workflow_manuals/WF03-travel.docx) |
+| WF04 | 离职申请与工作交接 | Word | 13,532 | [离职手册](workflow_manuals/WF04-offboarding.docx) |
+| WF05 | 办公采购与验收付款 | HTML | 13,240 | [采购手册](workflow_manuals/WF05-procurement.html) |
+| WF06 | 合同审查与用印 | HTML | 13,360 | [合同手册](workflow_manuals/WF06-contract.html) |
+| WF07 | 入职申请与岗位开通 | 单栏 PDF | 13,360 | [入职手册](workflow_manuals/WF07-onboarding-single-column.pdf) |
+| WF08 | 资产领用借还与维修 | 双栏 PDF | 13,184 | [资产手册](workflow_manuals/WF08-assets-double-column.pdf) |
+
+每份手册包括适用边界、角色责任、材料清单、审批矩阵、操作步骤、业务规则、异常处理、完整案例、填写示例、常见问题、状态语义、提醒升级、权限安全、归档与抽查。每份手册均自行说明通用办理控制，适合单独上传，不依赖同目录的说明文件才能理解。
+
+- 两份 Word 使用原生多级编号，一级章节与二级条目自动连续编号，表格设置重复表头。
+- 两份 PDF 均包含实际绘制的表格、嵌入中文字体、可提取文本层和页码；WF07 为单栏，WF08 为全宽导读和审批表加后续连续双栏正文，阅读顺序为每页左栏再右栏。
+- HTML 为 UTF-8 独立文件，包含本地章节锚点、语义表格、移动端和打印样式，无外部资源依赖。
+- 原有 `policies/` 检索与评估边界保持独立；若需评估新手册，应明确选择 `workflow_manuals/` 下的八份业务文件，避免误将两家公司或说明清单混入同一套规则。
 

@@ -1,0 +1,190 @@
+{
+  "verification_type": "offline_integrity_and_source_checks",
+  "source_extraction": "MD/TXT as text, python-docx, BeautifulSoup, pypdf; whitespace ignored only when independently matching a cited quotation. PDF extraction here is audit-only; the Agent index was built with real MinerU.",
+  "frozen_source_hashes_match": true,
+  "replacement_has_new_version_revision_and_chunk": true,
+  "loaded_source_code_still_matches_manifest": true,
+  "cases": [
+    {
+      "case_id": "QA01",
+      "record_sha256": "f3fca7fbf37fc52cd154e25f95b11da2709ceeac18d304cfba4e71ffcefe8fc5",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 5
+    },
+    {
+      "case_id": "QA03",
+      "record_sha256": "3c7a5f33f7ae2694ad8b2b2f0bd247214990d33a8cddc24f380a21254319945b",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 6
+    },
+    {
+      "case_id": "QA04",
+      "record_sha256": "d7c566767fb7ada2ca0a7fdf19ff46bd8f20fe2f23e8f9b582f70a770d7d657c",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 6
+    },
+    {
+      "case_id": "QA11",
+      "record_sha256": "45b79ec1cd0e25c6b93587dc69484226fd179f6dc2b2d725cce77b5bb3e799d0",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D06",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D06",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 4
+    },
+    {
+      "case_id": "QA16",
+      "record_sha256": "26b20ec0548a6e6e65365d581cbdaa5c499e371e887813bf9e23fb58e95ac587",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D01",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D02",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 10
+    },
+    {
+      "case_id": "QA17",
+      "record_sha256": "30b8f6987c52e11ab5720fb0dbba315f463691d74b4a4ca78a44bddbec1ce37d",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 10
+    },
+    {
+      "case_id": "QA18",
+      "record_sha256": "366c893737ed4e537119a831b20771d0bfe1033c699b9a2a5c6a9f6db104bca5",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D06",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D06",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D06",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 7
+    },
+    {
+      "case_id": "QA19",
+      "record_sha256": "2a49ac05c557191aa94cdd7ce36451fab1a6a6fe676a6892e69b832de8c39624",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 5
+    },
+    {
+      "case_id": "QA20",
+      "record_sha256": "2f11bcf66370181d7fb2cb0589beb30a2b6b372551f20ef2da2fba612175458a",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [],
+      "real_model_calls": 7
+    },
+    {
+      "case_id": "REPLACEMENT",
+      "record_sha256": "0b1cba4542dda6b21137182f336e0cf3ec2b033b9005dda9478131a98d24ad5d",
+      "status_checks": true,
+      "budgets_respected": true,
+      "citation_source_checks": [
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        },
+        {
+          "document_id": "D04",
+          "literal_source_match_ignoring_whitespace": true
+        }
+      ],
+      "real_model_calls": 4
+    }
+  ]
+}
