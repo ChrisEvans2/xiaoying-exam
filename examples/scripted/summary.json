@@ -1,0 +1,31 @@
+{
+  "evidence_type": "scripted_fixture_not_model_evaluation",
+  "kb_id": "915540ed-12f6-4d3d-a9c0-a68b89050931",
+  "cases": [
+    {
+      "case": "normal",
+      "status": "answered",
+      "run_id": "37810307-3edd-4e0c-b730-dda026111302"
+    },
+    {
+      "case": "conflict",
+      "status": "insufficient",
+      "run_id": "821bf496-1080-4658-b771-80f80424539e"
+    },
+    {
+      "case": "read-recovered",
+      "status": "answered",
+      "run_id": "1a49232b-7597-41e4-b0d6-ce19e050c261"
+    },
+    {
+      "case": "read-failed",
+      "status": "incomplete",
+      "run_id": "a267e34b-fe1d-4b03-aff7-a11dafeb97df"
+    },
+    {
+      "case": "replacement",
+      "status": "answered",
+      "run_id": "c97848d9-6a1f-4a4a-9326-3fa1394ffc3e"
+    }
+  ]
+}

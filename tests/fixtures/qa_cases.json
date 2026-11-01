@@ -1,0 +1,884 @@
+{
+  "schema_version": 2,
+  "created_date": "2026-10-31",
+  "purpose": "企业知识问答 Agent 的 20 组问题与参考答案；仅为预期结果，不是模型实际输出。",
+  "corpus_root": "data/policies",
+  "source_snapshot": [
+    {
+      "document_id": "D01",
+      "path": "data/policies/D01-expense-submission.md",
+      "sha256": "1878a52a5870674fdd0437f49f07d021ab8f1f760b008767b5a6105ccfc6b813"
+    },
+    {
+      "document_id": "D02",
+      "path": "data/policies/D02-finance-intake.pdf",
+      "sha256": "3ce1cadd14c92a53bf1a4ab03bc02dc6fc27020a43fd0b8879299c067a97cee7"
+    },
+    {
+      "document_id": "D03",
+      "path": "data/policies/D03-transportation.md",
+      "sha256": "dd505aa47b73c85c4741dc81952d9068b3ba49a11bad49dcefefa3b8ea7fff6c"
+    },
+    {
+      "document_id": "D04",
+      "path": "data/policies/D04-accommodation.docx",
+      "sha256": "8e4c21b384fb7a391d782643d8d06083f5797684ddfe0fd91b116431b2235bde"
+    },
+    {
+      "document_id": "D05",
+      "path": "data/policies/D05-meal-allowance.md",
+      "sha256": "bec46c0acada21333a4f35bec592242007cd133e03cb5360b0c47c7aa422c9ff"
+    },
+    {
+      "document_id": "D06",
+      "path": "data/policies/D06-travel-advance.html",
+      "sha256": "3b353c09d1bf9143b4ebb2d4f3427738e4dd7d315a82fd891d96c84d550e0463"
+    },
+    {
+      "document_id": "D07",
+      "path": "data/policies/D07-missing-receipts.txt",
+      "sha256": "19873600d87bcb00401d24dfb8799ac6ea6f331327766e782f08d890bcde2a97"
+    },
+    {
+      "document_id": "D08",
+      "path": "data/policies/D08-trip-approval-and-changes.md",
+      "sha256": "acc4acb2462e29b9ace9a22859b9d1a33d0d352c23c3c3b326186dea9024907e"
+    }
+  ],
+  "evaluation_rules": [
+    "只向受测模型提供 input 和正常工具接口；expected、source_snapshot、测试文档不得作为检索资料或系统提示中的答案。",
+    "按关键事实、原文证据、资料缺口、任务状态和实际工具观察判定，允许合理措辞变化，不要求整句字符串一致。",
+    "status 是评测语义标签，可映射到未来实现中的同义状态；incomplete 必须区别于完成。",
+    "历史回答只用于理解上下文，不替代本轮需要核对的制度原文。",
+    "evidence 是评测用支持片段，不要求逐字引用整条；实际引用须来自真实工具结果并足以支持各项结论。",
+    "资料外问题和持续工具失败可以没有引用，不应为了填满字段伪造依据。",
+    "setup 是 scripts/evaluate.py 执行的测试夹具规格，逻辑工具角色可映射实际工具名；不能把参考答案或预设动作注入受测模型。",
+    "单条存在无依据答案、错误引用或把未完成报告为成功时，该用例判失败。"
+  ],
+  "cases": [
+    {
+      "id": "QA01",
+      "category": "明确答案",
+      "input": {
+        "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "上海住宿费上限为每人每晚 500 元，按含税实际费用报销；低于上限按实际金额报销，超过部分自行承担。依据 D04 第 1、2 条。",
+        "required_facts": [
+          "上海上限为每人每晚 500 元",
+          "这是含税报销上限，不是固定发放金额",
+          "超出上限部分自付"
+        ],
+        "forbidden_claims": [
+          "不论实际花费均发放 500 元"
+        ],
+        "evidence": [
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 1 条",
+            "quote": "在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。"
+          },
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 2 条",
+            "quote": "上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA02",
+      "category": "明确答案",
+      "input": {
+        "question": "我去杭州出差，符合报销条件的含税房费是每晚 450 元，住 1 晚，公司报多少，我承担多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "杭州属于其他中国大陆城市，住宿上限为每人每晚 350 元，因此公司可报销 350 元，你承担超出的 100 元。依据 D04 第 1、2 条。",
+        "required_facts": [
+          "杭州上限为每人每晚 350 元",
+          "报销 350 元",
+          "个人承担 100 元"
+        ],
+        "forbidden_claims": [
+          "杭州适用 500 元上限",
+          "450 元全部报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 1 条",
+            "quote": "在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。"
+          },
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 2 条",
+            "quote": "上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA03",
+      "category": "改写后的相似问题",
+      "input": {
+        "question": "去上海见客户，住酒店一晚上最多能报多少钱？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "上海酒店住宿费最多可报销每人每晚 500 元，以含税实际费用为准；低于上限按实际金额报销，超出部分自付。依据 D04 第 1、2 条。",
+        "required_facts": [
+          "与 QA01 的核心结论一致",
+          "上限每人每晚 500 元",
+          "按实际费用报销"
+        ],
+        "forbidden_claims": [],
+        "evidence": [
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 1 条",
+            "quote": "在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。"
+          },
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 2 条",
+            "quote": "上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run",
+      "related_case": "QA01"
+    },
+    {
+      "id": "QA04",
+      "category": "上下文追问",
+      "input": {
+        "question": "那试用期员工呢？",
+        "history": [
+          {
+            "role": "user",
+            "content": "在上海出差，住宿费每人每晚最多能报销多少？"
+          },
+          {
+            "role": "assistant",
+            "content": "依据 D04，上海住宿费上限为每人每晚 500 元，按含税实际费用报销。"
+          }
+        ]
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "试用期员工在上海出差也执行每人每晚 500 元的住宿上限，与已转正员工相同。依据 D04 第 1、4 条。",
+        "required_facts": [
+          "从历史识别正在问上海住宿",
+          "试用期上限仍为每人每晚 500 元"
+        ],
+        "forbidden_claims": [
+          "试用期员工不能报销住宿费",
+          "转而回答预借款资格"
+        ],
+        "evidence": [
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 1 条",
+            "quote": "在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。"
+          },
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 4 条",
+            "quote": "试用期员工与已转正员工执行相同的住宿标准。本制度未设置按职级提高上限的例外。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA05",
+      "category": "明确答案",
+      "input": {
+        "question": "高铁二等座卖完了，我自行买一等座出差，制度允许超标准报销吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不允许。高铁、动车的报销标准为二等座，自行购买更高等级座位产生的费用不予报销，制度未设置超标准审批例外。依据 D03 第 1 条。",
+        "required_facts": [
+          "高铁报销标准为二等座",
+          "自行购买更高等级座位不符合该报销规定",
+          "没有主管批准即可超标准的例外"
+        ],
+        "forbidden_claims": [
+          "主管批准就可以报销一等座",
+          "保证可按二等座价格报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D03",
+            "source_path": "data/policies/D03-transportation.md",
+            "locator": "第 1 条",
+            "quote": "高铁、动车的报销标准为二等座；飞机的报销标准为经济舱。自行购买更高等级座位产生的费用不予报销，本制度未设置超标准审批例外。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA06",
+      "category": "明确答案",
+      "input": {
+        "question": "出差打网约车，只有支付截图，没有发票和行程明细，可以直接报销吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不能只凭支付截图直接报销。网约车须同时提供发票和行程明细，缺少行程明细应从平台补取；材料齐全后才能进入完整审核。依据 D03 第 4 条、D07 第 5 条。",
+        "required_facts": [
+          "支付截图不能替代发票和行程明细",
+          "需要补齐发票和行程明细",
+          "从平台补取缺失行程明细"
+        ],
+        "forbidden_claims": [
+          "只要有支付截图就可报销",
+          "只需补发票，无须行程明细"
+        ],
+        "evidence": [
+          {
+            "document_id": "D03",
+            "source_path": "data/policies/D03-transportation.md",
+            "locator": "第 4 条",
+            "quote": "出租车或网约车报销须同时提供发票和行程明细。仅有支付截图不能替代这两项材料。"
+          },
+          {
+            "document_id": "D07",
+            "source_path": "data/policies/D07-missing-receipts.txt",
+            "locator": "第 5 条",
+            "quote": "网约车行程明细缺失时，应从服务平台补取。发票与行程明细齐全后，才能进入该项费用的完整审核。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA07",
+      "category": "明确答案",
+      "input": {
+        "question": "我从常驻城市去杭州出差，9 月 1 日出发、9 月 2 日返回。两天都吃了房费内的免费早餐，没有其他供餐，餐补共多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "共 120 元。出发日和返回日均计入，共 2 天；每天 80 元，房费包含的早餐每天扣 20 元，所以 2 × (80 - 20) = 120 元。无须提供餐饮发票。依据 D05 第 1—3 条。",
+        "required_facts": [
+          "共计 2 个自然日",
+          "每天早餐扣减 20 元",
+          "合计 120 元",
+          "无需餐饮发票"
+        ],
+        "forbidden_claims": [
+          "合计 160 元",
+          "出发日或返回日不计补贴"
+        ],
+        "evidence": [
+          {
+            "document_id": "D05",
+            "source_path": "data/policies/D05-meal-allowance.md",
+            "locator": "第 1 条",
+            "quote": "员工离开常驻工作城市进行公务出差，可按每人每天 80 元申请餐费补贴，无须提供餐饮发票。"
+          },
+          {
+            "document_id": "D05",
+            "source_path": "data/policies/D05-meal-allowance.md",
+            "locator": "第 2 条",
+            "quote": "补贴按实际出差的自然日计算，出发日和返回日均计入；当天往返只计一天。同一天不得因多段行程重复领取。"
+          },
+          {
+            "document_id": "D05",
+            "source_path": "data/policies/D05-meal-allowance.md",
+            "locator": "第 3 条",
+            "quote": "公司、酒店或接待方免费提供餐食时，早餐扣减 20 元、午餐扣减 30 元、晚餐扣减 30 元。每餐只扣减一次，每日补贴最低为 0 元。房费中已包含的早餐视为免费提供。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA08",
+      "category": "明确答案",
+      "input": {
+        "question": "我在常驻工作城市内去客户办公室开会，当天可以领 80 元差旅餐补吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不适用这项差旅餐费补贴。在常驻工作城市内开展公务活动不适用 D05 的餐补规定。依据 D05 第 4 条。",
+        "required_facts": [
+          "常驻工作城市内公务活动不适用该餐补"
+        ],
+        "forbidden_claims": [
+          "只要见客户就能领 80 元",
+          "公司所有餐饮费用都禁止报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D05",
+            "source_path": "data/policies/D05-meal-allowance.md",
+            "locator": "第 4 条",
+            "quote": "在常驻工作城市内开展公务活动，不适用本补贴。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA09",
+      "category": "明确答案",
+      "input": {
+        "question": "境内出差坐飞机可以买什么舱位？要在什么时候取得谁的批准？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "飞机报销标准为经济舱，并须在购票前获得直属主管对该航班行程的批准，报销时附审批记录。依据 D03 第 1、2 条。",
+        "required_facts": [
+          "经济舱",
+          "购票前",
+          "直属主管对航班行程批准",
+          "报销时附审批记录"
+        ],
+        "forbidden_claims": [
+          "购票后补批准即可",
+          "商务舱也在标准内"
+        ],
+        "evidence": [
+          {
+            "document_id": "D03",
+            "source_path": "data/policies/D03-transportation.md",
+            "locator": "第 1 条",
+            "quote": "高铁、动车的报销标准为二等座；飞机的报销标准为经济舱。自行购买更高等级座位产生的费用不予报销，本制度未设置超标准审批例外。"
+          },
+          {
+            "document_id": "D03",
+            "source_path": "data/policies/D03-transportation.md",
+            "locator": "第 2 条",
+            "quote": "乘坐飞机须在购票前获得直属主管对该航班行程的批准，并在报销时附审批记录。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA10",
+      "category": "明确答案",
+      "input": {
+        "question": "我已转正，没有未结清预借款，已审批差旅预算为 4200 元。这次最多可以申请多少预借款？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "最多可申请 3000 元。预借款既不能超过已审批预算，也不能超过 3000 元；申请还须附审批记录和预算明细，经直属主管及财务审核后发放。依据 D06 第 1、2 条。",
+        "required_facts": [
+          "申请上限为 3000 元",
+          "需附审批记录和预算明细",
+          "须经直属主管及财务审核，不代表自动发款"
+        ],
+        "forbidden_claims": [
+          "可申请 4200 元",
+          "可立即自动到账"
+        ],
+        "evidence": [
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 1 条",
+            "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。"
+          },
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 2 条",
+            "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA11",
+      "category": "上下文追问",
+      "input": {
+        "question": "如果还在试用期，也能申请吗？",
+        "history": [
+          {
+            "role": "user",
+            "content": "已转正、没有未结清借款且差旅预算审批通过，最多能预借多少？"
+          },
+          {
+            "role": "assistant",
+            "content": "依据 D06，每次预借款不超过已审批差旅预算，且最高 3000 元；需经直属主管及财务审核。"
+          }
+        ]
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "试用期员工暂不能申请差旅预借款，但符合规定的实际差旅费用仍可正常申请报销。依据 D06 第 3 条。",
+        "required_facts": [
+          "承接历史中的差旅预借款",
+          "试用期没有该预借款申请资格",
+          "实际合规差旅费用仍可报销"
+        ],
+        "forbidden_claims": [
+          "试用期也能预借 3000 元",
+          "试用期所有差旅费用都不报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 3 条",
+            "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA12",
+      "category": "明确答案",
+      "input": {
+        "question": "住宿电子发票文件丢了，是不是一定不能报销了？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不是。先向原开票方重新获取同一张有效电子发票，重新获取后可以按正常流程报销；不得就同一交易重复开票报销。依据 D07 第 2 条。",
+        "required_facts": [
+          "向原开票方重新获取同一张有效电子发票",
+          "取得后按正常流程报销",
+          "不得重复开票报销"
+        ],
+        "forbidden_claims": [
+          "电子发票文件丢失就永久不能报销",
+          "重新开一张并与原票重复报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D07",
+            "source_path": "data/policies/D07-missing-receipts.txt",
+            "locator": "第 2 条",
+            "quote": "电子发票文件丢失时，应先向原开票方重新获取同一张有效电子发票；重新获取后可按正常流程报销，不得就同一交易重复开票报销。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA13",
+      "category": "明确答案",
+      "input": {
+        "question": "纸质住宿发票遗失了，我有银行流水和个人情况说明，能直接审核通过吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不能仅凭这些材料直接通过。应联系原开票方了解可提供的有效凭证并交财务确认；确认前该项费用保持“待补充材料”。银行流水和个人说明只能作为辅助材料。依据 D07 第 3、4 条。",
+        "required_facts": [
+          "银行流水和个人说明不能单独替代有效凭证",
+          "联系原开票方并由财务确认",
+          "确认前费用处于待补充材料状态"
+        ],
+        "forbidden_claims": [
+          "有流水和个人说明就必然通过",
+          "纸质发票遗失后任何情况下都不能报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D07",
+            "source_path": "data/policies/D07-missing-receipts.txt",
+            "locator": "第 3 条",
+            "quote": "纸质发票遗失时，应联系原开票方了解可提供的有效凭证，并交财务确认。在有效凭证获得确认前，该项费用保持“待补充材料”状态。"
+          },
+          {
+            "document_id": "D07",
+            "source_path": "data/policies/D07-missing-receipts.txt",
+            "locator": "第 4 条",
+            "quote": "支付截图、银行流水和个人情况说明只能作为辅助材料，不能单独替代发票或合法报销凭证。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA14",
+      "category": "明确答案",
+      "input": {
+        "question": "客户临时调整会议，我在产生新增费用前办好了变更审批，必要的改签费能报销吗？要什么材料？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "可以按规定据实报销。客户会议调整属于公务原因，须提供费用凭证、变更原因及审批记录。依据 D08 第 2、3 条。",
+        "required_facts": [
+          "公务原因的必要改签费可据实报销",
+          "需要费用凭证、变更原因和审批记录"
+        ],
+        "forbidden_claims": [
+          "不需要凭证",
+          "个人原因改签也同样报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D08",
+            "source_path": "data/policies/D08-trip-approval-and-changes.md",
+            "locator": "第 2 条",
+            "quote": "公务行程发生变更时，应在发生新增费用前提交变更说明及更新后的预算，获得直属主管批准，并保留审批记录。"
+          },
+          {
+            "document_id": "D08",
+            "source_path": "data/policies/D08-trip-approval-and-changes.md",
+            "locator": "第 3 条",
+            "quote": "因客户会议调整、公司任务取消等公务原因产生的必要退票费、改签费，可凭费用凭证、变更原因及审批记录据实报销。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA15",
+      "category": "明确答案",
+      "input": {
+        "question": "我想顺路探亲，因个人原因调整出差行程产生了改签费，公司报销吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "不报销。因个人原因调整行程产生的改签费由员工自行承担。依据 D08 第 4 条。",
+        "required_facts": [
+          "个人原因产生的改签费自行承担"
+        ],
+        "forbidden_claims": [
+          "只要原行程是出差就全部报销"
+        ],
+        "evidence": [
+          {
+            "document_id": "D08",
+            "source_path": "data/policies/D08-trip-approval-and-changes.md",
+            "locator": "第 4 条",
+            "quote": "因员工个人原因取消或调整行程产生的退票费、改签费由员工自行承担。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run"
+    },
+    {
+      "id": "QA16",
+      "category": "文档冲突",
+      "input": {
+        "question": "出差结束后，我最晚多少天内要提交差旅报销申请？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "现有资料存在冲突：D01 第 1 条规定出差结束次日起 30 个自然日内提交，D02 第 1 条规定同一起点的 15 个自然日。两份制度适用范围相同，未给出优先级或替代关系，不能仅凭 D02 日期较新选定 15 天。请确认应适用哪份制度，或提供财务对制度优先级的说明。",
+        "required_facts": [
+          "D01 为 30 个自然日",
+          "D02 为 15 个自然日",
+          "两者均从出差结束次日起计算",
+          "无法依据版本日期自行解决冲突",
+          "请求确认适用制度或补充优先级依据"
+        ],
+        "forbidden_claims": [
+          "直接认定必须 15 天内提交",
+          "直接认定必须 30 天内提交",
+          "日期较新自动覆盖旧制度",
+          "为保守起见把 15 天当作确定制度答案"
+        ],
+        "evidence": [
+          {
+            "document_id": "D01",
+            "source_path": "data/policies/D01-expense-submission.md",
+            "locator": "第 1 条",
+            "quote": "员工应在出差结束次日起 30 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。"
+          },
+          {
+            "document_id": "D02",
+            "source_path": "data/policies/D02-finance-intake.pdf",
+            "locator": "第 1 条",
+            "quote": "员工应在出差结束次日起 15 个自然日内提交差旅报销申请。自然日包含周末和法定节假日。"
+          }
+        ],
+        "information_gaps": [
+          "两份制度的优先级或替代关系未明确，需要确认适用制度"
+        ]
+      },
+      "trace_assertions": [
+        "实际检索和读取 D01、D02 的相冲突原文",
+        "发现冲突后查找适用范围或优先级依据；仍无依据时澄清或报告冲突",
+        "后续行动或结束决定来自模型对已观察结果的判断"
+      ],
+      "execution_status": "not_run",
+      "followup": {
+        "input": {
+          "content": "没有更多的优先级或替代关系说明，请保留冲突。"
+        },
+        "expected_status": "insufficient"
+      }
+    },
+    {
+      "id": "QA17",
+      "category": "资料外问题",
+      "input": {
+        "question": "我去日本东京出差，酒店每晚最多能报销多少人民币？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "当前资料只覆盖中国大陆境内差旅，未提供日本或其他境外差旅住宿标准，无法确定东京的报销上限。需要补充境外差旅制度或向财务确认。",
+        "required_facts": [
+          "现有资料不足以确定境外住宿上限",
+          "缺少境外差旅住宿制度",
+          "请求补充对应资料"
+        ],
+        "forbidden_claims": [
+          "套用国内 350 元上限",
+          "套用国内 500 元上限",
+          "编造东京住宿限额或汇率",
+          "因资料缺失就认定境外住宿禁止报销"
+        ],
+        "evidence": [],
+        "information_gaps": [
+          "缺少适用于日本东京的境外差旅住宿规定"
+        ]
+      },
+      "trace_assertions": [
+        "检索境外或东京相关规定，观察没有适用依据后说明缺口"
+      ],
+      "execution_status": "not_run",
+      "followup": {
+        "input": {
+          "content": "没有境外制度可以补充。"
+        },
+        "expected_status": "insufficient"
+      }
+    },
+    {
+      "id": "QA18",
+      "category": "信息不足",
+      "input": {
+        "question": "我下周去杭州出差，预算 2000 元，可以先借钱吗？",
+        "history": []
+      },
+      "expected": {
+        "status": "awaiting_user",
+        "reference_answer": "需要先确认你是否已转正、预算是否已审批、是否还有未结清的差旅预借款。若已转正、预算已审批且无未结清预借款，可按规定申请不超过 2000 元，并须经直属主管及财务审核；试用期或存在未结清预借款时不能申请。依据 D06 第 1—4 条。",
+        "required_facts": [
+          "询问转正状态、预算审批状态和未结清预借款",
+          "符合条件时本次上限 2000 元",
+          "需要直属主管及财务审核",
+          "不能无条件承诺可以借款"
+        ],
+        "forbidden_claims": [
+          "直接承诺可借 2000 元",
+          "忽略实际预算直接说能借 3000 元"
+        ],
+        "evidence": [
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 1 条",
+            "quote": "已转正员工可在出差前申请差旅预借款，每次金额不得超过已审批的差旅预算，且最高为 3000 元。"
+          },
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 2 条",
+            "quote": "申请须附出差审批记录和预算明细，经直属主管及财务审核通过后发放。"
+          },
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 3 条",
+            "quote": "试用期员工暂不具备差旅预借款申请资格，但其符合规定的实际差旅费用仍可正常申请报销。"
+          },
+          {
+            "document_id": "D06",
+            "source_path": "data/policies/D06-travel-advance.html",
+            "locator": "第 4 条",
+            "quote": "尚有未结清差旅预借款的员工，不得申请下一笔差旅预借款。"
+          }
+        ],
+        "information_gaps": [
+          "员工是否已转正",
+          "预算是否已经审批",
+          "是否存在未结清差旅预借款"
+        ]
+      },
+      "trace_assertions": [],
+      "execution_status": "not_run",
+      "followup": {
+        "input": {
+          "content": "我已转正，预算已审批，没有未结清的差旅预借款。"
+        },
+        "expected_status": "answered"
+      }
+    },
+    {
+      "id": "QA19",
+      "category": "工具失败后恢复",
+      "input": {
+        "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "answered",
+        "reference_answer": "上海住宿费上限为每人每晚 500 元，按含税实际费用报销；低于上限按实际金额报销，超过部分自行承担。依据 D04 第 1、2 条。",
+        "required_facts": [
+          "实际获得 D04 原文后才能给出 500 元上限",
+          "按含税实际费用报销",
+          "引用成功读取的原文"
+        ],
+        "forbidden_claims": [
+          "还没成功读取就凭记忆给出答案",
+          "伪造成功读取记录"
+        ],
+        "evidence": [
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 1 条",
+            "quote": "在北京、上海、广州、深圳住宿，报销上限为每人每晚 500 元；在中国大陆其他城市住宿，报销上限为每人每晚 350 元。"
+          },
+          {
+            "document_id": "D04",
+            "source_path": "data/policies/D04-accommodation.docx",
+            "locator": "第 2 条",
+            "quote": "上限适用于含税住宿费用。实际费用低于上限时按实际金额报销，高于上限时超出部分由员工自行承担。"
+          }
+        ],
+        "information_gaps": []
+      },
+      "trace_assertions": [
+        "首次读取 D04 返回 TIMEOUT",
+        "模型观察错误后选择重试读取；工具内部自动重试不计作该模型动作",
+        "后续读取成功，模型依据新观察结果回答"
+      ],
+      "execution_status": "not_run",
+      "setup": {
+        "description": "故障由测试适配器注入，模型仍须真实选择动作。搜索只返回元数据，禁止答案摘要、原文缓存和其他原文读取旁路。",
+        "search_results": {
+          "mode": "metadata_only",
+          "document_ids": [
+            "D04"
+          ]
+        },
+        "tool_failures": [
+          {
+            "tool_role": "read_document",
+            "document_id": "D04",
+            "fail_first_n": 1,
+            "error_code": "TIMEOUT",
+            "retryable": true
+          }
+        ],
+        "max_tool_calls": 6
+      },
+      "related_case": "QA01"
+    },
+    {
+      "id": "QA20",
+      "category": "工具持续失败",
+      "input": {
+        "question": "在上海出差，住宿费每人每晚最多能报销多少？",
+        "history": []
+      },
+      "expected": {
+        "status": "incomplete",
+        "reference_answer": "当前无法读取住宿制度原文，因此本次未能核实上海住宿报销上限。任务未完成，原因是文档读取失败；可以在工具恢复后重试。不得把缓存记忆中的金额当成本次已核实答案，也不能伪造引用。",
+        "required_facts": [
+          "任务未完成",
+          "说明工具读取失败",
+          "没有可用原文证据，不能给出确定金额或原文引用",
+          "到工具调用上限时明确说明达到上限"
+        ],
+        "forbidden_claims": [
+          "把 500 元或其他金额作为本次已核实答案",
+          "伪造原文引用",
+          "声称任务已完成",
+          "无限重试"
+        ],
+        "evidence": [],
+        "information_gaps": [
+          "文档读取失败，无法获得住宿标准原文"
+        ]
+      },
+      "trace_assertions": [
+        "观察到原文读取错误",
+        "模型选择后续处理或停止；达到上限时运行时强制结束且标记未完成",
+        "原文读取调用总量不超过剩余工具调用预算，全部工具调用总量不超过 6 次"
+      ],
+      "execution_status": "not_run",
+      "setup": {
+        "description": "搜索只返回元数据；所有原文读取持续失败，不允许成功缓存、答案摘要或读取旁路。由测试适配器注入故障，不能替模型预设决策。",
+        "search_results": {
+          "mode": "metadata_only",
+          "document_ids": [
+            "D04"
+          ]
+        },
+        "tool_failures": [
+          {
+            "tool_role": "read_document",
+            "document_id": "*",
+            "fail_all": true,
+            "error_code": "TIMEOUT",
+            "retryable": true
+          }
+        ],
+        "max_tool_calls": 6
+      },
+      "related_case": "QA01"
+    }
+  ]
+}
